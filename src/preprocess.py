@@ -22,6 +22,7 @@ from scipy.fftpack import fft, ifft
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 RESULT_DIR = '../results/'
+DATA_DIR = '../data/'
 
 def split_sequences(sequences, hist_size, n_steps_out=1):
     """Split data sequence into samples with matching input and targets.
@@ -232,12 +233,9 @@ def get_longrun_polynomial(inflow, hours_hist, hours_ahead, degree):
 
 class Preprocess():
 
-    def __init__(self, date, hours, n_forecast_hours, hist_size,
-            train_split=0.6, scale=True, n_steps_out=1, start_hour_pred=0,
-            split_seasons=False, priority = "", drop_prec = False,
-            data_file="DfEtna.csv", reverse_train_split=False,
-            reduce_forecast=False, with_wind = False,
-            remove_forecast=False
+    def __init__(self, hist_size=1000, train_split=0.6, scale=True,
+            data_file=DATA_DIR + "20200812-1809-merged.csv",
+            reverse_train_split=False
         ):
         """
         Load and preprocess data set.
@@ -246,144 +244,42 @@ class Preprocess():
         ----------
         date : string
             The last day of the desired data set.
-        hours : int
-            Number of hours into the past from param date.
-        n_forecast_hours : int
-            How many hours of weather forecast to use in the prediction.
-        hist_size : int
-            How many past hours should be used for prediction.
+        hist_size : int, default=1000
+            How many past time steps should be used for prediction.
         train_split : float, (0,1)
             How much data to use for training (the rest will be used for testing.)
         scale : bool, default=True
             Whether to scale the data set or not.
-        n_steps_out : int, default=1
-            Number of output steps.
-        start_hour_pred : int, default=0
-            How many hours into the future should prediction start. This gives 
-            the option of predicting for example from hour 5 to 10 into the
-            future, or simply only predict the nth hour into the future, if 
-            n_steps_out is set to 1.
-        split_seasons : boolean, default=False
-            Whether to split dataset into seasons.
-        priority : string, default=""
-            Option to use a set of predetermined parameters and features, which
-            are defined in the function preprocess(). Options:
-            - peaks: Tuned to hitting the peaks in inflow.
-            - error: Tuned to reducing the error.
-            - winter: Tuned to make good predictions in winter period.
-            - spring: Tuned to make good predictions in spring period.
-            - summer: Tuned to make good predictions in summer period.
-        drop_prec : boolean, default=False
-            Whether to drop precipitation history and forecast from input.
         data_file : string, default="DfEtna.csv"
             What file to get the data from.
         reverse_train_split : boolean, default=False
             Whether to use to first part of the dataset as test and the second
             part for training (if set to True). If set to False, it uses the
             first part for training and the second part for testing.
-        reduce_forecast : boolean, default=False
-            Whether to remove every second forecast hour from input.
-        remove_forecast : boolean, default=False
-            Whether to remove all forecast data from input.
 
         """
 
         self.data_file = data_file
-        self.n_steps_out = n_steps_out
-        self.start_hour_pred = start_hour_pred
         self.train_split = train_split
         self.hist_size = hist_size
         self.scale = scale
-        self.split_seasons = split_seasons
-        self.priority = priority
         self.reverse_train_split = reverse_train_split
-        self.reduce_forecast = reduce_forecast
-        self.remove_forecast = remove_forecast
 
         self.scaler_loaded = False
-        self.inflow_diff_used = False
-
         self.added_features = []
-        self.added_hist_features = []
-
-        # Select which columns to use from data set
-        date_col = [0]
-        inflow_col = [1]
-        # sensor_cols = np.arange(2,6,1)
-        if with_wind == True:
-            print("Using wind data")
-            sensor_cols = np.arange(4,7,1)
-            self.prec_cols = np.arange(74, 74 + n_forecast_hours, 1)
-            temp_cols = np.arange(9, 9 + n_forecast_hours, 1)
-            cols = np.concatenate((date_col, inflow_col, sensor_cols, temp_cols, self.prec_cols))
-        elif drop_prec == True:
-            temp_cols = np.arange(8, 8+n_forecast_hours, 1)
-            sensor_cols = [4]
-            cols = np.concatenate((date_col, inflow_col, sensor_cols, temp_cols))
-        elif remove_forecast:
-            sensor_cols = np.arange(4,6,1)
-            cols = np.concatenate((date_col, inflow_col, sensor_cols))
-        else:
-            sensor_cols = np.arange(4,6,1)
-            temp_cols = np.arange(8, 8+n_forecast_hours, 1)
-            self.prec_cols = np.arange(73, 73+n_forecast_hours, 1)
-            cols = np.concatenate((date_col, inflow_col, sensor_cols,
-                temp_cols, self.prec_cols))
-        
 
         # Get input matrix from file
-        self.df = readCSV.get_input_matrix(data_file, date, hours, cols)
-        print("Data file loaded: {}".format(data_file))
-        print("End date: {}".format(date))
-        print("Number of hours in data set: {}".format(hours))
+        self.df = pd.read_csv(self.data_file, index_col=0)
+        self.df.dropna(inplace=True)
+        self.df.reset_index(inplace=True, drop=True)
+        print(self.df)
+        print("Data file loaded: {}".format(self.data_file))
+        print("Length of data set: {}".format(len(self.df)))
 
 
     def preprocess(self, features = [], diff=False):
 
-        # Extract datetime information
-        dt_format = '%Y-%m-%d %H:%M:%S'
-        self.dates = pd.DatetimeIndex(
-            pd.to_datetime(self.df['value_dt'], format=dt_format)
-        )
-
-        if self.priority == "peaks":
-            self.add_rolling_features(['temp_mean_bool', 'temp_min_bool', 'temp_mean']) #'temp_range'
-            self.add_features(['hour', 'day', 'current_inflow', 'fft_inflow', 'fft_temp']) #'fft_inflow'
-            # self.add_polynomials()
-    
-        elif self.priority == "error":
-            pass
-
-        elif self.priority == "winter":
-            self.add_features(['hour', 'day', 'fft_precip', 'temp_mean', 'prec_sum'])
-            # self.add_rolling_features([]) #'temp_min_bool'
-
-        elif self.priority == "spring":
-            #-n 60 --hist 24
-            # self.add_rolling_features([]) #
-            self.add_features(['hour', 'day', 'current_inflow', 'temp_mean', 'temp_mean_bool', 'prec_sum']) #'temp_mean',
-        
-        elif self.priority == "summer":
-            self.add_features(['hour', 'day', 'current_inflow', 'temp_mean_bool', 'prec_sum_thresh', 'temp_max', 'days_since_inflow']) #'temp_mean', 'clausius',
-
-        else:
-            self.add_features(features)
-
-        if diff:
-            self.use_inflow_diff_as_target()
-
-        if self.reduce_forecast:
-            # Delete every second forecast hour
-            # TODO: Make drop_columns independent of column index, in order to
-            # make it fool proof (e.g. if we want to include/exclude columns
-            # that come before the forecast columns).
-            drop_columns = np.arange(5, 76, 2)
-            self.df.drop(columns=self.df.columns[drop_columns], inplace=True)
-            print('Forecast reduced.')
-
-        # Remove date column
-        self.df = self.df.iloc[:,1:]
-        self.df.index = self.dates
+        self.add_features(features)
 
         # Save the names of the input columns
         self.input_columns = self.df.columns
@@ -392,15 +288,7 @@ class Preprocess():
                 "-input_columns.csv")
 
 
-        if self.split_seasons:
-            self.split_data_to_seasons()
-
-            # USING SPRING DATA
-            self.dates = self.df_spring.index
-            self.split_to_years(self.df_spring)
-            self.data = self.df_spring.to_numpy()
-        else:
-            self.data = self.df.to_numpy()
+        self.data = self.df.to_numpy()
 
         self._split_train_test()
         self._scale_data()
@@ -1361,6 +1249,9 @@ class Preprocess():
         ))
 
 
+if __name__ == '__main__':
+
+    data = Preprocess()
 
 
 
