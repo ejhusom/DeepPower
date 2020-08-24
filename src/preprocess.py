@@ -90,17 +90,22 @@ def merge_time_series_and_added_features(X):
         data needed to make one prediction.
 
     """
+    
+    if isinstance(X, list) and (len(X) == 2):
 
-    result = list()
+        result = list()
 
-    for i in range(len(X[0])):
-        row = np.concatenate([
-            X[0][i].reshape(-1),
-            X[1][i]
-        ])
-        result.append(row)
+        for i in range(len(X[0])):
+            row = np.concatenate([
+                X[0][i].reshape(-1),
+                X[1][i]
+            ])
+            result.append(row)
 
-    return np.array(result)
+        return np.array(result)
+
+    else:
+        raise TypeError("X must be a list of two elements.")
 
 
 def scale_data(train_data, val_data, scaler_type='minmax'):
