@@ -21,7 +21,7 @@ from scipy.fftpack import fft, ifft
  
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
-RESULT_DIR = 'results/'
+RESULT_DIR = '../results/'
 
 def split_sequences(sequences, hist_size, n_steps_out=1):
     """Split data sequence into samples with matching input and targets.
@@ -67,9 +67,29 @@ def split_sequences(sequences, hist_size, n_steps_out=1):
 
     return X, y
 
-def merge_hist_and_forecast(X):
-    """Reverse the operation done on input matrix X by
-    split_hist_and_forecast."""
+def merge_time_series_and_added_features(X):
+    """
+    Reverse the operation done on input matrix X by
+    split_time_series_and_added_features, but flattening the time series
+    data.
+
+    Parameters
+    ----------
+    X : list
+        This must be a list of two elements:
+        1. 2D-array of shape [hist_size, num_features], which contains the time
+           series data.
+        2. 1D-array of shape [num_added_features], which contains the added
+           features.
+
+    Return
+    ------
+    result : array
+        A 2D-array, where each row contains the flattened time series data
+        along with the added features, such that each row contains the input
+        data needed to make one prediction.
+
+    """
 
     result = list()
 
@@ -85,6 +105,7 @@ def merge_hist_and_forecast(X):
 
 def scale_data(train_data, val_data, scaler_type='minmax'):
     """Scale train and test data.
+
     Parameters
     ----------
     train_data : array
@@ -94,6 +115,7 @@ def scale_data(train_data, val_data, scaler_type='minmax'):
     scaler_type : str, default='standard'
         Options: 'standard, 'minmax'.
         Specifies whether to use sklearn's StandardScaler or MinMaxScaler.
+
     Returns
     -------
     train_data : array
@@ -102,6 +124,7 @@ def scale_data(train_data, val_data, scaler_type='minmax'):
         Scaled test data.
     sc : scikit-learn scaler
         The scaler object that is used.
+
     """
 
     if scaler_type == 'standard':
@@ -119,7 +142,7 @@ def scale_data(train_data, val_data, scaler_type='minmax'):
 
     return train_data, val_data, scaler
 
-def split_hist_and_forecast(X, input_columns, added_features):
+def split_time_series_and_added_features(X, input_columns, added_features):
     """
     Take the result from split_sequences(), remove weather forecast for all time
     steps (in each sample) except the latest one, and put the latest forecast
@@ -202,7 +225,7 @@ def get_longrun_polynomial(inflow, hours_hist, hours_ahead, degree):
     return polynom
 
 
-class PreprocessData():
+class Preprocess():
 
     def __init__(self, date, hours, n_forecast_hours, hist_size,
             train_split=0.6, scale=True, n_steps_out=1, start_hour_pred=0,
