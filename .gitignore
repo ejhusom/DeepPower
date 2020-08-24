@@ -73,3 +73,5 @@ Session.vim
 
 # result dir
 results/*
+# data dir
+data/*
