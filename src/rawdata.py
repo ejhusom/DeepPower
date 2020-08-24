@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
+DATA_DIR = "../data"
 
 def pad_data(df):
     """Pad data such that there is a datapoint for every 0.1 second.
