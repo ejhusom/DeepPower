@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.layers import LSTM, Bidirectional, Dense, Activation
 
-RESULT_DIR = "results/"
+RESULT_DIR = "../results/"
 
 def CNNKeras(input_x, input_y, n_steps_out=1):
     """Define a CNN model architecture using Keras.
