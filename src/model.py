@@ -56,7 +56,7 @@ def CNNKeras(input_x, input_y, n_steps_out=1):
     return model
 
 
-class NeuralNetwork():
+class NeuralTimeSeries():
     """Run training and prediction using Keras."""
 
     def __init__(
@@ -66,8 +66,8 @@ class NeuralNetwork():
         X_test,
         y_test,
         n_epochs=100,
-        submethod="cnn",
-        time_id=time.strftime("%Y%m%d-%H%M&S")
+        net="cnn",
+        time_id=time.strftime("%Y%m%d-%H%M%S")
     ):
 
         tf.random.set_seed(2020)
@@ -78,7 +78,7 @@ class NeuralNetwork():
         self.y_test = y_test
 
         self.n_epochs = n_epochs
-        self.submethod = submethod.lower()
+        self.net = net.lower()
         self.model_loaded = False
         self.time_id = time_id
 
@@ -92,7 +92,7 @@ class NeuralNetwork():
             self.input_y = self.X_test.shape[-1]
     
 
-        if self.submethod == "lstm":
+        if self.net == "lstm":
             # self.model = LSTMKeras(
             #     self.input_x, self.input_y, self.n_steps_out
             # )
@@ -147,24 +147,5 @@ if __name__ == "__main__":
     # Setting seed for consistent results during testing.
     np.random.seed(2020)
 
-    analysis = NNForecast()
+    analysis = NeuralTimeSeries()
 
-    if len(sys.argv) > 1:
-        if sys.argv[1].startswith("model"):
-            model_file = sys.argv[1].split("=")[-1]
-            # weights_file = sys.argv[2].split("=")[-1]
-            # analysis.time_id = modelfile.split('-')[0] + modelfile.split('-')[1]
-            analysis.set_model(model_file)
-            print(analysis.model.summary())
-        elif sys.argv[1].startswith("n_epochs="):
-            analysis.n_epochs = int(sys.argv[1].split('=')[-1])
-            print("n_epochs set to {}.".format(analysis.n_epochs))
-            analysis.train()
-        else:
-            print("Command line argument not recognized.")
-            analysis.train()
-    else:
-        analysis.train()
-
-    analysis.predict()
-    analysis.plot()

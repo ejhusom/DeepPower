@@ -37,8 +37,6 @@ def split_sequences(sequences, hist_size, n_steps_out=1):
         should be matched with a given target.
     n_steps_out : int
         Number of output steps.
-    start_hour_pred : int, default=0
-        How many steps into the future should the prediction start.
     
     Returns
     -------
@@ -235,7 +233,7 @@ class Preprocess():
 
     def __init__(self, hist_size=1000, train_split=0.6, scale=True,
             data_file=DATA_DIR + "20200812-1809-merged.csv",
-            reverse_train_split=False
+            reverse_train_split=False, time_id=time.strftime("%Y%m%d-%H%M%S") 
         ):
         """
         Load and preprocess data set.
@@ -264,6 +262,7 @@ class Preprocess():
         self.hist_size = hist_size
         self.scale = scale
         self.reverse_train_split = reverse_train_split
+        self.time_id = time_id
 
         self.scaler_loaded = False
         self.added_features = []
@@ -272,6 +271,7 @@ class Preprocess():
         self.df = pd.read_csv(self.data_file, index_col=0)
         self.df.dropna(inplace=True)
         self.df.reset_index(inplace=True, drop=True)
+        self.index = self.df.index
         print(self.df)
         print("Data file loaded: {}".format(self.data_file))
         print("Length of data set: {}".format(len(self.df)))
@@ -297,7 +297,7 @@ class Preprocess():
         self.df.to_csv(RESULT_DIR + "tmp_df.csv")
         np.savetxt(RESULT_DIR + "tmp_X_train.csv", self.X_train, delimiter=",")
 
-        self._split_sequences(seasons=False)
+        self._split_sequences()
 
         self.n_features = self.X_train.shape[-1]
         self._create_feature_dict()
@@ -770,18 +770,18 @@ class Preprocess():
             self.test_hours = int(self.data.shape[0]*(1-self.train_split))
             
             self.train_data = self.data[self.test_hours:,:]
-            self.train_dates = self.dates[self.test_hours:]
+            self.train_indeces = self.index[self.test_hours:]
             self.test_data = self.data[:self.test_hours,:]
-            self.test_dates = self.dates[:self.test_hours]
+            self.test_indeces = self.index[:self.test_hours]
 
             print('Reversing train split.')
         else:
             self.train_hours = int(self.data.shape[0]*self.train_split)
 
             self.train_data = self.data[:self.train_hours,:]
-            self.train_dates = self.dates[:self.train_hours]
+            self.train_indeces = self.index[:self.train_hours]
             self.test_data = self.data[self.train_hours:,:]
-            self.test_dates = self.dates[self.train_hours:]
+            self.test_indeces = self.index[self.train_hours:]
 
 
 
@@ -865,10 +865,10 @@ class Preprocess():
         self.test_data = np.hstack((self.y_test, self.X_test))
 
         self.X_train, self.y_train = split_sequences(
-            self.train_data, self.hist_size, self.n_steps_out, self.start_hour_pred
+            self.train_data, self.hist_size
         )
         self.X_test, self.y_test = split_sequences(
-            self.test_data, self.hist_size, self.n_steps_out, self.start_hour_pred
+            self.test_data, self.hist_size
         )
 
     def _create_feature_dict(self):
@@ -936,14 +936,4 @@ class Preprocess():
 if __name__ == '__main__':
 
     data = Preprocess()
-
-
-
-
-
-
-
-
-
-
-
+    data.preprocess()
