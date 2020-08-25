@@ -10,8 +10,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+
 import tensorflow as tf
-from tensorflow.keras.layers import LSTM, Bidirectional, Dense, Activation
+from tensorflow.keras import layers
+from tensorflow.keras import models
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.models import Model, load_model
 
 RESULT_DIR = "../results/"
 
@@ -34,7 +39,7 @@ def CNNKeras(input_x, input_y, n_steps_out=1):
 
     """
 
-    kernel_size = 4
+    kernel_size = 2
 
     model = models.Sequential()
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
@@ -99,7 +104,7 @@ class NeuralTimeSeries():
             raise NotImplementedError;
         else:
             self.model = CNNKeras(
-                self.input_x, self.input_y, self.n_steps_out
+                self.input_x, self.input_y
             )
 
         return self.model
