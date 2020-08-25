@@ -183,22 +183,22 @@ def split_time_series_and_added_features(X, input_columns, added_features):
     
     """
 
-    X_hist, X_forecast = list(), list()
+    X_hist, X_added = list(), list()
     hist_idcs = []
-    forecast_idcs = []
+    added_idcs = []
 
     for i in range(len(input_columns)):
-        if input_columns[i][0].isdigit() or input_columns[i] in added_features:
-            forecast_idcs.append(i)
+        if input_columns[i] in added_features:
+            added_idcs.append(i)
         else:
             hist_idcs.append(i)
 
 	
     for i in range(len(X)):
         X_hist.append(X[i][:,hist_idcs])
-        X_forecast.append(X[i][-1,forecast_idcs])
+        X_added.append(X[i][-1,added_idcs])
 
-    return [np.array(X_hist), np.array(X_forecast)]
+    return [np.array(X_hist), np.array(X_added)]
 
 def get_polynomials(inflow):
     y = np.linspace(0, 10, len(inflow))
@@ -677,22 +677,8 @@ class Preprocess():
             plt.show()
             print(prec_sum_thresh)
 
-            # self.add_feature(
-            #         'prec_sum_thresh_forecast_{}H_{}win_{}thresh_summer'.format(
-            #             forecast_hour,
-            #             prec_rolling_sum_window,
-            #             prec_sum_threshold
-            #         ),
-            #         prec_sum_thresh
-            # )
-
-
         self.df = self.df.dropna()
-
-        dt_format = '%Y-%m-%d %H:%M:%S'
-        self.dates = pd.DatetimeIndex(
-            pd.to_datetime(self.df['value_dt'], format=dt_format)
-        )
+        self.df.reset_index(inplace=True, drop=True)
 
     def add_rolling_features(self, features):
         """
@@ -731,104 +717,7 @@ class Preprocess():
             self.added_features.append('fourrier_precip_forecast{}'.format(i))
         print('Feature added: fft forecast')
     
-    def add_polynomials(self):
-        inflow = self.df.iloc[:, 1]
-        first_order_2_point, first_order_3_point, second_order = get_polynomials(inflow)
-        self.df['first_order_2_point'] = first_order_2_point
-        # self.df['first_order_3_point'] = first_order_3_point
-        # self.df['second_order'] = second_order
-        self.added_features.append('first_order_2_point')
-        # self.added_features.append('first_order_3_point')
-        # self.added_features.append('second_order')
 
-        print('Feature added: Polynomials')
-
-    def add_longrun(self):
-
-        hours_ahead = 60 #= hours of forecast
-
-        inflow = self.df.iloc[:, 1]
-        longrun2 = get_longrun_polynomial(inflow, 24, hours_ahead, 2)
-        # longrun3 = get_longrun_polynomial(inflow, 60, hours_ahead, 3)
-        for i in range(hours_ahead):            
-            self.df['longrun2_{}hours'.format(i)] = longrun2[i]
-            self.added_features.append('longrun2_{}hours'.format(i))
-        # for i in range(hours_ahead):    
-        #     self.df['longrun3_{}hours'.format(i)] = longrun3[i]
-        #     self.added_features.append('longrun3_{}hours'.format(i))
-
-        print('Feature added: Longrun polynomials')
-
-    def add_days_since_xmm_prec(self, x):
-        precip = self.df.iloc[:,3].to_numpy().copy()
-        precip[precip < x] = 0
-        days_since = np.array([])
-        days = 0
-        for i in range(len(precip)):
-            if ((precip[i] != 0) or (i == len(precip)-1)):
-                days_since = np.append(days_since, np.arange(0, days + 1, 1))
-                days = 0
-            else:
-                days+=1
-        days_since[days_since>1000] = 1000
-        self.df['days_since_prec_over_{}mm'.format(x)] = days_since
-        self.added_features.append('days_since_prec_over_{}mm'.format(x))
-        print('Feature added: Days since {}mm prec'.format(x))
-
-    def add_mult(self):
-        precip = self.df.iloc[:,3].to_numpy().copy()
-        temp = self.df.iloc[:,2].to_numpy().copy()
-        self.df['mult'] = temp*precip
-        self.added_features.append('mult')
-        print('Feature added: mult')
-
-    def add_days_since_x_inflow(self, x):
-        precip = self.df.iloc[:,1].to_numpy().copy()
-        precip[precip < x] = 0
-        days_since = np.array([])
-        days = 0
-        for i in range(len(precip)):
-            if ((precip[i] != 0) or (i == len(precip)-1)):
-                days_since = np.append(days_since, np.arange(0, days + 1, 1))
-                days = 0
-            else:
-                days+=1
-        days_since[days_since>400] = 400
-        self.df['days_since_inflow_over_{}'.format(x)] = days_since
-        self.added_features.append('days_since_inflow_over_{}'.format(x))
-        print('Feature added: Days since {} inflow'.format(x))
-
-    def remove_inflow_as_input(self):
-        """
-        Remove inflow from the input matrix. 
-
-        NB: Must be done before split_sequences!
-        """
-
-        self.X_train = self.X_train[:,1:]
-        self.X_test = self.X_test[:,1:]
-        self.input_columns = self.input_columns[1:]
-
-    def add_prec_forecast_change(self):
-        prec_forecast = self.df.iloc[:,40:76].to_numpy()
-
-        add_p = prec_forecast[len(prec_forecast)%6 + 6:] - prec_forecast[len(prec_forecast)%6:-6]
-        add_prec = np.insert(add_p, 0, np.zeros((len(prec_forecast)%6 + 6,len(add_p[0]))), axis = 0)
-
-        for i in range(len(add_prec[0])):
-            self.df['change_prec_forecast_hour_{}'.format(i+1)] = add_prec[:,i]
-            self.added_features.append('change_prec_forecast_hour_{}'.format(i))
-    
-    def add_temp_forecast_change(self):
-        temp_forecast = self.df.iloc[:,4:40].to_numpy()
-
-        add_t = temp_forecast[len(temp_forecast)%6 + 6:] - temp_forecast[len(temp_forecast)%6:-6]
-        add_temp = np.insert(add_t, 0, np.zeros((len(temp_forecast)%6 + 6,len(add_t[0]))), axis = 0)
-
-        for i in range(len(add_temp[0])):
-            self.df['change_temp_forecast_hour_{}'.format(i+1)] = add_temp[:,i]
-            self.added_features.append('change_temp_forecast_hour_{}'.format(i))
-        
     def add_feature(self, name, feature_col, add_to_hist_matrix=False):
         """
         Adding a feature to the data set. The name is 'registered' into one of
@@ -869,28 +758,6 @@ class Preprocess():
             self.added_features.append(name)
 
         print('Feature added: {}'.format(name))
-
-    
-    def use_inflow_diff_as_target(self):
-        """
-        This function changes the target values from inflow values to the
-        difference of between one inflow value and the next.
-        """
-
-        self.inflow = self.df.iloc[:,1].copy()
-        self.inflow.index = self.dates.copy()
-        self.first_inflow_value = self.inflow.iloc[0]
-
-        self.df.iloc[:,1] = self.df.iloc[:,1].diff(1)
-        self.df = self.df.dropna()
-        dt_format = '%Y-%m-%d %H:%M:%S'
-        self.dates = pd.DatetimeIndex(
-            pd.to_datetime(self.df['value_dt'], format=dt_format)
-        )
-
-        self.inflow_diff_used = True
-
-        print('Using inflow diff as target.')
 
 
     def _split_train_test(self):
@@ -983,16 +850,11 @@ class Preprocess():
 
         print("Scaler loaded : {}".format(scaler_file))
 
-    def _split_sequences(self, seasons=False):
+    def _split_sequences(self):
         """Wrapper function for splitting the input data into sequences. The
         point of this function is to accomodate for the possibility of
         splitting the data set into seasons, and fitting a model for each
         season.
-
-        Parameters
-        ----------
-        seasons : boolean, default=False
-            Whether the data should be split into seasons or not.
 
         """
 
@@ -1002,57 +864,12 @@ class Preprocess():
         self.train_data = np.hstack((self.y_train, self.X_train))
         self.test_data = np.hstack((self.y_test, self.X_test))
 
-        if seasons:
-            # TODO: Add functionality for handling a data set that is split
-            # into seasons. Must find a good way to handle the gap in the data
-            # from one season to the next.
-            raise NotImplementedError
-        else:
-            self.X_train, self.y_train = split_sequences(
-                self.train_data, self.hist_size, self.n_steps_out, self.start_hour_pred
-            )
-            self.X_test, self.y_test = split_sequences(
-                self.test_data, self.hist_size, self.n_steps_out, self.start_hour_pred
-            )
-
-
-    def split_data_to_seasons(self):
-        """Split dataset into three seasons."""
-
-        # Defining the start month of the three seasons.
-        winter = 12
-        spring = 4
-        autumn = 8
-        
-        winter_mask = (self.df.month >= winter) | (self.df.month < spring)
-        spring_mask = (self.df.month >= spring) & (self.df.month < autumn)
-        autumn_mask = (self.df.month >= autumn) & (self.df.month < winter)
-
-        self.df_winter = self.df.loc[winter_mask]
-        self.df_spring = self.df.loc[spring_mask]
-        self.df_autumn = self.df.loc[autumn_mask]
-
-
-    def split_to_years(self, df=None):
-        """
-        Creating a list containing the original dataframe split into years.
-        """
-
-        if df is None:
-            df = self.df
-
-        years = sorted(set(df.index.year))
-
-        self.dfs_by_year = []
-
-        df['year'] = np.array(df.index.year)
-
-        for year in years:
-            self.dfs_by_year.append(df.loc[df.year == year])
-
-        del df['year']
-
-
+        self.X_train, self.y_train = split_sequences(
+            self.train_data, self.hist_size, self.n_steps_out, self.start_hour_pred
+        )
+        self.X_test, self.y_test = split_sequences(
+            self.test_data, self.hist_size, self.n_steps_out, self.start_hour_pred
+        )
 
     def _create_feature_dict(self):
         """
@@ -1081,139 +898,6 @@ class Preprocess():
         # pp.pprint(self.feature_dict)
         # print(self.feature_dict)
         self.feature_dict = np.array(self.feature_dict)
-
-
-    def get_forecast_column_name(self, hour, forecast_type='prec'):
-
-        if forecast_type == 'prec':
-            test_string = 'precipitation_amount_{}H'.format(hour)
-        elif forecast_type == 'temp':
-            test_string = 'air_temperature_2m_{}H'.format(hour)
-        else:
-            raise ValueError('Not valid forecast type.')
-            
-
-        col_name = [col for col in self.df.columns if col.endswith(
-            test_string
-        )]
-
-        return col_name
-
-    def get_forecast_column_names(self):
-        """Find the names of all forecast columns.
-
-        Returns
-        -------
-        temp_forecast_cols : list
-            List of the names of all temperature forecast columns in dataset.
-        prec_forecast_cols : list
-            List of the names of all precipitation forecast columns in dataset.
-
-        """
-
-        temp_name = 'air_temperature'
-        prec_name = 'precipitation_amount'
-
-        temp_forecast_cols = [
-                col for col in self.df.columns if temp_name in col
-        ]
-
-        prec_forecast_cols = [
-                col for col in self.df.columns if prec_name in col
-        ]
-
-        return temp_forecast_cols, prec_forecast_cols
-
-    def split_for_triplenet(self, X):
-        """
-        Split input matrix into historic observations, forecast, and other
-        features.
-
-        Parameters
-        ----------
-        X : list/array of arrays
-            Input matrix produced by split_sequences().
-        
-        Returns
-        -------
-        X_hist : list of arrays
-            The input matrix containing historical observations.
-        X_forecast : list of arrays
-            Input matrix containing the latest weather forecast for each
-            sample.
-        X_dense : list of arrays
-            Input matrix to be sent to dense layers.
-        
-        """
-
-        X_hist, X_forecast, X_dense = list(), list(), list()
-        hist_idcs = []
-        temp_forecast_idcs = []
-        prec_forecast_idcs = []
-        dense_idcs = []
-
-        temp_name = 'air_temperature'
-        prec_name = 'precipitation_amount'
-
-        for i in range(len(self.input_columns)):
-
-            if temp_name in self.input_columns[i]:
-                temp_forecast_idcs.append(i)
-            elif prec_name in self.input_columns[i]:
-                prec_forecast_idcs.append(i)
-            elif self.input_columns[i] in self.added_features:
-                dense_idcs.append(i)
-            else:
-                hist_idcs.append(i)
-
-            
-        for i in range(len(X)):
-            X_hist.append(X[i][:,hist_idcs])
-
-            temp_forecast = X[i][-1,temp_forecast_idcs].transpose()
-            prec_forecast = X[i][-1,prec_forecast_idcs].transpose()
-            forecast = np.c_[temp_forecast, prec_forecast]
-            X_forecast.append(forecast)
-
-            X_dense.append(X[i][-1,dense_idcs])
-
-        return [np.array(X_hist), np.array(X_forecast), np.array(X_dense)]
-
-    def combine_forecast_and_observations(self, X):
-        """
-        Combine the observations and the forecast into one continous array. The
-        result is to be used in the TripleNet architecture.
-
-        Parameters
-        ----------
-        X : array
-            Input matrix produced by split_sequences().
-
-        Returns
-        -------
-        X_hist : list of arrays
-            The input matrix containing historical observations.
-        combined : list of arrays
-            Input matrix containing the latest weather forecast combined with
-            the historic observations.
-        X_dense : list of arrays
-            Input matrix to be sent to dense layers.
-
-        """
-
-        X_split = self.split_for_triplenet(X)
-
-        observations = X_split[0].copy()
-        forecast = X_split[1].copy()
-
-        combined = []
-
-        for i in range(len(observations)):
-            stack = np.vstack([observations[i][:,1:], forecast[i]])
-            combined.append(stack)
-
-        return [X_split[0], np.array(combined), X_split[2]]
-
 
     def augment_data(self, thresh=20):
         """
