@@ -147,7 +147,7 @@ if __name__ == '__main__':
     )
 
     parser.add_argument("-d", '--data_file', help='which data file to use', 
-            default=DATA_DIR + "20200812-1809-merged.csv")
+            default=DATA_DIR + "20200813-2012-merged.csv")
     parser.add_argument("-s", "--hist_size", type=int,
             help="""how many deciseconds of history to use for power estimation,
             default=5""", default=50)
