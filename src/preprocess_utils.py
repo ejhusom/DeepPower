@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 
 import datetime 
 import numpy as np
+import os
 import pandas as pd
 import pickle
 import string
@@ -22,14 +23,13 @@ from scipy.fftpack import fft, ifft
  
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
-RESULT_DIR = '../results/'
-DATA_DIR = '../data/'
-
 def read_csv(filename, delete_columns=[], verbose=False):
     """Read csv file, and make proper adjustment to the resulting dataframe."""
 
     # Get input matrix from file
     df = pd.read_csv(filename, index_col=0)
+
+    if verbose: print_dataframe(df, "DATAFRAME FROM CSV")
 
     for col in delete_columns:
         del df[col]
@@ -39,11 +39,46 @@ def read_csv(filename, delete_columns=[], verbose=False):
     index = df.index
 
     if verbose:
-        print(df)
         print("Data file loaded: {}".format(filename))
         print("Length of data set: {}".format(len(df)))
 
     return df, index
+
+def print_dataframe(df, message=""):
+    """Print dataframe to terminal, with boundary and message."""
+
+    rows, columns = os.popen('stty size', 'r').read().split()
+    for i in range(int(columns)):
+        print('=',end='')
+    
+    print(message)
+    print(df)
+
+def move_column(df, column_name, new_idx):
+    """
+    Move a column in a dataframe.
+
+    Parameters
+    ----------
+    df : pandas DataFrame
+        Dataframe containing the column to be moved.
+    column_name : string
+        Name of the column to be moved.
+    new_idx : int
+        The column index the column should be moved to.
+
+    Returns
+    -------
+    df : pandas DataFrame
+        Dataframe with the columns reordered.
+
+    """
+
+    old_idx = df.columns.get_loc(column_name)
+    reordered_columns = list(df.columns)
+    reordered_columns.insert(0, reordered_columns.pop(old_idx))
+
+    return df[reordered_columns]
 
 def split_sequences(sequences, hist_size, n_steps_out=1):
     """Split data sequence into samples with matching input and targets.

@@ -7,14 +7,13 @@
 # Description:
 # Estimate power during workout using deep learning.
 # ============================================================================
+import argparse
+import os
+import pickle
+import sys
+
 from preprocess import *
 from model import *
-
-import argparse
-import pickle
-
-RESULT_DIR = '../results/'
-DATA_DIR = '../data/'
 
 
 class DeepPower(Preprocess, NeuralTimeSeries):
@@ -22,87 +21,58 @@ class DeepPower(Preprocess, NeuralTimeSeries):
 
     Parameters
     ----------
-    parameter : float
-      Description.
-
 
 
     Attributes
     ----------
-    attribute : float
-       Description.
-
-    array[float]
-       Description.
-
-
-    Notes
-    -----
-
-    
-    References
-    ----------
-
-
-    Example
-    -------
-    >>>
 
     """
 
 
-    def __init__(
-            self,
-            data_file=DATA_DIR + "20200812-1809-merged.csv",
-            time_id=time.strftime("%Y%m%d-%H%M%S"),
-            hist_size = 50, # deciseconds
+    def __init__(self,
+            data_file="../data/20200812-1809-merged.csv",
+            hist_size=1000, 
+            train_split=0.6, 
+            scale=True,
+            reverse_train_split=False, 
+            verbose=False,
             net="cnn",
-            train_split = 0.6,
             n_epochs=100,
-            reverse_train_split=False
+            time_id=time.strftime("%Y%m%d-%H%M%S")
     ):
 
-
-        self.data_file = data_file
-        self.time_id = time_id
-        self.hist_size = hist_size
         self.net = net
-        self.train_split = train_split
         self.n_epochs = n_epochs
-        
+
         Preprocess.__init__(self,
-                hist_size=self.hist_size,
-                train_split=self.train_split,
-                data_file=self.data_file,
+                data_file=data_file,
+                hist_size=hist_size,
+                train_split=train_split,
+                scale=scale,
                 reverse_train_split=reverse_train_split,
-                time_id=self.time_id
+                verbose=verbose,
+                time_id=time_id
         )
 
-        self.title = ("""File: {}, hist_size: {}, net: {}, n_epochs: {}, added
-        features: {}""".format(self.data_file, self.hist_size, self.net,
-            self.n_epochs, self.added_features))
+        self.title = (
+            """File: {}, hist_size: {}, net: {}, n_epochs: {}, 
+            added feats.: {}""".format(
+                self.data_file, self.hist_size, self.net, self.n_epochs,
+                self.added_features
+            )
+        )
             
     def build_model(self):
+        """Build the model."""
 
-        self.model = NeuralTimeSeries.__init__(
-            self, self.X_train, self.y_train, self.X_test, self.y_test,
-            self.n_epochs, self.net, self.time_id
-        )
-        print(self.model.summary())
+        try:
+            NeuralTimeSeries.__init__(
+                self, self.X_train, self.y_train, self.X_test, self.y_test,
+                self.n_epochs, self.net, self.time_id
+            )
+        except:
+            raise AttributeError("Data is not preprocessed.")
 
-        self.model_built = True
-
-    def fit(self):
-        """
-        Fitting a model to the training data. This function is a wrapper
-        function, in order to make it easy to swap between different methods.
-        """
-
-        if not self.model_built:
-            self.build_model()
-            print("yoyo")
-
-        self._train_network()
 
     def predict(self, X_test=None, y_test=None):
         """Perform prediction using the trained model."""
@@ -121,7 +91,6 @@ class DeepPower(Preprocess, NeuralTimeSeries):
     def plot_prediction(self):
         """
         Plot the prediction compared to the true targets.
-        
         """
 
         # error_plot_average(self.y_test, self.y_pred, 168, self.time_id)
@@ -136,67 +105,79 @@ class DeepPower(Preprocess, NeuralTimeSeries):
 
         plt.legend()
         plt.title(self.title, wrap=True)
-        plt.savefig(RESULT_DIR + self.time_id + "-pred.png")
+        plt.savefig(self.result_dir + self.time_id + "-pred.png")
         plt.show()
 
 if __name__ == '__main__':
     np.random.seed(2020)
+    time_id = time.strftime("%Y%m%d-%H%M%S")
 
     parser = argparse.ArgumentParser(
             formatter_class=argparse.RawTextHelpFormatter
     )
 
-    parser.add_argument("-d", '--data_file', help='which data file to use', 
-            default=DATA_DIR + "20200813-2012-merged.csv")
-    parser.add_argument("-s", "--hist_size", type=int,
-            help="""how many deciseconds of history to use for power estimation,
-            default=5""", default=50)
-    parser.add_argument('-n', "--net", 
-            help="which network architectyre to use, default=cnn",
-            default="cnn")
-    parser.add_argument('--train_split', type=float,
-            help='training/test ratio', default='0.6')
-    parser.add_argument('-e', "--n_epochs", type=int, 
-            help="number of epochs to run for NN, default=100", default=100)
-    parser.add_argument('--reverse_train_split', help="""use first part of data
-            set for testing and second part for training""",
-            action='store_true')
-    parser.add_argument('-l', '--load', help="loads model")
-    parser.add_argument('--scaler', help='data scaler object')
-    parser.add_argument('-t', '--train', help="trains model",
-            action='store_true')
-    parser.add_argument('-p', '--predict', help="predicts on test set",
-            action='store_true')
+    parser.add_argument('-v', '--verbose', action="store_true",
+            help="print what the program does")
 
+    # PREPROCESSING ARGUMENTS
+    parser.add_argument("-d", '--data_file', 
+            default="../data/20200813-2012-merged.csv",
+            help='which data file to use')
+    parser.add_argument("-s", "--hist_size", type=int, default=50,
+            help="""how many deciseconds of history to use for power estimation,
+            default=5""")
+    parser.add_argument('--train_split', type=float, default="0.6",
+            help='training/test ratio')
+    parser.add_argument('--reverse_train_split', action="store_true",
+            help="""use first part of data set for testing and second part for
+            training""")
     parser.add_argument('-f', '--features', nargs='+', default='',
             help="""
     Add extra features by writing the keyword after this flag. Available:
     - nan: No features available yet
     """)
 
+    # MODEL ARGUMENTS
+    parser.add_argument('-n', "--net", default="cnn",
+            help="which network architectyre to use, default=cnn")
+    parser.add_argument('-e', "--n_epochs", type=int, default=100,
+            help="number of epochs to run for NN, default=100")
+    parser.add_argument('-t', '--train', action="store_true",
+            help="trains model")
+    parser.add_argument('-p', '--predict', action="store_true",
+            help="predicts on test set")
+
+    # LOAD MODEL ARGUMENTS
+    parser.add_argument('-m', '--model', help="loads pretrained model")
+    parser.add_argument('--scaler', help='data scaler object')
+
     args = parser.parse_args()
 
     power_estimation = DeepPower(
             data_file=args.data_file,
             hist_size=args.hist_size,
-            net=args.net,
             train_split=args.train_split,
+            reverse_train_split=args.reverse_train_split,
+            net=args.net,
             n_epochs=args.n_epochs,
-            reverse_train_split=args.reverse_train_split
+            verbose=args.verbose,
+            time_id=time_id
     )
 
-
-    if args.scaler != None:
-        power_estimation.set_scaler(args.scaler)
-
     power_estimation.preprocess(args.features)
-
     power_estimation.build_model()
 
-    if args.load != None:
-        if args.load.endswith('.h5'):
-            power_estimation.set_model(args.load)
+    if args.model != None:
+        if args.model.endswith('.h5'):
+            power_estimation.set_model(args.model)
+        else:
+            raise ValueError("Model does not have correct extension.")
 
+        if args.scaler != None:
+            power_estimation.set_scaler(args.scaler)
+        else:
+            raise Exception("To load pretrained model, scaler must be given.")
+            sys.exit(1)
 
     if args.train:
         power_estimation.fit()
@@ -204,3 +185,4 @@ if __name__ == '__main__':
     if args.predict:
         power_estimation.predict()
         power_estimation.plot_prediction()
+

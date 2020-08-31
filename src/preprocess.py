@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 
 import datetime 
 import numpy as np
+import os
 import pandas as pd
 import pickle
 import string
@@ -23,16 +24,17 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 from preprocess_utils import *
 
-RESULT_DIR = '../results/'
-DATA_DIR = '../data/'
-
-
-
 class Preprocess():
 
-    def __init__(self, hist_size=1000, train_split=0.6, scale=True,
-            data_file=DATA_DIR + "20200812-1809-merged.csv",
-            reverse_train_split=False, time_id=time.strftime("%Y%m%d-%H%M%S") 
+    def __init__(self, 
+            data_file="../data/20200812-1809-merged.csv",
+            hist_size=1000, 
+            train_split=0.6, 
+            scale=True,
+            reverse_train_split=False, 
+            verbose=False,
+            target_name="power",
+            time_id=time.strftime("%Y%m%d-%H%M%S")
         ):
         """
         Load and preprocess data set.
@@ -53,6 +55,8 @@ class Preprocess():
             Whether to use to first part of the dataset as test and the second
             part for training (if set to True). If set to False, it uses the
             first part for training and the second part for testing.
+        verbose : boolean, default=False
+            Printing what the program does.
 
         """
 
@@ -62,42 +66,41 @@ class Preprocess():
         self.scale = scale
         self.reverse_train_split = reverse_train_split
         self.time_id = time_id
+        self.verbose = verbose
 
         self.scaler_loaded = False
         self.added_features = []
-
-        # Get input matrix from file
-        self.df = pd.read_csv(self.data_file, index_col=0)
-        del self.df["abdomen"]
-        self.df.dropna(inplace=True)
-        self.df.reset_index(inplace=True, drop=True)
-        self.index = self.df.index
-        print(self.df)
-        print("Data file loaded: {}".format(self.data_file))
-        print("Length of data set: {}".format(len(self.df)))
-
-        self.target_col_name = "power"
-
+        self.target_name = target_name
+        self.result_dir = "../results/" + time_id + "/"
+        os.mkdir(self.result_dir)
 
 
     def preprocess(self, features = [], diff=False):
 
+        self.df, self.index = read_csv(
+                self.data_file, 
+                delete_columns=["time", "calories", "abdomen"],
+                verbose=self.verbose
+        )
 
-        del self.df["time"]
-        del self.df["calories"]
-        print(self.df.columns)
-        columns = ["power", "ribcage", "heartrate"]
-        self.df = self.df[columns]
-        print(self.df)
+        # Move target column to the beginning of dataframe
+        self.df = move_column(self.df, self.target_name, 0)
+
+        if self.verbose:
+            rows, columns = os.popen('stty size', 'r').read().split()
+            for i in range(int(columns)):
+                print('=',end='')
+            print("DATAFRAME BEFORE FEATURE ENGINEERING")
+            print(self.df)
 
 
         self.add_features(features)
-        # Save the names of the input columns
-        # self.input_columns = self.df.columns
-        # input_columns_df = pd.DataFrame(self.input_columns)
-        # input_columns_df.to_csv(RESULT_DIR + self.time_id +
-        #         "-input_columns.csv")
 
+        # Save the names of the input columns
+        self.input_columns = self.df.columns
+        input_columns_df = pd.DataFrame(self.input_columns)
+        input_columns_df.to_csv(self.result_dir + self.time_id +
+                "-input_columns.csv")
 
         self.data = self.df.to_numpy()
 
@@ -105,20 +108,16 @@ class Preprocess():
         self._scale_data()
 
         # Save data for inspection of preprocessed data set
-        self.df.to_csv(RESULT_DIR + "tmp_df.csv")
-        np.savetxt(RESULT_DIR + "tmp_X_train.csv", self.X_train, delimiter=",")
+        self.df.to_csv("tmp_df.csv")
+        np.savetxt("tmp_X_train.csv", self.X_train, delimiter=",")
 
         self._split_sequences()
-
-
-        plt.plot(self.X_train[0])
-        plt.show()
 
         self.n_features = self.X_train.shape[-1]
         # self._create_feature_dict()
 
         # Save test targets for inspection
-        np.savetxt(RESULT_DIR + "tmp_y_test.csv", self.y_test, delimiter=",")
+        np.savetxt("tmp_y_test.csv", self.y_test, delimiter=",")
 
 
     def add_features(self, features):
@@ -200,10 +199,17 @@ class Preprocess():
             self.test_data, self.hist_size
         )
 
-    def _split_train_test(self, test_equals_train=True):
+    def _split_train_test(self, test_equals_train=False):
         """
         Splitting the data set into training and test set, based on the
         train_split ratio.
+
+        Parameters
+        ----------
+        test_equals_train : boolean, default=False
+            Setting test set to be the same as training set, for debugging
+            purposes.
+
         """
 
         self.train_hours = int(self.data.shape[0]*self.train_split)
@@ -252,7 +258,8 @@ class Preprocess():
                     pass
 
                 self.X_test = self.X_scaler.transform(self.X_test)
-                print("Loaded scaler used to scale data.")
+
+                if self.verbose: print("Loaded scaler used to scale data.")
 
 
             else:
@@ -267,10 +274,10 @@ class Preprocess():
                 self.X_test = self.X_scaler.transform(self.X_test)
 
                 # Save the scaler in order to reuse it on other test sets
-                pickle.dump(self.X_scaler, open(RESULT_DIR + self.time_id +
+                pickle.dump(self.X_scaler, open(self.result_dir + self.time_id +
                     '-scaler.pkl', 'wb'))
 
-                print("Data scaled and scaler saved.")
+                if self.verbose: print("Data scaled and scaler saved.")
 
 
     def set_scaler(self, scaler_file):
@@ -282,7 +289,7 @@ class Preprocess():
         self.X_scaler = pickle.load(open(scaler_file, 'rb'))
         self.scaler_loaded = True
 
-        print("Scaler loaded : {}".format(scaler_file))
+        if self.verbose: print("Scaler loaded : {}".format(scaler_file))
 
 
     def _create_feature_dict(self):

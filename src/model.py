@@ -18,8 +18,6 @@ from tensorflow.keras import models
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.models import Model, load_model
 
-RESULT_DIR = "../results/"
-
 def CNNKeras(input_x, input_y, n_steps_out=1):
     """Define a CNN model architecture using Keras.
     Parameters
@@ -55,8 +53,6 @@ def CNNKeras(input_x, input_y, n_steps_out=1):
     model.compile(
         optimizer='adam', loss='mae', metrics=['mae', 'mape', 'acc']
     )
-
-    print(model.summary())
 
     return model
 
@@ -95,7 +91,6 @@ class NeuralTimeSeries():
         except:
             self.input_x = self.X_test.shape[-2]
             self.input_y = self.X_test.shape[-1]
-    
 
         if self.net == "lstm":
             # self.model = LSTMKeras(
@@ -107,43 +102,36 @@ class NeuralTimeSeries():
                 self.input_x, self.input_y
             )
 
-        return self.model
+        if self.verbose: print(self.model.summary())
 
 
-    def _train_network(self):
+    def fit(self):
         """Train the model."""
 
-        early_stop = EarlyStopping(
-            monitor = 'val_loss', patience = 1500, verbose = 1
-        )
+        if not hasattr(self, "model"):
+            self.build_model()
 
-        checkpoint_path = "weights/checkpoint"
-        # "./weights/"+self.time_id+"-w.{epoch:02d}-{val_loss:.2f}.hdf5"
-        checkpoint = ModelCheckpoint(
-            checkpoint_path, monitor='val_loss', verbose=1,
-            save_best_only=True, mode='auto',save_weights_only=True)
+        fit_verbose = 1 if self.verbose else 0
 
         self.history = self.model.fit(
-            self.X_train, self.y_train, epochs=self.n_epochs, verbose=1,
-            # callbacks=[early_stop, checkpoint],
-            batch_size=128,
+            self.X_train, self.y_train, epochs=self.n_epochs,
+            verbose=fit_verbose, batch_size=128,
             # validation_split=0.2
         )
 
-        # self.model.load_weights(checkpoint_path)
+        if self.verbose:
+            scores = self.model.evaluate(self.X_test, self.y_test, verbose=1)
+            print(scores)
 
-        self.scores = self.model.evaluate(self.X_test, self.y_test, verbose=1)
-        print(self.scores)
-        self.model.save(RESULT_DIR + self.time_id + "-model.h5")
-        with open(RESULT_DIR + self.time_id + "-config.json", 'w') as f:
+        self.model.save(self.result_dir + self.time_id + "-model.h5")
+
+        with open(self.result_dir + self.time_id + "-config.json", 'w') as f:
             f.write(self.model.to_json())
 
     def set_model(self, model_file):
         """Setting the model to be used from a model saved with Keras."""
 
         self.model = models.load_model(model_file)
-        # self.model.load_weights(weights_file)
-        # self.model = loaded_model
         self.model_loaded = True
         print("Model loaded: {}".format(model_file))
 
