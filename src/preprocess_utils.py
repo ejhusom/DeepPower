@@ -25,6 +25,25 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 RESULT_DIR = '../results/'
 DATA_DIR = '../data/'
 
+def read_csv(filename, delete_columns=[], verbose=False):
+    """Read csv file, and make proper adjustment to the resulting dataframe."""
+
+    # Get input matrix from file
+    df = pd.read_csv(filename, index_col=0)
+
+    for col in delete_columns:
+        del df[col]
+
+    df.dropna(inplace=True)
+    df.reset_index(inplace=True, drop=True)
+    index = df.index
+
+    if verbose:
+        print(df)
+        print("Data file loaded: {}".format(filename))
+        print("Length of data set: {}".format(len(df)))
+
+    return df, index
 
 def split_sequences(sequences, hist_size, n_steps_out=1):
     """Split data sequence into samples with matching input and targets.
