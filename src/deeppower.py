@@ -136,7 +136,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
             for i in range(self.X_test_pre_seq.shape[1]):
                 fig.add_trace(go.Scatter(
                     x=x, y=self.X_test_pre_seq[:,i]*250,
-                    name=self.input_columns[i]))
+                    name=self.input_columns[i+1]))
 
         fig.show(config=config)
 

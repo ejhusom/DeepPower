@@ -100,6 +100,7 @@ class Preprocess():
 
         # Save the names of the input columns
         self.input_columns = self.df.columns
+        print(self.input_columns)
         input_columns_df = pd.DataFrame(self.input_columns)
         input_columns_df.to_csv(self.result_dir + self.time_id +
                 "-input_columns.csv")
