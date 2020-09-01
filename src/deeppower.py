@@ -108,7 +108,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         if include_input:
             print(self.X_test_pre_seq.shape)
             for i in range(self.X_test_pre_seq.shape[1]):
-                plt.plot(self.X_test_pre_seq[:,i], label=self.input_columns[i])
+                plt.plot(self.df.iloc[:,i], label=self.input_columns[i])
 
         plt.legend()
         plt.title(self.title, wrap=True)
