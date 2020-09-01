@@ -72,7 +72,7 @@ class Preprocess():
         self.added_features = []
         self.target_name = target_name
         self.result_dir = "../results/" + time_id + "/"
-        os.mkdir(self.result_dir)
+        os.makedirs(self.result_dir)
 
 
     def preprocess(self, features = [], diff=False):

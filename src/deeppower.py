@@ -11,6 +11,11 @@ import argparse
 import os
 import pickle
 
+try:
+    import gnuplotlib as gp
+except:
+    pass
+
 from preprocess import *
 from model import *
 
@@ -37,7 +42,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
             verbose=False,
             net="cnn",
             n_epochs=100,
-            time_id=time.strftime("%Y%m%d-%H%M%S")
+            time_id=time.strftime("%Y%m%d-%H%M%S"),
     ):
 
         self.net = net
@@ -60,6 +65,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
                 self.added_features
             )
         )
+
             
     def build_model(self):
         """Build the model."""
@@ -95,17 +101,46 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         # error_plot_average(self.y_test, self.y_pred, 168, self.time_id)
 
         plt.figure()
+
         plt.plot(self.y_test, label="true")
         plt.plot(self.y_pred, label="pred")
-
-        # print("Pred MSE: {}".format(
-        #     mean_squared_error(self.y_test, self.y_pred)
-        # ))
 
         plt.legend()
         plt.title(self.title, wrap=True)
         plt.savefig(self.result_dir + self.time_id + "-pred.png")
         plt.show()
+
+    def plot_prediction_gp(self):
+        """
+        Plot the prediction compared to the true targets, using gnuplotlib.
+        """
+
+        with os.popen("stty size", "r") as f:
+            termsize = f.read().split()
+        termsize[0], termsize[1] = int(termsize[1]), int(termsize[0])
+
+        y_true = self.y_test.flatten()
+        y_pred = self.y_pred.flatten()
+
+        x_len = len(y_true)
+        x = np.linspace(0,x_len-1,x_len)
+
+        gp.plot((x, y_true, dict(legend="true")),
+                (x, y_pred, dict(legend="pred")),
+                unset="grid",
+                terminal="dumb {} {}".format(termsize[0], termsize[1]))
+
+        # import plotext.plot as plx
+        # plx.plot(x, y_true, line=True)
+        # plx.plot(x, y_pred, line=True)
+        # plx.show()
+
+        # import termplotlib as tpl
+        # fig = tpl.figure()
+        # fig.plot(x, y_true)
+        # fig.plot(x, y_pred)
+        # fig.show()
+
 
 if __name__ == '__main__':
     np.random.seed(2020)
@@ -117,8 +152,10 @@ if __name__ == '__main__':
 
     parser.add_argument('-v', '--verbose', action="store_true",
             help="print what the program does")
+    parser.add_argument('-g', '--gnuplotlib', action="store_true",
+            help="use gnuplotlib as plot backend")
 
-    # PREPROCESSING ARGUMENTS
+    # PREPROCESSING ARGUMENT
     parser.add_argument("-d", '--data_file', 
             default="../data/20200813-2012-merged.csv",
             help='which data file to use')
@@ -183,5 +220,8 @@ if __name__ == '__main__':
 
     if args.predict:
         power_estimation.predict()
-        power_estimation.plot_prediction()
+        if args.gnuplotlib:
+            power_estimation.plot_prediction_gp()
+        else:
+            power_estimation.plot_prediction()
 
