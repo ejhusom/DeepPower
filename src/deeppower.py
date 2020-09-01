@@ -10,7 +10,6 @@
 import argparse
 import os
 import pickle
-import sys
 
 from preprocess import *
 from model import *
