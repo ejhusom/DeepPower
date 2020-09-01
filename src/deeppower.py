@@ -93,7 +93,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         #     self.y_pred = self.y_scaler.inverse_transform(self.y_pred)
         #     print("Targets inverse transformed.")
 
-    def plot_prediction(self):
+    def plot_prediction(self, include_input=True):
         """
         Plot the prediction compared to the true targets.
         """
@@ -104,6 +104,11 @@ class DeepPower(Preprocess, NeuralTimeSeries):
 
         plt.plot(self.y_test, label="true")
         plt.plot(self.y_pred, label="pred")
+
+        if include_input:
+            print(self.X_test_pre_seq.shape)
+            for i in range(self.X_test_pre_seq.shape[1]):
+                plt.plot(self.X_test_pre_seq[:,i], label=self.input_columns[i])
 
         plt.legend()
         plt.title(self.title, wrap=True)

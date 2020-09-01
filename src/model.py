@@ -51,7 +51,7 @@ def CNNKeras(input_x, input_y, n_steps_out=1):
     model.add(layers.Dense(64, activation='relu'))
     model.add(layers.Dense(n_steps_out, activation='linear'))
     model.compile(
-        optimizer='adam', loss='mae', metrics=['mae', 'mape', 'acc']
+        optimizer='adam', loss='mse', metrics=['mae', 'mape']
     )
 
     return model

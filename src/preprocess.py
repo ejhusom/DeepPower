@@ -79,7 +79,7 @@ class Preprocess():
 
         self.df, self.index = read_csv(
                 self.data_file, 
-                delete_columns=["time", "calories", "abdomen"],
+                delete_columns=["time", "calories"], #, "abdomen"],
                 verbose=self.verbose
         )
 
@@ -131,10 +131,6 @@ class Preprocess():
             A list containing keywords specifying which features to add.
             
         """
-        # TODO: Remove the need for the variable t_vt, since it will need to be
-        # changed if Sortungen temperature and/or precipitation is added to
-        # inputs. Better to use variable t_col (name of column), such that the
-        # variable do not need to be changed.
         pass
 
     def add_feature(self, name, feature_col, add_to_hist_matrix=False):
@@ -220,6 +216,7 @@ class Preprocess():
         self.test_indeces = self.index[self.train_hours:]
 
         if test_equals_train:
+            print("WARNING: TRAINING SET IS USED AS TEST SET")
             self.test_data = self.train_data
             self.test_indeces = self.train_indeces
 
