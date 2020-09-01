@@ -9,6 +9,8 @@
 import matplotlib.pyplot as plt
 # plt.rcParams['figure.figsize'] = [5.0, 3.0]
 # plt.rcParams['figure.dpi'] = 300
+import plotly.express as px
+import plotly.graph_objects as go
 
 import datetime 
 import numpy as np

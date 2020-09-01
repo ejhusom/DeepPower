@@ -106,14 +106,39 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         plt.plot(self.y_pred, label="pred")
 
         if include_input:
-            print(self.X_test_pre_seq.shape)
             for i in range(self.X_test_pre_seq.shape[1]):
-                plt.plot(self.df.iloc[:,i], label=self.input_columns[i])
+                # plt.plot(self.df.iloc[:,i], label=self.input_columns[i])
+                plt.plot(self.X_test_pre_seq[:,i]*250, label=self.input_columns[i])
 
         plt.legend()
         plt.title(self.title, wrap=True)
+        plt.autoscale()
         plt.savefig(self.result_dir + self.time_id + "-pred.png")
         plt.show()
+
+    def plot_prediction_plotly(self, include_input=True):
+        """
+        Plot the prediction compared to the true targets, using plotly.
+        """
+
+        x_len = len(self.y_test.flatten())
+        x = np.linspace(0,x_len-1,x_len)
+
+        fig = go.Figure()
+        config = dict({"scrollZoom": True})
+
+        fig.add_trace(go.Scatter(
+            x=x, y=self.y_test.flatten(), name="true"))
+        fig.add_trace(go.Scatter(
+            x=x, y=self.y_pred.flatten(), name="pred"))
+
+        if include_input:
+            for i in range(self.X_test_pre_seq.shape[1]):
+                fig.add_trace(go.Scatter(
+                    x=x, y=self.X_test_pre_seq[:,i]*250,
+                    name=self.input_columns[i]))
+
+        fig.show(config=config)
 
     def plot_prediction_gp(self):
         """
@@ -158,7 +183,9 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', action="store_true",
             help="print what the program does")
     parser.add_argument('-g', '--gnuplotlib', action="store_true",
-            help="use gnuplotlib as plot backend")
+            help="use gnuplotlib for plotting")
+    parser.add_argument('--plotly', action="store_true",
+            help="use plotly for plotting")
 
     # PREPROCESSING ARGUMENT
     parser.add_argument("-d", '--data_file', 
@@ -225,7 +252,9 @@ if __name__ == '__main__':
 
     if args.predict:
         power_estimation.predict()
-        if args.gnuplotlib:
+        if args.plotly:
+            power_estimation.plot_prediction_plotly()
+        elif args.gnuplotlib:
             power_estimation.plot_prediction_gp()
         else:
             power_estimation.plot_prediction()
