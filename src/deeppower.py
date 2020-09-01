@@ -199,6 +199,8 @@ if __name__ == '__main__':
     parser.add_argument('--reverse_train_split', action="store_true",
             help="""use first part of data set for testing and second part for
             training""")
+    parser.add_argument('--remove', nargs="+", default="",
+            help="Remove features by writing the keyword after this flag.""")
     parser.add_argument('-f', '--features', nargs='+', default='',
             help="""
     Add extra features by writing the keyword after this flag. Available:
@@ -232,7 +234,7 @@ if __name__ == '__main__':
             time_id=time_id
     )
 
-    power_estimation.preprocess(args.features)
+    power_estimation.preprocess(args.features, args.remove)
     power_estimation.build_model()
 
     if args.model != None:
@@ -252,10 +254,9 @@ if __name__ == '__main__':
 
     if args.predict:
         power_estimation.predict()
+        power_estimation.plot_prediction()
         if args.plotly:
             power_estimation.plot_prediction_plotly()
         elif args.gnuplotlib:
             power_estimation.plot_prediction_gp()
-        else:
-            power_estimation.plot_prediction()
 

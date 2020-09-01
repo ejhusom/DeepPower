@@ -77,11 +77,11 @@ class Preprocess():
         os.makedirs(self.result_dir)
 
 
-    def preprocess(self, features = [], diff=False):
+    def preprocess(self, features = [], remove_features = []):
 
         self.df, self.index = read_csv(
                 self.data_file, 
-                delete_columns=["time", "calories"], #, "abdomen"],
+                delete_columns=["time", "calories"] + remove_features,
                 verbose=self.verbose
         )
 
@@ -100,7 +100,6 @@ class Preprocess():
 
         # Save the names of the input columns
         self.input_columns = self.df.columns
-        print(self.input_columns)
         input_columns_df = pd.DataFrame(self.input_columns)
         input_columns_df.to_csv(self.result_dir + self.time_id +
                 "-input_columns.csv")
@@ -117,7 +116,10 @@ class Preprocess():
         self._split_sequences()
 
         self.n_features = self.X_train.shape[-1]
-        # self._create_feature_dict()
+
+        if self.verbose:
+            print("Following features are used in data set:")
+            print(self.input_columns)
 
         # Save test targets for inspection
         np.savetxt("tmp_y_test.csv", self.y_test, delimiter=",")
