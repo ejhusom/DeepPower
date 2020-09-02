@@ -36,7 +36,8 @@ class DeepPower(Preprocess, NeuralTimeSeries):
             verbose=False,
             net="cnn",
             n_epochs=100,
-            time_id=time.strftime("%Y%m%d-%H%M%S"),
+            result_dir="./",
+            time_id=time.strftime("%Y%m%d-%H%M%S")
     ):
 
         self.net = net
@@ -49,6 +50,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
                 scale=scale,
                 reverse_train_split=reverse_train_split,
                 verbose=verbose,
+                result_dir=result_dir,
                 time_id=time_id
         )
 
@@ -168,6 +170,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
 
 
 def to_bool(string):
+    """Converting various values to True or False."""
 
     true_values = ["True", True, 1]
     false_values = ["False", False, 0]
@@ -183,6 +186,8 @@ def to_bool(string):
 if __name__ == '__main__':
     np.random.seed(2020)
     time_id = time.strftime("%Y%m%d-%H%M%S")
+    result_dir="../results/" + time_id + "/"
+    os.makedirs(result_dir)
 
     parser = argparse.ArgumentParser(
             formatter_class=argparse.RawTextHelpFormatter
@@ -230,22 +235,22 @@ if __name__ == '__main__':
     parser.add_argument('--scaler', help='data scaler object')
 
     # LOAD OR PRINT
-    parser.add_argument("--save_config", action="store_true",
-            help="print all parameters used in analysis")
+    # parser.add_argument("--save_config", action="store_true",
+    #         help="print all parameters used in analysis")
     parser.add_argument("-c", "--config", help="load parameters from file")
 
     args = parser.parse_args()
 
-    if args.save_config:
-        print(parameters)
-        # with open(time_id + ".json", "w") as f:
-        #     json.dump(vars(args), f, indent=4)
+    # if args.save_config:
+    with open(result_dir + time_id + "config.json", "w") as f:
+        json.dump(vars(args), f, indent=4)
 
     if args.config != None:
         with open(args.config, "rt") as f:
             t_args = argparse.Namespace()
             t_args.__dict__.update(json.load(f))
             args = parser.parse_args(namespace=t_args)
+
 
     power_estimation = DeepPower(
             data_file=args.data_file,
@@ -255,6 +260,7 @@ if __name__ == '__main__':
             net=args.net,
             n_epochs=int(args.n_epochs),
             verbose=to_bool(args.verbose),
+            result_dir=result_dir,
             time_id=time_id
     )
 
