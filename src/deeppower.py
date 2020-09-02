@@ -234,15 +234,13 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', help="loads pretrained model")
     parser.add_argument('--scaler', help='data scaler object')
 
-    # LOAD OR PRINT
-    # parser.add_argument("--save_config", action="store_true",
-    #         help="print all parameters used in analysis")
+    # LOAD CONFIG FROM FILE
     parser.add_argument("-c", "--config", help="load parameters from file")
 
     args = parser.parse_args()
 
     # if args.save_config:
-    with open(result_dir + time_id + "config.json", "w") as f:
+    with open(result_dir + time_id + "-config.json", "w") as f:
         json.dump(vars(args), f, indent=4)
 
     if args.config != None:
