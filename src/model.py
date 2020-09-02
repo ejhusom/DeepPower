@@ -112,6 +112,7 @@ class NeuralTimeSeries():
             self.build_model()
 
         fit_verbose = 1 if self.verbose else 0
+        # fit_verbose = 1 if self.verbose == 2 else 0
 
         self.history = self.model.fit(
             self.X_train, self.y_train, epochs=self.n_epochs,

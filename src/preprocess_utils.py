@@ -47,9 +47,12 @@ def read_csv(filename, delete_columns=[], verbose=False):
 def print_dataframe(df, message=""):
     """Print dataframe to terminal, with boundary and message."""
 
-    rows, columns = os.popen('stty size', 'r').read().split()
-    for i in range(int(columns)):
-        print('=',end='')
+    try:
+        rows, columns = os.popen('stty size', 'r').read().split()
+        for i in range(int(columns)):
+            print('=',end='')
+    except:
+        print("==========================================")
     
     print(message)
     print(df)

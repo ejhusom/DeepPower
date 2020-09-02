@@ -8,6 +8,7 @@
 # Estimate power during workout using deep learning.
 # ============================================================================
 import argparse
+import json
 import os
 import pickle
 
@@ -22,13 +23,6 @@ from model import *
 
 class DeepPower(Preprocess, NeuralTimeSeries):
     """Estimate power from breathing and heart rate, using deep learning.
-
-    Parameters
-    ----------
-
-
-    Attributes
-    ----------
 
     """
 
@@ -108,7 +102,8 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         if include_input:
             for i in range(self.X_test_pre_seq.shape[1]):
                 # plt.plot(self.df.iloc[:,i], label=self.input_columns[i])
-                plt.plot(self.X_test_pre_seq[:,i]*250, label=self.input_columns[i])
+                plt.plot(self.X_test_pre_seq[:,i]*250,
+                        label=self.input_columns[i+1])
 
         plt.legend()
         plt.title(self.title, wrap=True)
@@ -172,6 +167,19 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         # fig.show()
 
 
+def to_bool(string):
+
+    true_values = ["True", True, 1]
+    false_values = ["False", False, 0]
+
+    if string in true_values:
+        return True
+    elif string in false_values:
+        return False
+    else:
+        raise ValueError("Ambigious string, could not convert to boolean.")
+
+
 if __name__ == '__main__':
     np.random.seed(2020)
     time_id = time.strftime("%Y%m%d-%H%M%S")
@@ -199,7 +207,7 @@ if __name__ == '__main__':
     parser.add_argument('--reverse_train_split', action="store_true",
             help="""use first part of data set for testing and second part for
             training""")
-    parser.add_argument('--remove', nargs="+", default="",
+    parser.add_argument('--remove', nargs="+", default=[],
             help="Remove features by writing the keyword after this flag.""")
     parser.add_argument('-f', '--features', nargs='+', default='',
             help="""
@@ -221,42 +229,58 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', help="loads pretrained model")
     parser.add_argument('--scaler', help='data scaler object')
 
+    # LOAD OR PRINT
+    parser.add_argument("--save_config", action="store_true",
+            help="print all parameters used in analysis")
+    parser.add_argument("-c", "--config", help="load parameters from file")
+
     args = parser.parse_args()
+
+    if args.save_config:
+        print(parameters)
+        # with open(time_id + ".json", "w") as f:
+        #     json.dump(vars(args), f, indent=4)
+
+    if args.config != None:
+        with open(args.config, "rt") as f:
+            t_args = argparse.Namespace()
+            t_args.__dict__.update(json.load(f))
+            args = parser.parse_args(namespace=t_args)
 
     power_estimation = DeepPower(
             data_file=args.data_file,
-            hist_size=args.hist_size,
-            train_split=args.train_split,
-            reverse_train_split=args.reverse_train_split,
+            hist_size=int(args.hist_size),
+            train_split=float(args.train_split),
+            reverse_train_split=to_bool(args.reverse_train_split),
             net=args.net,
-            n_epochs=args.n_epochs,
-            verbose=args.verbose,
+            n_epochs=int(args.n_epochs),
+            verbose=to_bool(args.verbose),
             time_id=time_id
     )
 
-    power_estimation.preprocess(args.features, args.remove)
+    power_estimation.preprocess(list(args.features), list(args.remove))
     power_estimation.build_model()
 
-    if args.model != None:
+    if args.model != None and args.model != "None":
         if args.model.endswith('.h5'):
             power_estimation.set_model(args.model)
         else:
             raise ValueError("Model does not have correct extension.")
 
-        if args.scaler != None:
+        if args.scaler != None and args.scaler != "None":
             power_estimation.set_scaler(args.scaler)
         else:
             raise Exception("To load pretrained model, scaler must be given.")
             sys.exit(1)
 
-    if args.train:
+    if to_bool(args.train):
         power_estimation.fit()
 
-    if args.predict:
+    if to_bool(args.predict):
         power_estimation.predict()
         power_estimation.plot_prediction()
-        if args.plotly:
+        if to_bool(args.plotly):
             power_estimation.plot_prediction_plotly()
-        elif args.gnuplotlib:
+        elif to_bool(args.gnuplotlib):
             power_estimation.plot_prediction_gp()
 

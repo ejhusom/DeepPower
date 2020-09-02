@@ -89,9 +89,12 @@ class Preprocess():
         self.df = move_column(self.df, self.target_name, 0)
 
         if self.verbose:
-            rows, columns = os.popen('stty size', 'r').read().split()
-            for i in range(int(columns)):
-                print('=',end='')
+            try:
+                rows, columns = os.popen('stty size', 'r').read().split()
+                for i in range(int(columns)):
+                    print('=',end='')
+            except:
+                print("==========================================")
             print("DATAFRAME BEFORE FEATURE ENGINEERING")
             print(self.df)
 
