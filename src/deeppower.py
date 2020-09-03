@@ -19,6 +19,7 @@ except:
 
 from preprocess import *
 from model import *
+from utils import *
 
 
 class DeepPower(Preprocess, NeuralTimeSeries):
@@ -142,9 +143,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         Plot the prediction compared to the true targets, using gnuplotlib.
         """
 
-        with os.popen("stty size", "r") as f:
-            termsize = f.read().split()
-        termsize[0], termsize[1] = int(termsize[1]), int(termsize[0])
+        termsize[0], termsize[1] = get_terminal_size()
 
         y_true = self.y_test.flatten()
         y_pred = self.y_pred.flatten()
