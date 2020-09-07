@@ -105,18 +105,18 @@ class NeuralTimeSeries():
         if self.verbose: print(self.model.summary())
 
 
-    def fit(self):
+    def fit(self, verbose=None):
         """Train the model."""
 
         if not hasattr(self, "model"):
             self.build_model()
 
-        fit_verbose = 1 if self.verbose else 0
-        # fit_verbose = 1 if self.verbose == 2 else 0
+        if verbose == None:
+            verbose = 1 if self.verbose else 0
 
         self.history = self.model.fit(
             self.X_train, self.y_train, epochs=self.n_epochs,
-            verbose=fit_verbose, batch_size=128,
+            verbose=verbose, batch_size=128,
             # validation_split=0.2
         )
 

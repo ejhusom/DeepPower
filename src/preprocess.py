@@ -25,6 +25,7 @@ from scipy.fftpack import fft, ifft
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 from preprocess_utils import *
+from utils import *
 
 class Preprocess():
 
@@ -36,7 +37,6 @@ class Preprocess():
             reverse_train_split=False, 
             verbose=False,
             target_name="power",
-            result_dir="./",
             time_id=time.strftime("%Y%m%d-%H%M%S")
         ):
         """
@@ -74,7 +74,8 @@ class Preprocess():
         self.scaler_loaded = False
         self.added_features = []
         self.target_name = target_name
-        self.result_dir = result_dir
+        self.result_dir = "../results/" + time_id + "/"
+        os.makedirs(self.result_dir)
 
 
     def preprocess(self, features = [], remove_features = []):
@@ -89,12 +90,7 @@ class Preprocess():
         self.df = move_column(self.df, self.target_name, 0)
 
         if self.verbose:
-            try:
-                rows, columns = os.popen('stty size', 'r').read().split()
-                for i in range(int(columns)):
-                    print('=',end='')
-            except:
-                print("==========================================")
+            print_horizontal_line()
             print("DATAFRAME BEFORE FEATURE ENGINEERING")
             print(self.df)
 
@@ -109,7 +105,7 @@ class Preprocess():
 
         self.data = self.df.to_numpy()
 
-        self._split_train_test()
+        self._split_train_test(test_equals_train=True)
         self._scale_data()
 
         # Save data for inspection of preprocessed data set
@@ -295,35 +291,6 @@ class Preprocess():
         self.scaler_loaded = True
 
         if self.verbose: print("Scaler loaded : {}".format(scaler_file))
-
-
-    def _create_feature_dict(self):
-        """
-        Create an array that contains the name of the features in the exact
-        order as they appear in the tabular version of the input matrix, i.e.
-        the input matrix used for boosting etc, not the sliding window version
-        used for neural networks. The function creates an numpy array, and not
-        a Python dictionary, in order to make it easier to extract names using
-        array of indeces.
-        """
-
-        self.feature_dict = []
-
-        for i in range(self.hist_size):
-            # for j in range(self.n_features):
-            for j in range(5):
-                value = (
-                    self.input_columns[j] +
-                    '_Tminus{}'.format(abs(i-self.hist_size))
-                )
-                self.feature_dict.append(value)
-        for i in range(5, self.n_features):
-            self.feature_dict.append(self.input_columns[i])
-
-        # pp = pprint.PrettyPrinter()
-        # pp.pprint(self.feature_dict)
-        # print(self.feature_dict)
-        self.feature_dict = np.array(self.feature_dict)
 
     def augment_data(self, thresh=20):
         """

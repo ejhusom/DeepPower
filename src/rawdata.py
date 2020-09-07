@@ -7,6 +7,7 @@
 # Description:
 # Process and plot raw data from BreathZpot FLOW and PM5 monitor.
 # ============================================================================
+import glob
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -192,67 +193,86 @@ def structure_heartrate_data(data):
 
 if __name__ == '__main__':
 
-    # READ RAW DATA
-    filepath = sys.argv[1]
-    filename, fileextension = os.path.splitext(filepath)
+    dataframes = []
 
-    data = pd.read_csv(
-            filepath, 
-            names=["writetime", "datatype", "value","value2","na"], 
-            header=None,
-            index_col=False
-    )
-    print(data)
+    for filepath in sys.argv[1:]:
 
-    # change timestamp from unix time to relative start time:
-    t0 = data["writetime"][0]
-    data["writetime"] -= t0 - 700
+        # READ RAW DATA
+        # filepath = sys.argv[1]
+        filename, fileextension = os.path.splitext(filepath)
 
-    ribcage = structure_breathing_data(data, "ribcage")
-    abdomen = structure_breathing_data(data, "abdomen")
-    heartrate = structure_heartrate_data(data)
-    power = structure_power_data(data)
-    calories = structure_calories_data(data)
+        data = pd.read_csv(
+                filepath, 
+                names=["writetime", "datatype", "value","value2","na"], 
+                header=None,
+                index_col=False
+        )
+        print(data)
 
-    # dfs = [power, abdomen, heartrate, ribcage, calories]
-    dfs = [ribcage, abdomen, heartrate, power, calories]
+        # change timestamp from unix time to relative start time:
+        t0 = data["writetime"][0]
+        data["writetime"] -= t0 - 700
 
-    # Loop to make sure that the first dataframe in dfs actually contains
-    # values, otherwise the merging of all dataframes will fail.
-    for i in range(len(dfs)):
-        try:
-            _ = dfs[0][["time", "value"]]
-            break
-        except:
-            dfs = dfs[1:] + dfs[:1]
-            print(dfs[0].name)
+        ribcage = structure_breathing_data(data, "ribcage")
+        abdomen = structure_breathing_data(data, "abdomen")
+        heartrate = structure_heartrate_data(data)
+        power = structure_power_data(data)
+        calories = structure_calories_data(data)
+
+        dfs = [power, ribcage, abdomen, heartrate, calories]
+
+        # Loop to make sure that the first dataframe in dfs actually contains
+        # values, otherwise the merging of all dataframes will fail.
+        for i in range(len(dfs)):
+            try:
+                _ = dfs[0][["time", "value"]]
+                break
+            except:
+                dfs = dfs[1:] + dfs[:1]
+                print(dfs[0].name)
 
 
-    # Merging dataframes into one dataframe.
-    for i in range(len(dfs)):
-        df_name = dfs[i].name
-        if i == 0:
-            merged_dfs = dfs[0][["time", "value"]]
-            merged_dfs = merged_dfs.rename(columns={'value': df_name})
-            continue
+        # Merging dataframes into one dataframe.
+        for i in range(len(dfs)):
+            df_name = dfs[i].name
+            if i == 0:
+                merged_dfs = dfs[0][["time", "value"]]
+                merged_dfs = merged_dfs.rename(columns={'value': df_name})
+                continue
 
-        if dfs[i].empty:
-            merged_dfs[df_name] = np.nan
-            print(f"Dataframe number {i+1} not found; inserted NaN instead.")
-        else:
-            df = dfs[i][["value", "time"]]
-            merged_dfs = merged_dfs.merge(df, on="time", how="outer", sort=True)
-            merged_dfs.rename(columns={'value': df_name}, inplace=True)
-            
+            if dfs[i].empty:
+                merged_dfs[df_name] = np.nan
+                print(f"Dataframe number {i+1} not found; inserted NaN instead.")
+            else:
+                df = dfs[i][["value", "time"]]
+                merged_dfs = merged_dfs.merge(df, on="time", how="outer", sort=True)
+                merged_dfs.rename(columns={'value': df_name}, inplace=True)
+                
+        # Drop all rows where we do not have power data
+        merged_dfs = merged_dfs[merged_dfs['power'].notna()]
 
+        # Plot resulting dataframe.
+        plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
+        plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
+        plt.plot(merged_dfs.time, merged_dfs.power, label="power")
+        plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
+        plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
+        plt.legend()
+        plt.show()
+
+        dataframes.append(merged_dfs)
+
+    dataframes = pd.concat(dataframes, ignore_index=True)
+    dataframes.to_csv("merged_data" + fileextension)
+
+    print(dataframes)
     # Plot resulting dataframe.
-    plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
-    plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
-    plt.plot(merged_dfs.time, merged_dfs.power, label="power")
-    plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
-    plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
+    plt.plot(dataframes.ribcage, label="rib")
+    plt.plot(dataframes.abdomen, label="ab")
+    plt.plot(dataframes.power, label="power")
+    plt.plot(dataframes.calories, label="cal")
+    plt.plot(dataframes.heartrate, label="hr")
     plt.legend()
     plt.show()
-    merged_dfs.to_csv(filename + "-merged" + fileextension)
 
-    print(merged_dfs)
+

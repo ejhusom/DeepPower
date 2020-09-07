@@ -23,6 +23,8 @@ from scipy.fftpack import fft, ifft
  
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
+from utils import *
+
 def read_csv(filename, delete_columns=[], verbose=False):
     """Read csv file, and make proper adjustment to the resulting dataframe."""
 
@@ -47,12 +49,7 @@ def read_csv(filename, delete_columns=[], verbose=False):
 def print_dataframe(df, message=""):
     """Print dataframe to terminal, with boundary and message."""
 
-    try:
-        rows, columns = os.popen('stty size', 'r').read().split()
-        for i in range(int(columns)):
-            print('=',end='')
-    except:
-        print("==========================================")
+    print_horizontal_line()
     
     print(message)
     print(df)

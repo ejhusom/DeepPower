@@ -7,7 +7,6 @@
 # Description:
 # Estimate power during workout using deep learning.
 # ============================================================================
-import argparse
 import json
 import os
 import pickle
@@ -37,7 +36,6 @@ class DeepPower(Preprocess, NeuralTimeSeries):
             verbose=False,
             net="cnn",
             n_epochs=100,
-            result_dir="./",
             time_id=time.strftime("%Y%m%d-%H%M%S")
     ):
 
@@ -51,11 +49,10 @@ class DeepPower(Preprocess, NeuralTimeSeries):
                 scale=scale,
                 reverse_train_split=reverse_train_split,
                 verbose=verbose,
-                result_dir=result_dir,
                 time_id=time_id
         )
 
-        self.title = (
+        self.plot_title = (
             """File: {}, hist_size: {}, net: {}, n_epochs: {}, 
             added feats.: {}""".format(
                 self.data_file, self.hist_size, self.net, self.n_epochs,
@@ -109,7 +106,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
                         label=self.input_columns[i+1])
 
         plt.legend()
-        plt.title(self.title, wrap=True)
+        plt.title(self.plot_title, wrap=True)
         plt.autoscale()
         plt.savefig(self.result_dir + self.time_id + "-pred.png")
         plt.show()
@@ -156,98 +153,18 @@ class DeepPower(Preprocess, NeuralTimeSeries):
                 unset="grid",
                 terminal="dumb {} {}".format(termsize[0], termsize[1]))
 
-        # import plotext.plot as plx
-        # plx.plot(x, y_true, line=True)
-        # plx.plot(x, y_pred, line=True)
-        # plx.show()
-
-        # import termplotlib as tpl
-        # fig = tpl.figure()
-        # fig.plot(x, y_true)
-        # fig.plot(x, y_pred)
-        # fig.show()
-
-
-def to_bool(string):
-    """Converting various values to True or False."""
-
-    true_values = ["True", True, 1]
-    false_values = ["False", False, 0]
-
-    if string in true_values:
-        return True
-    elif string in false_values:
-        return False
-    else:
-        raise ValueError("Ambigious string, could not convert to boolean.")
-
 
 if __name__ == '__main__':
     np.random.seed(2020)
-    time_id = time.strftime("%Y%m%d-%H%M%S")
-    result_dir="../results/" + time_id + "/"
-    os.makedirs(result_dir)
 
-    parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter
-    )
+    args = parse_arguments()
 
-    parser.add_argument('-v', '--verbose', action="store_true",
-            help="print what the program does")
-    parser.add_argument('-g', '--gnuplotlib', action="store_true",
-            help="use gnuplotlib for plotting")
-    parser.add_argument('--plotly', action="store_true",
-            help="use plotly for plotting")
-
-    # PREPROCESSING ARGUMENT
-    parser.add_argument("-d", '--data_file', 
-            default="../data/20200813-2012-merged.csv",
-            help='which data file to use')
-    parser.add_argument("-s", "--hist_size", type=int, default=50,
-            help="""how many deciseconds of history to use for power estimation,
-            default=5""")
-    parser.add_argument('--train_split', type=float, default="0.6",
-            help='training/test ratio')
-    parser.add_argument('--reverse_train_split', action="store_true",
-            help="""use first part of data set for testing and second part for
-            training""")
-    parser.add_argument('--remove', nargs="+", default=[],
-            help="Remove features by writing the keyword after this flag.""")
-    parser.add_argument('-f', '--features', nargs='+', default='',
-            help="""
-    Add extra features by writing the keyword after this flag. Available:
-    - nan: No features available yet
-    """)
-
-    # MODEL ARGUMENTS
-    parser.add_argument('-n', "--net", default="cnn",
-            help="which network architectyre to use, default=cnn")
-    parser.add_argument('-e', "--n_epochs", type=int, default=100,
-            help="number of epochs to run for NN, default=100")
-    parser.add_argument('-t', '--train', action="store_true",
-            help="trains model")
-    parser.add_argument('-p', '--predict', action="store_true",
-            help="predicts on test set")
-
-    # LOAD MODEL ARGUMENTS
-    parser.add_argument('-m', '--model', help="loads pretrained model")
-    parser.add_argument('--scaler', help='data scaler object')
-
-    # LOAD CONFIG FROM FILE
-    parser.add_argument("-c", "--config", help="load parameters from file")
-
-    args = parser.parse_args()
-
-    # if args.save_config:
-    with open(result_dir + time_id + "-config.json", "w") as f:
-        json.dump(vars(args), f, indent=4)
-
+    # Open config parameters from file if arguments is given
     if args.config != None:
         with open(args.config, "rt") as f:
             t_args = argparse.Namespace()
             t_args.__dict__.update(json.load(f))
             args = parser.parse_args(namespace=t_args)
-
 
     power_estimation = DeepPower(
             data_file=args.data_file,
@@ -257,13 +174,13 @@ if __name__ == '__main__':
             net=args.net,
             n_epochs=int(args.n_epochs),
             verbose=to_bool(args.verbose),
-            result_dir=result_dir,
-            time_id=time_id
+            time_id = time.strftime("%Y%m%d-%H%M%S")
     )
 
     power_estimation.preprocess(list(args.features), list(args.remove))
     power_estimation.build_model()
 
+    # Load model and scaler if argument is given
     if args.model != None and args.model != "None":
         if args.model.endswith('.h5'):
             power_estimation.set_model(args.model)
@@ -275,10 +192,12 @@ if __name__ == '__main__':
         else:
             raise Exception("To load pretrained model, scaler must be given.")
             sys.exit(1)
-
+    
+    # Train if argument is given
     if to_bool(args.train):
         power_estimation.fit()
 
+    # Predict and plot if argument is given
     if to_bool(args.predict):
         power_estimation.predict()
         power_estimation.plot_prediction()
