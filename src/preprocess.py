@@ -79,12 +79,13 @@ class Preprocess():
 
 
     def preprocess(self, features = [], remove_features = []):
-
+        
         self.df, self.index = read_csv(
                 self.data_file, 
                 delete_columns=["time", "calories"] + remove_features,
                 verbose=self.verbose
         )
+        print(self.df)
 
         # Move target column to the beginning of dataframe
         self.df = move_column(self.df, self.target_name, 0)
@@ -105,7 +106,7 @@ class Preprocess():
 
         self.data = self.df.to_numpy()
 
-        self._split_train_test(test_equals_train=True)
+        self._split_train_test(test_equals_train=False)
         self._scale_data()
 
         # Save data for inspection of preprocessed data set
