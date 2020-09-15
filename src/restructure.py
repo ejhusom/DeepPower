@@ -201,6 +201,11 @@ def restructure(filepaths, show=False, output=None):
         dirname = os.path.dirname(filepath)
         filename, fileextension = os.path.splitext(basename)
 
+        print(basename)
+        print(dirname)
+        print(filename)
+        print(fileextension)
+
         print("Processing {}".format(basename))
 
         data = pd.read_csv(
@@ -264,7 +269,7 @@ def restructure(filepaths, show=False, output=None):
             plt.savefig(filename + "-dataframe.png")
             plt.show()
 
-        merged_dfs.to_csv("data/restructured/" + filename, "-dataframe",
+        merged_dfs.to_csv("./data/restructured/" + filename + "-dataframe" +
                 fileextension)
 
 if __name__ == '__main__':
