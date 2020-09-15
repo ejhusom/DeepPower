@@ -259,6 +259,7 @@ if __name__ == '__main__':
         plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
         plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
         plt.legend()
+        plt.savefig(filename + "-dataframe.png")
         plt.show()
 
         merged_dfs.to_csv(filename + "-dataframe" + fileextension)
