@@ -77,5 +77,6 @@ env/
 # result dir
 results/*
 # data dir
-data/*
+# data/*
+# /data
 /data

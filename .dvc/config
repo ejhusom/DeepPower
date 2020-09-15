@@ -2,4 +2,4 @@
     analytics = false
     remote = gitstorage
 ['remote "gitstorage"']
-    url = https://github.com/ejhusom/power-dvc
+    url = /home/erikjohannes/Documents/power-dvc
