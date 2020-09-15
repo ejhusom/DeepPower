@@ -1,2 +1,5 @@
+restructure:
+  files: ["data/raw/20200511-1159.csv"]
+
 train:
   n_epochs: 10

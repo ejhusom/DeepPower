@@ -13,6 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import sys
+import yaml
 
 def pad_data(df):
     """Pad data such that there is a datapoint for every 0.1 second.
@@ -201,11 +202,6 @@ def restructure(filepaths, show=False, output=None):
         dirname = os.path.dirname(filepath)
         filename, fileextension = os.path.splitext(basename)
 
-        print(basename)
-        print(dirname)
-        print(filename)
-        print(fileextension)
-
         print("Processing {}".format(basename))
 
         data = pd.read_csv(
@@ -274,4 +270,10 @@ def restructure(filepaths, show=False, output=None):
 
 if __name__ == '__main__':
 
-    restructure(sys.argv[1:], show=False)
+    if len(sys.argv) > 1:
+        restructure(sys.argv[1:], show=False)
+    else:
+        params = yaml.safe_load(open("params.yaml"))["restructure"]
+        restructure(params["files"], show=False)
+
+

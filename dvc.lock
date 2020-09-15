@@ -1,9 +1,11 @@
 restructure:
-  cmd: python src/restructure.py data/raw/20200511-1159.csv data/raw/20200512-1108.csv
-    data/raw/20200513-1053.csv data/raw/20200622-2106.csv data/raw/20200727-2055.csv
-    data/raw/20200811-1726.csv data/raw/20200812-1943.csv data/raw/20200813-2012.csv
+  cmd: python src/restructure.py
   deps:
-  - path: data/raw
-    md5: d1003606fd0eca9a719fac20904c00d6.dir
+  - path: data/
+    md5: a9eee097ab3e0f1dc58d480b656f8784.dir
   - path: src/restructure.py
-    md5: 8594d4823f0e08fc1970a5c15e0c31d7
+    md5: 7ea1aca66b6d3b948016989b3676c5cd
+  params:
+    params.yaml:
+      restructure.files:
+      - data/raw/20200511-1159.csv

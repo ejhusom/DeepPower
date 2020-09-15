@@ -1,8 +1,8 @@
 stages:
   restructure:
-    cmd: python src/restructure.py data/raw/20200511-1159.csv data/raw/20200512-1108.csv
-      data/raw/20200513-1053.csv data/raw/20200622-2106.csv data/raw/20200727-2055.csv
-      data/raw/20200811-1726.csv data/raw/20200812-1943.csv data/raw/20200813-2012.csv
+    cmd: python src/restructure.py
     deps:
-    - data/raw
+    - data/
     - src/restructure.py
+    params:
+    - restructure.files
