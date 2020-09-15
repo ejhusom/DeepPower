@@ -1,0 +1,12 @@
+restructure:
+  cmd: data/raw/20200512-1108.csv data/raw/20200513-1053.csv data/raw/20200622-2106.csv
+    data/raw/20200727-2055.csv data/raw/20200811-1726.csv data/raw/20200812-1943.csv
+    data/raw/20200813-2012.csv -o data/restructured python src/restructure.py data/raw/20200511-1159.csv
+    data/raw/20200512-1108.csv data/raw/20200513-1053.csv data/raw/20200622-2106.csv
+    data/raw/20200727-2055.csv data/raw/20200811-1726.csv data/raw/20200812-1943.csv
+    data/raw/20200813-2012.csv
+  deps:
+  - path: data/raw/20200511-1159.csv
+    md5: 693589556acc3cec6066470450015202
+  - path: src/restructure.py
+    md5: f38774f0e0965f8a71e0b9eaf6144ab6

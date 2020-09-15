@@ -68,7 +68,7 @@ def explore_timestamps(df):
     except:
         print(f"{df.name} lacks necessary columns to plot time intervals.")
 
-def structure_breathing_data(data, placement):
+def structure_breathing_data(data, placement, t0):
     """Process breathing data from the FLOW sensor.
     
     Parameters
@@ -182,7 +182,7 @@ def structure_heartrate_data(data):
 
     return heartrate
 
-def restructure(filepaths, show=False):
+def restructure(filepaths, show=False, output=None):
     """Restructure raw data into dataframe.
 
     Args:
@@ -197,8 +197,11 @@ def restructure(filepaths, show=False):
     for filepath in filepaths:
 
         # READ RAW DATA
-        filename, fileextension = os.path.splitext(filepath)
-        print("Processing {}".format(filename))
+        basename = os.path.basename(filepath)
+        dirname = os.path.dirname(filepath)
+        filename, fileextension = os.path.splitext(basename)
+
+        print("Processing {}".format(basename))
 
         data = pd.read_csv(
                 filepath, 
@@ -212,8 +215,8 @@ def restructure(filepaths, show=False):
         t0 = data["writetime"][0]
         data["writetime"] -= t0 - 700
 
-        ribcage = structure_breathing_data(data, "ribcage")
-        abdomen = structure_breathing_data(data, "abdomen")
+        ribcage = structure_breathing_data(data, "ribcage", t0)
+        abdomen = structure_breathing_data(data, "abdomen", t0)
         heartrate = structure_heartrate_data(data)
         power = structure_power_data(data)
         calories = structure_calories_data(data)
@@ -251,19 +254,19 @@ def restructure(filepaths, show=False):
         merged_dfs = merged_dfs[merged_dfs['power'].notna()]
 
         # Plot resulting dataframe.
-        plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
-        plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
-        plt.plot(merged_dfs.time, merged_dfs.power, label="power")
-        plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
-        plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
-        plt.legend()
-        plt.savefig(filename + "-dataframe.png")
-        plt.show()
+        if show:
+            plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
+            plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
+            plt.plot(merged_dfs.time, merged_dfs.power, label="power")
+            plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
+            plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
+            plt.legend()
+            plt.savefig(filename + "-dataframe.png")
+            plt.show()
 
-        merged_dfs.to_csv(filename + "-dataframe" + fileextension)
-
-
+        merged_dfs.to_csv("data/restructured/" + filename, "-dataframe",
+                fileextension)
 
 if __name__ == '__main__':
 
-    restructure(sys.argv[1:], show=True)
+    restructure(sys.argv[1:], show=False)
