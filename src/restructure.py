@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ============================================================================
-# File:     raw_to_dataframe.py
+# File:     restructure.py
 # Author:   Erik Johannes Husom
 # Created:  2020-01-27
 # ----------------------------------------------------------------------------
@@ -13,8 +13,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import sys
-
-DATA_DIR = "../data"
 
 def pad_data(df):
     """Pad data such that there is a datapoint for every 0.1 second.
@@ -47,7 +45,6 @@ def pad_data(df):
 
     return df
 
-        
 def check_missing_points(df):
 
     diff = df.time.diff(1)
@@ -55,7 +52,6 @@ def check_missing_points(df):
     print(f" Min timestep (should be 0.1): {np.min(diff)}")
     print(f"Duplicate rows: {df['time'].duplicated().any()}")
     
-
 def explore_timestamps(df):
     
     try:
@@ -186,7 +182,7 @@ def structure_heartrate_data(data):
 
     return heartrate
 
-def raw_to_dataframe(filepaths, show=False):
+def restructure(filepaths, show=False):
     """Restructure raw data into dataframe.
 
     Args:
@@ -270,4 +266,4 @@ def raw_to_dataframe(filepaths, show=False):
 
 if __name__ == '__main__':
 
-    raw_to_dataframe(sys.argv[1:], show=True)
+    restructure(sys.argv[1:], show=True)
