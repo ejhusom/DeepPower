@@ -1,2 +1,5 @@
 [core]
     analytics = false
+    remote = gitstorage
+['remote "gitstorage"']
+    url = https://github.com/ejhusom/power-dvc
