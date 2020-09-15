@@ -195,70 +195,73 @@ if __name__ == '__main__':
 
     # dataframes = []
 
-    # for filepath in sys.argv[1:]:
+    for filepath in sys.argv[1:]:
 
-    # READ RAW DATA
-    filepath = sys.argv[1]
-    filename, fileextension = os.path.splitext(filepath)
+        # READ RAW DATA
+        # filepath = sys.argv[1]
+        filename, fileextension = os.path.splitext(filepath)
+        print("Processing {}".format(filename))
 
-    data = pd.read_csv(
-            filepath, 
-            names=["writetime", "datatype", "value","value2","na"], 
-            header=None,
-            index_col=False
-    )
-    print(data)
+        data = pd.read_csv(
+                filepath, 
+                names=["writetime", "datatype", "value","value2","na"], 
+                header=None,
+                index_col=False
+        )
+        print(data)
 
-    # change timestamp from unix time to relative start time:
-    t0 = data["writetime"][0]
-    data["writetime"] -= t0 - 700
+        # change timestamp from unix time to relative start time:
+        t0 = data["writetime"][0]
+        data["writetime"] -= t0 - 700
 
-    ribcage = structure_breathing_data(data, "ribcage")
-    abdomen = structure_breathing_data(data, "abdomen")
-    heartrate = structure_heartrate_data(data)
-    power = structure_power_data(data)
-    calories = structure_calories_data(data)
+        ribcage = structure_breathing_data(data, "ribcage")
+        abdomen = structure_breathing_data(data, "abdomen")
+        heartrate = structure_heartrate_data(data)
+        power = structure_power_data(data)
+        calories = structure_calories_data(data)
 
-    dfs = [power, ribcage, abdomen, heartrate, calories]
+        dfs = [power, ribcage, abdomen, heartrate, calories]
 
-    # Loop to make sure that the first dataframe in dfs actually contains
-    # values, otherwise the merging of all dataframes will fail.
-    for i in range(len(dfs)):
-        try:
-            _ = dfs[0][["time", "value"]]
-            break
-        except:
-            dfs = dfs[1:] + dfs[:1]
-            print(dfs[0].name)
+        # Loop to make sure that the first dataframe in dfs actually contains
+        # values, otherwise the merging of all dataframes will fail.
+        for i in range(len(dfs)):
+            try:
+                _ = dfs[0][["time", "value"]]
+                break
+            except:
+                dfs = dfs[1:] + dfs[:1]
+                print(dfs[0].name)
 
 
-    # Merging dataframes into one dataframe.
-    for i in range(len(dfs)):
-        df_name = dfs[i].name
-        if i == 0:
-            merged_dfs = dfs[0][["time", "value"]]
-            merged_dfs = merged_dfs.rename(columns={'value': df_name})
-            continue
+        # Merging dataframes into one dataframe.
+        for i in range(len(dfs)):
+            df_name = dfs[i].name
+            if i == 0:
+                merged_dfs = dfs[0][["time", "value"]]
+                merged_dfs = merged_dfs.rename(columns={'value': df_name})
+                continue
 
-        if dfs[i].empty:
-            merged_dfs[df_name] = np.nan
-            print(f"Dataframe number {i+1} not found; inserted NaN instead.")
-        else:
-            df = dfs[i][["value", "time"]]
-            merged_dfs = merged_dfs.merge(df, on="time", how="outer", sort=True)
-            merged_dfs.rename(columns={'value': df_name}, inplace=True)
-            
-    # Drop all rows where we do not have power data
-    merged_dfs = merged_dfs[merged_dfs['power'].notna()]
+            if dfs[i].empty:
+                merged_dfs[df_name] = np.nan
+                print(f"Dataframe number {i+1} not found; inserted NaN instead.")
+            else:
+                df = dfs[i][["value", "time"]]
+                merged_dfs = merged_dfs.merge(df, on="time", how="outer", sort=True)
+                merged_dfs.rename(columns={'value': df_name}, inplace=True)
+                
+        # Drop all rows where we do not have power data
+        merged_dfs = merged_dfs[merged_dfs['power'].notna()]
 
-    # Plot resulting dataframe.
-    plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
-    plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
-    plt.plot(merged_dfs.time, merged_dfs.power, label="power")
-    plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
-    plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
-    plt.legend()
-    plt.show()
+        # Plot resulting dataframe.
+        plt.plot(merged_dfs.time, merged_dfs.ribcage, label="rib")
+        plt.plot(merged_dfs.time, merged_dfs.abdomen, label="ab")
+        plt.plot(merged_dfs.time, merged_dfs.power, label="power")
+        plt.plot(merged_dfs.time, merged_dfs.calories, label="cal")
+        plt.plot(merged_dfs.time, merged_dfs.heartrate, label="hr")
+        plt.legend()
+        plt.show()
+
+        merged_dfs.to_csv(filename + "-dataframe" + fileextension)
 
         # dataframes.append(merged_dfs)
 
