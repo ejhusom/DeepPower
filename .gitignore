@@ -71,6 +71,9 @@ temp*
 # vim
 Session.vim
 
+# python venv
+env/
+
 # result dir
 results/*
 # data dir

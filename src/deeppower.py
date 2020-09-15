@@ -21,7 +21,7 @@ from model import *
 from utils import *
 
 
-class DeepPower(Preprocess, NeuralTimeSeries):
+class DeepPower(Dataset, NeuralTimeSeries):
     """Estimate power from breathing and heart rate, using deep learning.
 
     """
@@ -42,7 +42,7 @@ class DeepPower(Preprocess, NeuralTimeSeries):
         self.net = net
         self.n_epochs = n_epochs
 
-        Preprocess.__init__(self,
+        Dataset.__init__(self,
                 data_file=data_file,
                 hist_size=hist_size,
                 train_split=train_split,

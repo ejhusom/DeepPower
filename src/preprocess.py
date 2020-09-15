@@ -24,13 +24,14 @@ from scipy.fftpack import fft, ifft
  
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
+from raw_to_dataframe import *
 from preprocess_utils import *
 from utils import *
 
-class Preprocess():
+class Dataset():
 
     def __init__(self, 
-            data_file="../data/20200812-1809-merged.csv",
+            filename="../data/20200812-1809-merged.csv",
             hist_size=1000, 
             train_split=0.6, 
             scale=True,
@@ -52,7 +53,7 @@ class Preprocess():
             How much data to use for training (the rest will be used for testing.)
         scale : bool, default=True
             Whether to scale the data set or not.
-        data_file : string, default="DfEtna.csv"
+        filename : string, default="DfEtna.csv"
             What file to get the data from.
         reverse_train_split : boolean, default=False
             Whether to use to first part of the dataset as test and the second
@@ -63,7 +64,7 @@ class Preprocess():
 
         """
 
-        self.data_file = data_file
+        self.filename = filename
         self.train_split = train_split
         self.hist_size = hist_size
         self.scale = scale
@@ -71,17 +72,18 @@ class Preprocess():
         self.time_id = time_id
         self.verbose = verbose
 
+        self.preprocessed = False
         self.scaler_loaded = False
         self.added_features = []
         self.target_name = target_name
         self.result_dir = "../results/" + time_id + "/"
         os.makedirs(self.result_dir)
 
-
+    
     def preprocess(self, features = [], remove_features = []):
         
         self.df, self.index = read_csv(
-                self.data_file, 
+                self.filename, 
                 delete_columns=["time", "calories"] + remove_features,
                 verbose=self.verbose
         )
@@ -123,6 +125,9 @@ class Preprocess():
 
         # Save test targets for inspection
         np.savetxt("tmp_y_test.csv", self.y_test, delimiter=",")
+
+
+        self.preprocessed = True
 
 
     def add_features(self, features):
@@ -329,5 +334,5 @@ class Preprocess():
 
 if __name__ == '__main__':
 
-    data = Preprocess()
+    data = Dataset()
     data.preprocess()

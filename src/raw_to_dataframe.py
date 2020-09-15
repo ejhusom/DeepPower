@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ============================================================================
-# File:     restructure_raw_data.py
+# File:     raw_to_dataframe.py
 # Author:   Erik Johannes Husom
 # Created:  2020-01-27
 # ----------------------------------------------------------------------------
@@ -71,9 +71,6 @@ def explore_timestamps(df):
         plt.show()
     except:
         print(f"{df.name} lacks necessary columns to plot time intervals.")
-
-
-
 
 def structure_breathing_data(data, placement):
     """Process breathing data from the FLOW sensor.
@@ -189,17 +186,17 @@ def structure_heartrate_data(data):
 
     return heartrate
 
-
-
-
-
-def main(filepaths, show=False):
+def raw_to_dataframe(filepaths, show=False):
     """Restructure raw data into dataframe.
 
     Args:
         filepaths (list of str): List of filepaths.
     
     """
+
+    # If filepaths is a string (e.g. only one filepath), wrap this in a list
+    if isinstance(filepaths, str):
+        filepaths = [filepaths]
 
     for filepath in filepaths:
 
@@ -273,4 +270,4 @@ def main(filepaths, show=False):
 
 if __name__ == '__main__':
 
-    main(sys.argv[1:], show=True)
+    raw_to_dataframe(sys.argv[1:], show=True)
