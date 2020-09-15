@@ -191,14 +191,19 @@ def structure_heartrate_data(data):
 
 
 
-if __name__ == '__main__':
 
-    # dataframes = []
 
-    for filepath in sys.argv[1:]:
+def main(filepaths, show=False):
+    """Restructure raw data into dataframe.
+
+    Args:
+        filepaths (list of str): List of filepaths.
+    
+    """
+
+    for filepath in filepaths:
 
         # READ RAW DATA
-        # filepath = sys.argv[1]
         filename, fileextension = os.path.splitext(filepath)
         print("Processing {}".format(filename))
 
@@ -264,19 +269,8 @@ if __name__ == '__main__':
 
         merged_dfs.to_csv(filename + "-dataframe" + fileextension)
 
-        # dataframes.append(merged_dfs)
-
-    # dataframes = pd.concat(dataframes, ignore_index=True)
-    # dataframes.to_csv("merged_data" + fileextension)
-
-    # print(dataframes)
-    # # Plot resulting dataframe.
-    # plt.plot(dataframes.ribcage, label="rib")
-    # plt.plot(dataframes.abdomen, label="ab")
-    # plt.plot(dataframes.power, label="power")
-    # plt.plot(dataframes.calories, label="cal")
-    # plt.plot(dataframes.heartrate, label="hr")
-    # plt.legend()
-    # plt.show()
 
 
+if __name__ == '__main__':
+
+    main(sys.argv[1:], show=True)
