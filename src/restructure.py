@@ -270,10 +270,12 @@ def restructure(filepaths, show=False, output=None):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) > 1:
-        restructure(sys.argv[1:], show=False)
-    else:
-        params = yaml.safe_load(open("params.yaml"))["restructure"]
-        restructure(params["files"], show=False)
+    restructure(sys.argv[1:], show=False)
+
+    # if len(sys.argv) > 1:
+    #     restructure(sys.argv[1:], show=False)
+    # else:
+    #     params = yaml.safe_load(open("params.yaml"))["restructure"]
+    #     restructure(params["files"], show=False)
 
 

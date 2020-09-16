@@ -1,8 +1,0 @@
-stages:
-  restructure:
-    cmd: python src/restructure.py
-    deps:
-    - data/
-    - src/restructure.py
-    params:
-    - restructure.files

@@ -1,5 +1,0 @@
-[core]
-    analytics = false
-    remote = gitstorage
-['remote "gitstorage"']
-    url = /home/erikjohannes/Documents/power-dvc
