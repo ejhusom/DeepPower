@@ -12,15 +12,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class ExploreData():
-    
-    
+class ExploreData:
     def __init__():
-    
-    
+        pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
-
-

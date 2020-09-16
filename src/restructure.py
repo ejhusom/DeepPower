@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-from config import Config
+from config import *
 
 
 def pad_data(df):
@@ -212,7 +212,7 @@ def restructure(filepaths, show=False, output=None):
     if isinstance(filepaths, str):
         filepaths = [filepaths]
 
-    Config.DATA_RESTRUCTURED_PATH.mkdir(parents=True, exist_ok=True)
+    DATA_RESTRUCTURED_PATH.mkdir(parents=True, exist_ok=True)
 
     for filepath in filepaths:
 
@@ -279,7 +279,7 @@ def restructure(filepaths, show=False, output=None):
             plt.show()
 
         merged_dfs.to_csv(
-            Config.DATA_RESTRUCTURED_PATH
+            DATA_RESTRUCTURED_PATH
             / (os.path.basename(filepath).replace(".", "-restructured."))
         )
 

@@ -13,7 +13,7 @@ import pandas as pd
 import sys
 import yaml
 
-from config import Config
+from config import *
 from preprocess_utils import *
 from utils import *
 
@@ -24,7 +24,7 @@ def featurize(filepaths):
     if isinstance(filepaths, str):
         filepaths = [filepaths]
 
-    Config.DATA_FEATURIZED_PATH.mkdir(parents=True, exist_ok=True)
+    DATA_FEATURIZED_PATH.mkdir(parents=True, exist_ok=True)
 
     params = yaml.safe_load(open("params.yaml"))["featurize"]
 
@@ -50,7 +50,7 @@ def featurize(filepaths):
         #         "-input_columns.csv")
 
         df.to_csv(
-            Config.DATA_FEATURIZED_PATH
+            DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
 

@@ -7,12 +7,13 @@
 # Description: Preprocessing workout data.
 # ============================================================================
 import matplotlib.pyplot as plt
+
 # plt.rcParams['figure.figsize'] = [5.0, 3.0]
 # plt.rcParams['figure.dpi'] = 300
 import plotly.express as px
 import plotly.graph_objects as go
 
-import datetime 
+import datetime
 import numpy as np
 import os
 import pandas as pd
@@ -21,28 +22,29 @@ import string
 import sys
 import time
 from scipy.fftpack import fft, ifft
- 
+
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 from raw_to_dataframe import *
 from preprocess_utils import *
 from utils import *
 
-class Dataset():
 
-    def __init__(self, 
-            filename="../data/20200812-1809-merged.csv",
-            hist_size=1000, 
-            train_split=0.6, 
-            scale=True,
-            reverse_train_split=False, 
-            verbose=False,
-            target_name="power",
-            time_id=time.strftime("%Y%m%d-%H%M%S")
-        ):
+class Dataset:
+    def __init__(
+        self,
+        filename="../data/20200812-1809-merged.csv",
+        hist_size=1000,
+        train_split=0.6,
+        scale=True,
+        reverse_train_split=False,
+        verbose=False,
+        target_name="power",
+        time_id=time.strftime("%Y%m%d-%H%M%S"),
+    ):
         """
         Load and preprocess data set.
-        
+
         Parameters
         ----------
         date : string
@@ -79,13 +81,12 @@ class Dataset():
         self.result_dir = "../results/" + time_id + "/"
         os.makedirs(self.result_dir)
 
-    
-    def preprocess(self, features = [], remove_features = []):
-        
+    def preprocess(self, features=[], remove_features=[]):
+
         self.df, self.index = read_csv(
-                self.filename, 
-                delete_columns=["time", "calories"] + remove_features,
-                verbose=self.verbose
+            self.filename,
+            delete_columns=["time", "calories"] + remove_features,
+            verbose=self.verbose,
         )
         print(self.df)
 
@@ -97,14 +98,12 @@ class Dataset():
             print("DATAFRAME BEFORE FEATURE ENGINEERING")
             print(self.df)
 
-
         self.add_features(features)
 
         # Save the names of the input columns
         self.input_columns = self.df.columns
         input_columns_df = pd.DataFrame(self.input_columns)
-        input_columns_df.to_csv(self.result_dir + self.time_id +
-                "-input_columns.csv")
+        input_columns_df.to_csv(self.result_dir + self.time_id + "-input_columns.csv")
 
         self.data = self.df.to_numpy()
 
@@ -126,9 +125,7 @@ class Dataset():
         # Save test targets for inspection
         np.savetxt("tmp_y_test.csv", self.y_test, delimiter=",")
 
-
         self.preprocessed = True
-
 
     def add_features(self, features):
         """
@@ -139,7 +136,7 @@ class Dataset():
         ----------
         features : list
             A list containing keywords specifying which features to add.
-            
+
         """
         pass
 
@@ -182,7 +179,7 @@ class Dataset():
         else:
             self.added_features.append(name)
 
-        print('Feature added: {}'.format(name))
+        print("Feature added: {}".format(name))
 
     def _split_sequences(self):
         """Wrapper function for splitting the input data into sequences. The
@@ -194,16 +191,12 @@ class Dataset():
 
         self.X_train_pre_seq = self.X_train.copy()
         self.X_test_pre_seq = self.X_test.copy()
-        # Combine data 
+        # Combine data
         self.train_data = np.hstack((self.y_train, self.X_train))
         self.test_data = np.hstack((self.y_test, self.X_test))
 
-        self.X_train, self.y_train = split_sequences(
-            self.train_data, self.hist_size
-        )
-        self.X_test, self.y_test = split_sequences(
-            self.test_data, self.hist_size
-        )
+        self.X_train, self.y_train = split_sequences(self.train_data, self.hist_size)
+        self.X_test, self.y_test = split_sequences(self.test_data, self.hist_size)
 
     def _split_train_test(self, test_equals_train=False):
         """
@@ -218,27 +211,25 @@ class Dataset():
 
         """
 
-        self.train_hours = int(self.data.shape[0]*self.train_split)
+        self.train_hours = int(self.data.shape[0] * self.train_split)
 
-        self.train_data = self.data[:self.train_hours,:]
-        self.train_indeces = self.index[:self.train_hours]
-        self.test_data = self.data[self.train_hours:,:]
-        self.test_indeces = self.index[self.train_hours:]
+        self.train_data = self.data[: self.train_hours, :]
+        self.train_indeces = self.index[: self.train_hours]
+        self.test_data = self.data[self.train_hours :, :]
+        self.test_indeces = self.index[self.train_hours :]
 
         if test_equals_train:
             print("WARNING: TRAINING SET IS USED AS TEST SET")
             self.test_data = self.train_data
             self.test_indeces = self.train_indeces
 
-
-
         # Split data in inputs and targets
         self.X_train = self.train_data[:, 1:]
         self.X_test = self.test_data[:, 1:]
-        self.y_train = self.train_data[:,0].reshape(-1,1)
-        self.y_test = self.test_data[:,0].reshape(-1,1)
+        self.y_train = self.train_data[:, 0].reshape(-1, 1)
+        self.y_test = self.test_data[:, 0].reshape(-1, 1)
 
-    def _scale_data(self, scaler_type='minmax'):
+    def _scale_data(self, scaler_type="minmax"):
         """
         Scaling the input data.
 
@@ -266,13 +257,13 @@ class Dataset():
 
                 self.X_test = self.X_scaler.transform(self.X_test)
 
-                if self.verbose: print("Loaded scaler used to scale data.")
-
+                if self.verbose:
+                    print("Loaded scaler used to scale data.")
 
             else:
-                if scaler_type == 'standard':
+                if scaler_type == "standard":
                     self.X_scaler = StandardScaler()
-                elif scaler_type == 'robust':
+                elif scaler_type == "robust":
                     self.X_scaler = RobustScaler()
                 else:
                     self.X_scaler = MinMaxScaler()
@@ -281,11 +272,13 @@ class Dataset():
                 self.X_test = self.X_scaler.transform(self.X_test)
 
                 # Save the scaler in order to reuse it on other test sets
-                pickle.dump(self.X_scaler, open(self.result_dir + self.time_id +
-                    '-scaler.pkl', 'wb'))
+                pickle.dump(
+                    self.X_scaler,
+                    open(self.result_dir + self.time_id + "-scaler.pkl", "wb"),
+                )
 
-                if self.verbose: print("Data scaled and scaler saved.")
-
+                if self.verbose:
+                    print("Data scaled and scaler saved.")
 
     def set_scaler(self, scaler_file):
         """
@@ -293,10 +286,11 @@ class Dataset():
         Useful when testing a model on new data.
         """
 
-        self.X_scaler = pickle.load(open(scaler_file, 'rb'))
+        self.X_scaler = pickle.load(open(scaler_file, "rb"))
         self.scaler_loaded = True
 
-        if self.verbose: print("Scaler loaded : {}".format(scaler_file))
+        if self.verbose:
+            print("Scaler loaded : {}".format(scaler_file))
 
     def augment_data(self, thresh=20):
         """
@@ -310,29 +304,34 @@ class Dataset():
 
         """
 
-        print('Augmenting data...')
+        print("Augmenting data...")
         original_num_points = self.y_train.shape[0]
 
         for i in range(len(self.X_train[0])):
-            if np.max(self.y_train[i,:]) > thresh:
-                self.y_train = np.vstack((self.y_train, self.y_train[i,:]))
-                self.X_train[0] = np.concatenate((
-                    self.X_train[0], np.array([self.X_train[0][i]])))
-                self.X_train[1] = np.concatenate((
-                    self.X_train[1], np.array([self.X_train[1][i]])))
-                self.X_train[2] = np.concatenate((
-                    self.X_train[2], np.array([self.X_train[2][i]])))
+            if np.max(self.y_train[i, :]) > thresh:
+                self.y_train = np.vstack((self.y_train, self.y_train[i, :]))
+                self.X_train[0] = np.concatenate(
+                    (self.X_train[0], np.array([self.X_train[0][i]]))
+                )
+                self.X_train[1] = np.concatenate(
+                    (self.X_train[1], np.array([self.X_train[1][i]]))
+                )
+                self.X_train[2] = np.concatenate(
+                    (self.X_train[2], np.array([self.X_train[2][i]]))
+                )
 
         new_num_points = self.y_train.shape[0]
 
-        print('Original number of points: {}.'.format(original_num_points))
-        print('New number of points: {}.'.format(new_num_points))
-        print('Data augmented with {} points.'.format(
-            new_num_points-original_num_points
-        ))
+        print("Original number of points: {}.".format(original_num_points))
+        print("New number of points: {}.".format(new_num_points))
+        print(
+            "Data augmented with {} points.".format(
+                new_num_points - original_num_points
+            )
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     data = Dataset()
     data.preprocess()

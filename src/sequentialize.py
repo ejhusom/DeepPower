@@ -13,7 +13,7 @@ import pandas as pd
 import sys
 import yaml
 
-from config import Config
+from config import *
 from preprocess_utils import *
 from utils import *
 
@@ -24,7 +24,7 @@ def sequentialize(filepaths):
     if isinstance(filepaths, str):
         filepaths = [filepaths]
 
-    Config.DATA_SEQUENTIALIZED_PATH.mkdir(parents=True, exist_ok=True)
+    DATA_SEQUENTIALIZED_PATH.mkdir(parents=True, exist_ok=True)
 
     params = yaml.safe_load(open("params.yaml"))["sequentialize"]
 
@@ -49,7 +49,7 @@ def sequentialize(filepaths):
 
         # Save X and y into a binary file
         np.savez(
-            Config.DATA_SEQUENTIALIZED_PATH
+            DATA_SEQUENTIALIZED_PATH
             / (
                 os.path.basename(filepath).replace(
                     "featurized.csv", "sequentialized.npz"
@@ -58,6 +58,7 @@ def sequentialize(filepaths):
             X=X,
             y=y,
         )
+
 
 if __name__ == "__main__":
 
