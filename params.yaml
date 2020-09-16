@@ -16,11 +16,12 @@ split:
   train_split: 0.7
 
 scale:
-  type: minmax
+  method: minmax
 
 train:
   net: cnn
   n_epochs: 10
+  batch_size: 128
 
 evaluate:
 

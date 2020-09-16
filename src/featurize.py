@@ -18,6 +18,7 @@ import yaml
 from config import DATA_FEATURIZED_PATH
 from preprocess_utils import read_csv, move_column
 
+
 def featurize(filepaths):
     """Clean up inputs and add features to data set.
 

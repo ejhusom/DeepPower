@@ -17,7 +17,7 @@ except:
     pass
 
 from preprocess import *
-from model import *
+from neuraltimeseries import *
 from utils import *
 
 
@@ -27,7 +27,7 @@ class DeepPower(Dataset, NeuralTimeSeries):
     def __init__(
         self,
         data_file="../data/20200812-1809-merged.csv",
-        hist_size=1000,
+        hist_size=100,
         train_split=0.6,
         scale=True,
         reverse_train_split=False,

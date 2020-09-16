@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-# ============================================================================
-# File:     split.py
-# Author:   Erik Johannes Husom
-# Created:  2020-09-16
-# ----------------------------------------------------------------------------
-# Description:
-# Split data set into training and test set.
-# ============================================================================
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+"""Split data into training and test set.
+
+This module combines data from multiple workouts, and the splits the data into
+a training and test set.
+
+Author:
+    Erik Johannes Husom
+
+Date:
+    2020-09-16
+
+"""
 import sys
+
+import numpy as np
 import yaml
 
-from config import *
-from preprocess_utils import *
-from utils import *
-
+from config import DATA_SPLIT_PATH
 
 def combine(filepaths):
     """Combine data from multiple workouts into one dataset.
@@ -51,13 +51,18 @@ def combine(filepaths):
 
 
 def split(X, y):
+    """Split data into train and test set.
+
+    Args:
+        X (array): Input array.
+        y (array): Output/target array.
+
+    """
 
     DATA_SPLIT_PATH.mkdir(parents=True, exist_ok=True)
 
     params = yaml.safe_load(open("params.yaml"))["split"]
-
     train_split = params["train_split"]
-
     train_elements = int(X.shape[0] * train_split)
 
     # Split X and y into train and test
@@ -65,8 +70,8 @@ def split(X, y):
     y_train, y_test = np.split(y, [train_elements])
 
     # Save train and test data into a binary file
-    np.savez(DATA_SPLIT_PATH / "train.npz", X=X, y_train=y)
-    np.savez(DATA_SPLIT_PATH / "test.npz", X=X, y_test=y)
+    np.savez(DATA_SPLIT_PATH / "train.npz", X=X_train, y=y_train)
+    np.savez(DATA_SPLIT_PATH / "test.npz", X=X_test, y=y_test)
 
 
 if __name__ == "__main__":

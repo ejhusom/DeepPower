@@ -15,8 +15,9 @@ Created:
     2020-09-16
 
 """
+import numpy as np
 
-from config import DATA_SPLIT_PATH
+from config import DATA_SCALED_PATH
 
 
 def scale(train_file, test_file):
@@ -28,6 +29,10 @@ def scale(train_file, test_file):
 
     """
 
+    DATA_SCALED_PATH.mkdir(parents=True, exist_ok=True)
+
+    params = yaml.safe_load(open("params.yaml"))["scale"]
+    method = params["method"]
 
     train = np.load(train_file)
     test = np.load(test_file)
@@ -37,5 +42,17 @@ def scale(train_file, test_file):
     y_train = train["y"]
     y_test = test["y"]
 
+    # TODO: Implement scaling.
+
+    np.savez(DATA_SCALED_PATH / "train.npz", X=X_train, y=y_train)
+    np.savez(DATA_SCALED_PATH / "test.npz", X=X_test, y=y_test)
 
 
+if __name__ == "__main__":
+
+    if len(sys.argv) == 3:
+        train_file = sys.argv[1]
+        test_file = sys.argv[2]
+        scale(train_file, test_file)
+    else:
+        raise ValueError("Give 2 cmd line args: [train_file] [test_file]")
