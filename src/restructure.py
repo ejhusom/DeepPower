@@ -14,6 +14,8 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
+from config import Config
+
 def pad_data(df):
     """Pad data such that there is a datapoint for every 0.1 second.
 
@@ -193,18 +195,14 @@ def restructure(filepaths, show=False, output=None):
     # If filepaths is a string (e.g. only one filepath), wrap this in a list
     if isinstance(filepaths, str):
         filepaths = [filepaths]
+        
+    Config.DATA_RESTRUCTURED_PATH.mkdir(parents=True, exist_ok=True)
 
-    os.makedirs(os.path.join("data", "restructured"), exist_ok=True)
 
     for filepath in filepaths:
 
+        print("Processing {}".format(filepath))
         # READ RAW DATA
-        basename = os.path.basename(filepath)
-        dirname = os.path.dirname(filepath)
-        filename, fileextension = os.path.splitext(basename)
-
-        print("Processing {}".format(basename))
-
         data = pd.read_csv(
                 filepath, 
                 names=["writetime", "datatype", "value","value2","na"], 
@@ -266,8 +264,9 @@ def restructure(filepaths, show=False, output=None):
             plt.savefig(filename + "-dataframe.png")
             plt.show()
 
-        merged_dfs.to_csv("./data/restructured/" + filename + "-dataframe" +
-                fileextension)
+        merged_dfs.to_csv(Config.DATA_RESTRUCTURED_PATH / (
+            os.path.basename(filepath).replace(".", "-restructured.")
+        ))
 
 if __name__ == '__main__':
 
