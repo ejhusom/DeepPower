@@ -65,8 +65,8 @@ def split(X, y):
     y_train, y_test = np.split(y, [train_elements])
 
     # Save train and test data into a binary file
-    np.savez(DATA_SPLIT_PATH / "train.npz", X_train=X_train, y_train=y_train)
-    np.savez(DATA_SPLIT_PATH / "test.npz", X_test=X_test, y_test=y_test)
+    np.savez(DATA_SPLIT_PATH / "train.npz", X=X, y_train=y)
+    np.savez(DATA_SPLIT_PATH / "test.npz", X=X, y_test=y)
 
 
 if __name__ == "__main__":
