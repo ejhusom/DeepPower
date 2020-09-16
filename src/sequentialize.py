@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
-# ============================================================================
-# File:     seuqentialize.py
-# Author:   Erik Johannes Husom
-# Created:  2020-09-16
-# ----------------------------------------------------------------------------
-# Description:
-# Split data into input/output sequences.
-# ============================================================================
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+"""Split data into sequences.
+
+Prepare the data for input to a neural network. A sequence with a given history
+size is extracted from the input data, and matched with the appropriate target
+value(s).
+
+Author:
+    Erik Johannes Husom
+
+Date:
+    2020-09-16
+
+"""
+import os
 import sys
+
+import numpy as np
 import yaml
 
-from config import *
-from preprocess_utils import *
-from utils import *
+from config import DATA_SEQUENTIALIZED_PATH
+from preprocess_utils import read_csv, split_sequences
 
 
 def sequentialize(filepaths):

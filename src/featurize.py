@@ -1,24 +1,30 @@
 #!/usr/bin/env python3
-# ============================================================================
-# File:     featurize.py
-# Author:   Erik Johannes Husom
-# Created:  2020-09-16
-# ----------------------------------------------------------------------------
-# Description:
-# Add engineered features to dataset.
-# ============================================================================
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+"""Clean up inputs and add features to data set.
+
+Author:
+    Erik Johannes Husom
+
+Date:
+    2020-09-16
+
+"""
+import os
 import sys
+
+import matplotlib.pyplot as plt
+import pandas as pd
 import yaml
 
-from config import *
-from preprocess_utils import *
-from utils import *
-
+from config import DATA_FEATURIZED_PATH
+from preprocess_utils import read_csv, move_column
 
 def featurize(filepaths):
+    """Clean up inputs and add features to data set.
+
+    Args:
+        filepaths (list of str): List of paths to files to process.
+
+    """
 
     # If filepaths is a string (e.g. only one filepath), wrap this in a list
     if isinstance(filepaths, str):
