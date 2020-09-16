@@ -195,6 +195,8 @@ def restructure(filepaths, show=False, output=None):
     if isinstance(filepaths, str):
         filepaths = [filepaths]
 
+    os.makedirs(os.path.join("data", "restructured"), exist_ok=True)
+
     for filepath in filepaths:
 
         # READ RAW DATA
