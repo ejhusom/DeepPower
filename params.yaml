@@ -1,4 +1,12 @@
 restructure:
 
+featurize:
+  remove:
+    - time
+    - calories
+    - abdomen
+  features:
+
+
 train:
   n_epochs: 10

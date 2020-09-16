@@ -13,7 +13,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import sys
-import yaml
 
 def pad_data(df):
     """Pad data such that there is a datapoint for every 0.1 second.
