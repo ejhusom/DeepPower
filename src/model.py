@@ -18,6 +18,7 @@ from tensorflow.keras import models
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.models import Model, load_model
 
+
 def CNNKeras(input_x, input_y, n_steps_out=1):
     """Define a CNN model architecture using Keras.
     Parameters
@@ -40,35 +41,37 @@ def CNNKeras(input_x, input_y, n_steps_out=1):
     kernel_size = 2
 
     model = models.Sequential()
-    model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
-                            activation='relu', 
-                            input_shape=(input_x, input_y)))
-    model.add(layers.Conv1D(filters=32, kernel_size=kernel_size,
-                            activation="relu"))
+    model.add(
+        layers.Conv1D(
+            filters=64,
+            kernel_size=kernel_size,
+            activation="relu",
+            input_shape=(input_x, input_y),
+        )
+    )
+    model.add(layers.Conv1D(filters=32, kernel_size=kernel_size, activation="relu"))
     # model.add(layers.MaxPooling1D(pool_size=2))
     model.add(layers.Flatten())
-    model.add(layers.Dense(128, activation='relu'))
-    model.add(layers.Dense(64, activation='relu'))
-    model.add(layers.Dense(n_steps_out, activation='linear'))
-    model.compile(
-        optimizer='adam', loss='mse', metrics=['mae', 'mape']
-    )
+    model.add(layers.Dense(128, activation="relu"))
+    model.add(layers.Dense(64, activation="relu"))
+    model.add(layers.Dense(n_steps_out, activation="linear"))
+    model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
 
     return model
 
 
-class NeuralTimeSeries():
+class NeuralTimeSeries:
     """Run training and prediction using Keras."""
 
     def __init__(
-        self, 
+        self,
         X_train,
         y_train,
         X_test,
         y_test,
         n_epochs=100,
         net="cnn",
-        time_id=time.strftime("%Y%m%d-%H%M%S")
+        time_id=time.strftime("%Y%m%d-%H%M%S"),
     ):
 
         tf.random.set_seed(2020)
@@ -84,7 +87,7 @@ class NeuralTimeSeries():
         self.time_id = time_id
 
         self.n_features = self.X_train.shape[-1]
-        
+
         try:
             self.input_x = self.X_train.shape[-2]
             self.input_y = self.X_train.shape[-1]
@@ -96,14 +99,12 @@ class NeuralTimeSeries():
             # self.model = LSTMKeras(
             #     self.input_x, self.input_y, self.n_steps_out
             # )
-            raise NotImplementedError;
+            raise NotImplementedError
         else:
-            self.model = CNNKeras(
-                self.input_x, self.input_y
-            )
+            self.model = CNNKeras(self.input_x, self.input_y)
 
-        if self.verbose: print(self.model.summary())
-
+        if self.verbose:
+            print(self.model.summary())
 
     def fit(self, verbose=None):
         """Train the model."""
@@ -115,8 +116,11 @@ class NeuralTimeSeries():
             verbose = 1 if self.verbose else 0
 
         self.history = self.model.fit(
-            self.X_train, self.y_train, epochs=self.n_epochs,
-            verbose=verbose, batch_size=128,
+            self.X_train,
+            self.y_train,
+            epochs=self.n_epochs,
+            verbose=verbose,
+            batch_size=128,
             # validation_split=0.2
         )
 
@@ -126,7 +130,7 @@ class NeuralTimeSeries():
 
         self.model.save(self.result_dir + self.time_id + "-model.h5")
 
-        with open(self.result_dir + self.time_id + "-config.json", 'w') as f:
+        with open(self.result_dir + self.time_id + "-config.json", "w") as f:
             f.write(self.model.to_json())
 
     def set_model(self, model_file):
@@ -142,4 +146,3 @@ if __name__ == "__main__":
     np.random.seed(2020)
 
     analysis = NeuralTimeSeries()
-

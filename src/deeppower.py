@@ -22,56 +22,56 @@ from utils import *
 
 
 class DeepPower(Dataset, NeuralTimeSeries):
-    """Estimate power from breathing and heart rate, using deep learning.
+    """Estimate power from breathing and heart rate, using deep learning."""
 
-    """
-
-
-    def __init__(self,
-            data_file="../data/20200812-1809-merged.csv",
-            hist_size=1000, 
-            train_split=0.6, 
-            scale=True,
-            reverse_train_split=False, 
-            verbose=False,
-            net="cnn",
-            n_epochs=100,
-            time_id=time.strftime("%Y%m%d-%H%M%S")
+    def __init__(
+        self,
+        data_file="../data/20200812-1809-merged.csv",
+        hist_size=1000,
+        train_split=0.6,
+        scale=True,
+        reverse_train_split=False,
+        verbose=False,
+        net="cnn",
+        n_epochs=100,
+        time_id=time.strftime("%Y%m%d-%H%M%S"),
     ):
 
         self.net = net
         self.n_epochs = n_epochs
 
-        Dataset.__init__(self,
-                data_file=data_file,
-                hist_size=hist_size,
-                train_split=train_split,
-                scale=scale,
-                reverse_train_split=reverse_train_split,
-                verbose=verbose,
-                time_id=time_id
+        Dataset.__init__(
+            self,
+            data_file=data_file,
+            hist_size=hist_size,
+            train_split=train_split,
+            scale=scale,
+            reverse_train_split=reverse_train_split,
+            verbose=verbose,
+            time_id=time_id,
         )
 
-        self.plot_title = (
-            """File: {}, hist_size: {}, net: {}, n_epochs: {}, 
+        self.plot_title = """File: {}, hist_size: {}, net: {}, n_epochs: {}, 
             added feats.: {}""".format(
-                self.data_file, self.hist_size, self.net, self.n_epochs,
-                self.added_features
-            )
+            self.data_file, self.hist_size, self.net, self.n_epochs, self.added_features
         )
 
-            
     def build_model(self):
         """Build the model."""
 
         try:
             NeuralTimeSeries.__init__(
-                self, self.X_train, self.y_train, self.X_test, self.y_test,
-                self.n_epochs, self.net, self.time_id
+                self,
+                self.X_train,
+                self.y_train,
+                self.X_test,
+                self.y_test,
+                self.n_epochs,
+                self.net,
+                self.time_id,
             )
         except:
             raise AttributeError("Data is not preprocessed.")
-
 
     def predict(self, X_test=None, y_test=None):
         """Perform prediction using the trained model."""
@@ -102,8 +102,9 @@ class DeepPower(Dataset, NeuralTimeSeries):
         if include_input:
             for i in range(self.X_test_pre_seq.shape[1]):
                 # plt.plot(self.df.iloc[:,i], label=self.input_columns[i])
-                plt.plot(self.X_test_pre_seq[:,i]*250,
-                        label=self.input_columns[i+1])
+                plt.plot(
+                    self.X_test_pre_seq[:, i] * 250, label=self.input_columns[i + 1]
+                )
 
         plt.legend()
         plt.title(self.plot_title, wrap=True)
@@ -117,21 +118,23 @@ class DeepPower(Dataset, NeuralTimeSeries):
         """
 
         x_len = len(self.y_test.flatten())
-        x = np.linspace(0,x_len-1,x_len)
+        x = np.linspace(0, x_len - 1, x_len)
 
         fig = go.Figure()
         config = dict({"scrollZoom": True})
 
-        fig.add_trace(go.Scatter(
-            x=x, y=self.y_test.flatten(), name="true"))
-        fig.add_trace(go.Scatter(
-            x=x, y=self.y_pred.flatten(), name="pred"))
+        fig.add_trace(go.Scatter(x=x, y=self.y_test.flatten(), name="true"))
+        fig.add_trace(go.Scatter(x=x, y=self.y_pred.flatten(), name="pred"))
 
         if include_input:
             for i in range(self.X_test_pre_seq.shape[1]):
-                fig.add_trace(go.Scatter(
-                    x=x, y=self.X_test_pre_seq[:,i]*250,
-                    name=self.input_columns[i+1]))
+                fig.add_trace(
+                    go.Scatter(
+                        x=x,
+                        y=self.X_test_pre_seq[:, i] * 250,
+                        name=self.input_columns[i + 1],
+                    )
+                )
 
         fig.show(config=config)
 
@@ -146,15 +149,17 @@ class DeepPower(Dataset, NeuralTimeSeries):
         y_pred = self.y_pred.flatten()
 
         x_len = len(y_true)
-        x = np.linspace(0,x_len-1,x_len)
+        x = np.linspace(0, x_len - 1, x_len)
 
-        gp.plot((x, y_true, dict(legend="true")),
-                (x, y_pred, dict(legend="pred")),
-                unset="grid",
-                terminal="dumb {} {}".format(termsize[0], termsize[1]))
+        gp.plot(
+            (x, y_true, dict(legend="true")),
+            (x, y_pred, dict(legend="pred")),
+            unset="grid",
+            terminal="dumb {} {}".format(termsize[0], termsize[1]),
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     np.random.seed(2020)
 
     args = parse_arguments()
@@ -167,14 +172,14 @@ if __name__ == '__main__':
             args = parser.parse_args(namespace=t_args)
 
     power_estimation = DeepPower(
-            data_file=args.data_file,
-            hist_size=int(args.hist_size),
-            train_split=float(args.train_split),
-            reverse_train_split=to_bool(args.reverse_train_split),
-            net=args.net,
-            n_epochs=int(args.n_epochs),
-            verbose=to_bool(args.verbose),
-            time_id = time.strftime("%Y%m%d-%H%M%S")
+        data_file=args.data_file,
+        hist_size=int(args.hist_size),
+        train_split=float(args.train_split),
+        reverse_train_split=to_bool(args.reverse_train_split),
+        net=args.net,
+        n_epochs=int(args.n_epochs),
+        verbose=to_bool(args.verbose),
+        time_id=time.strftime("%Y%m%d-%H%M%S"),
     )
 
     power_estimation.preprocess(list(args.features), list(args.remove))
@@ -182,7 +187,7 @@ if __name__ == '__main__':
 
     # Load model and scaler if argument is given
     if args.model != None and args.model != "None":
-        if args.model.endswith('.h5'):
+        if args.model.endswith(".h5"):
             power_estimation.set_model(args.model)
         else:
             raise ValueError("Model does not have correct extension.")
@@ -192,7 +197,7 @@ if __name__ == '__main__':
         else:
             raise Exception("To load pretrained model, scaler must be given.")
             sys.exit(1)
-    
+
     # Train if argument is given
     if to_bool(args.train):
         power_estimation.fit()
@@ -205,4 +210,3 @@ if __name__ == '__main__':
             power_estimation.plot_prediction_plotly()
         elif to_bool(args.gnuplotlib):
             power_estimation.plot_prediction_gp()
-

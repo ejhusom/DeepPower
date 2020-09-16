@@ -17,6 +17,7 @@ from config import Config
 from preprocess_utils import *
 from utils import *
 
+
 def featurize(filepaths):
 
     # If filepaths is a string (e.g. only one filepath), wrap this in a list
@@ -31,10 +32,10 @@ def featurize(filepaths):
     remove_features = params["remove"]
 
     for filepath in filepaths:
-    
+
         df, index = read_csv(
-                filepath, 
-                delete_columns=remove_features,
+            filepath,
+            delete_columns=remove_features,
         )
 
         # Move target column to the beginning of dataframe
@@ -48,14 +49,15 @@ def featurize(filepaths):
         # input_columns_df.to_csv(self.result_dir + self.time_id +
         #         "-input_columns.csv")
 
-        df.to_csv(Config.DATA_FEATURIZED_PATH / (
-            os.path.basename(filepath).replace("restructured", "featurized"))
+        df.to_csv(
+            Config.DATA_FEATURIZED_PATH
+            / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
 
         df.plot()
         plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     featurize(sys.argv[1:])

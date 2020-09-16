@@ -8,10 +8,11 @@
 # Utilities for data preprocessing.
 # ============================================================================
 import matplotlib.pyplot as plt
+
 # plt.rcParams['figure.figsize'] = [5.0, 3.0]
 # plt.rcParams['figure.dpi'] = 300
 
-import datetime 
+import datetime
 import numpy as np
 import os
 import pandas as pd
@@ -20,10 +21,11 @@ import string
 import sys
 import time
 from scipy.fftpack import fft, ifft
- 
+
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 from utils import *
+
 
 def read_csv(filename, delete_columns=[], verbose=False):
     """Read csv file, and make proper adjustment to the resulting dataframe."""
@@ -31,7 +33,8 @@ def read_csv(filename, delete_columns=[], verbose=False):
     # Get input matrix from file
     df = pd.read_csv(filename, index_col=0)
 
-    if verbose: print_dataframe(df, "DATAFRAME FROM CSV")
+    if verbose:
+        print_dataframe(df, "DATAFRAME FROM CSV")
 
     for col in delete_columns:
         del df[col]
@@ -46,13 +49,15 @@ def read_csv(filename, delete_columns=[], verbose=False):
 
     return df, index
 
+
 def print_dataframe(df, message=""):
     """Print dataframe to terminal, with boundary and message."""
 
     print_horizontal_line()
-    
+
     print(message)
     print(df)
+
 
 def move_column(df, column_name, new_idx):
     """
@@ -80,6 +85,7 @@ def move_column(df, column_name, new_idx):
 
     return df[reordered_columns]
 
+
 def split_sequences(sequences, hist_size, n_steps_out=1):
     """Split data sequence into samples with matching input and targets.
 
@@ -93,17 +99,17 @@ def split_sequences(sequences, hist_size, n_steps_out=1):
         should be matched with a given target.
     n_steps_out : int
         Number of output steps.
-    
+
     Returns
     -------
     X : array
         The input samples.
     y : array
         The targets.
-    
+
     """
     X, y = list(), list()
-	
+
     for i in range(len(sequences)):
         # find the end of this pattern
         end_ix = i + hist_size
@@ -123,6 +129,7 @@ def split_sequences(sequences, hist_size, n_steps_out=1):
     y = np.array(y)
 
     return X, y
+
 
 def merge_time_series_and_added_features(X):
     """
@@ -147,16 +154,13 @@ def merge_time_series_and_added_features(X):
         data needed to make one prediction.
 
     """
-    
+
     if isinstance(X, list) and (len(X) == 2):
 
         result = list()
 
         for i in range(len(X[0])):
-            row = np.concatenate([
-                X[0][i].reshape(-1),
-                X[1][i]
-            ])
+            row = np.concatenate([X[0][i].reshape(-1), X[1][i]])
             result.append(row)
 
         return np.array(result)
@@ -165,7 +169,7 @@ def merge_time_series_and_added_features(X):
         raise TypeError("X must be a list of two elements.")
 
 
-def scale_data(train_data, val_data, scaler_type='minmax'):
+def scale_data(train_data, val_data, scaler_type="minmax"):
     """Scale train and test data.
 
     Parameters
@@ -189,11 +193,11 @@ def scale_data(train_data, val_data, scaler_type='minmax'):
 
     """
 
-    if scaler_type == 'standard':
+    if scaler_type == "standard":
         scaler = StandardScaler()
-    elif scaler_type == 'minmax':
+    elif scaler_type == "minmax":
         scaler = MinMaxScaler()
-    elif scaler_type == 'robust':
+    elif scaler_type == "robust":
         scaler = RobustScaler()
     else:
         print('Scaler must be "standard" or "minmax"!')
@@ -203,6 +207,7 @@ def scale_data(train_data, val_data, scaler_type='minmax'):
     val_data = scaler.transform(val_data)
 
     return train_data, val_data, scaler
+
 
 def split_time_series_and_added_features(X, input_columns, added_features):
     """
@@ -228,7 +233,7 @@ def split_time_series_and_added_features(X, input_columns, added_features):
         A list of the features that are added to the raw data. These features
         will not be included in the history window, but will be appended to the
         array of forecast values.
-    
+
     Returns
     -------
     X_hist : list of arrays
@@ -236,7 +241,7 @@ def split_time_series_and_added_features(X, input_columns, added_features):
         forecast removed.
     X_forecast : list of arrays
         Input matrix containing the latest weather forecast for each sample.
-    
+
     """
 
     X_hist, X_added = list(), list()
@@ -249,10 +254,8 @@ def split_time_series_and_added_features(X, input_columns, added_features):
         else:
             hist_idcs.append(i)
 
-	
     for i in range(len(X)):
-        X_hist.append(X[i][:,hist_idcs])
-        X_added.append(X[i][-1,added_idcs])
+        X_hist.append(X[i][:, hist_idcs])
+        X_added.append(X[i][-1, added_idcs])
 
     return [np.array(X_hist), np.array(X_added)]
-

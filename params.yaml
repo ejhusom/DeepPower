@@ -7,6 +7,20 @@ featurize:
     - abdomen
   features:
 
+sequentialize:
+  hist_size: 100 # milliseconds
+
+combine:
+
+split:
+  train_split: 0.7
+
+scale:
+  type: minmax
 
 train:
+  net: cnn
   n_epochs: 10
+
+evaluate:
+
