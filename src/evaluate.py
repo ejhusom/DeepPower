@@ -48,8 +48,6 @@ def evaluate(model_filepath, test_filepath):
     rmse = mean_squared_error(y_test, y_pred)
 
     time_id, _ = os.path.splitext(os.path.basename(model_filepath))
-    print(time_id)
-    print(type(time_id))
 
     with open(METRICS_PATH / (time_id + "-metrics.json"), "w") as f:
         json.dump(dict(rmse=rmse), f)
@@ -72,6 +70,7 @@ def plot_prediction(y_true, y_pred, include_input=True):
     plt.plot(y_pred, label="pred")
 
     # if include_input:
+    #     # X = np.load("./assets/data/featurized/")
     #     for i in range(X_test_pre_seq.shape[1]):
     #         # plt.plot(df.iloc[:,i], label=input_columns[i])
     #         plt.plot(
