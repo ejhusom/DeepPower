@@ -62,3 +62,13 @@ scale:
   outs:
   - path: assets/data/scaled
     md5: be66f774f92dba71082c7cfbf129b73c.dir
+train:
+  cmd: python3 src/train.py assets/data/scaled/train.npz
+  deps:
+  - path: assets/data/scaled
+    md5: be66f774f92dba71082c7cfbf129b73c.dir
+  - path: src/train.py
+    md5: 61610d41a5bfcb2db6d4e6edcdcfee9a
+  outs:
+  - path: assets/models
+    md5: cef636f98d9974eb83b583ccd98e9bf5.dir

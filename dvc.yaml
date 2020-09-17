@@ -48,3 +48,10 @@ stages:
     - src/scale.py
     outs:
     - assets/data/scaled
+  train:
+    cmd: python3 src/train.py assets/data/scaled/train.npz
+    deps:
+    - assets/data/scaled
+    - src/train.py
+    outs:
+    - assets/models
