@@ -10,13 +10,14 @@ Created:
     2020-09-16  
 
 """
+import sys
+import time
+
+import numpy as np
 import yaml
 
+from config import MODELS_PATH
 from model import cnn
-
-
-def build_model():
-    pass
 
 
 def train(filepath):
@@ -26,6 +27,8 @@ def train(filepath):
         filepath (str): Path to training set.
 
     """
+
+    MODELS_PATH.mkdir(parents=True, exist_ok=True)
 
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["train"]
@@ -47,3 +50,14 @@ def train(filepath):
     history = model.fit(
         X_train, y_train, epochs=params["n_epochs"], batch_size=params["batch_size"]
     )
+
+    time_id = time.strftime("%Y%m%d%H%M%S")
+
+    model.save(MODELS_PATH / (time_id + ".h5"))
+
+    with open(MODELS_PATH / (time_id + ".json"), "w") as f:
+        f.write(model.to_json())
+
+if __name__ == '__main__':
+
+    train(sys.argv[1])

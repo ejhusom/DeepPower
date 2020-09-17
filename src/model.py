@@ -9,13 +9,8 @@ Date:
     2020-09-16
 
 """
-import numpy as np
-
-import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import models
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from tensorflow.keras.models import Model, load_model
 
 
 def cnn(input_x, input_y, n_steps_out=1):

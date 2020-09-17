@@ -35,11 +35,11 @@ DATA_SPLIT_PATH = DATA_PATH / "split"
 DATA_SCALED_PATH = DATA_PATH / "scaled"
 """Path to scaled data."""
 
-MODELS_PATH = "../models"
+MODELS_PATH = ASSETS_PATH / "models"
 """Path to models."""
 
-METRICS_PATH = "../metrics"
+METRICS_PATH = ASSETS_PATH / "metrics"
 """Path to folder containing metrics file."""
 
-METRICS_FILE_PATH = "../metrics/metrics.json"
+METRICS_FILE_PATH = ASSETS_PATH / "metrics/metrics.json"
 """Path to file containing metrics."""
