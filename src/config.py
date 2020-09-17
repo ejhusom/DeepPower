@@ -38,11 +38,17 @@ DATA_SCALED_PATH = DATA_PATH / "scaled"
 MODELS_PATH = ASSETS_PATH / "models"
 """Path to models."""
 
-MODELS_FILE_PATH = ASSETS_PATH / "models/model.h5"
+MODELS_FILE_PATH = MODELS_PATH / "model.h5"
 """Path to model file."""
 
 METRICS_PATH = ASSETS_PATH / "metrics"
 """Path to folder containing metrics file."""
 
-METRICS_FILE_PATH = ASSETS_PATH / "metrics/metrics.json"
+METRICS_FILE_PATH = METRICS_PATH / "metrics.json"
 """Path to file containing metrics."""
+
+PLOTS_PATH = ASSETS_PATH / "plots"
+"""Path to folder plots."""
+
+PREDICTION_PLOT_PATH = PLOTS_PATH / "prediction.json"
+"""Path to file containing prediction plot."""

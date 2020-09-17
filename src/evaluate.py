@@ -19,7 +19,7 @@ from sklearn.metrics import mean_squared_error
 from tensorflow.keras import models
 import yaml
 
-from config import METRICS_PATH, METRICS_FILE_PATH
+from config import METRICS_FILE_PATH, PREDICTION_PLOT_PATH
 
 
 def evaluate(model_filepath, test_filepath):
@@ -31,7 +31,7 @@ def evaluate(model_filepath, test_filepath):
 
     """
 
-    METRICS_PATH.mkdir(parents=True, exist_ok=True)
+    METRICS_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     # Load training set
     test = np.load(test_filepath)
@@ -62,24 +62,25 @@ def plot_prediction(y_true, y_pred, include_input=True):
 
     """
 
+    PREDICTION_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     plt.figure()
 
     plt.plot(y_true, label="true")
     plt.plot(y_pred, label="pred")
-
-    # if include_input:
-    #     # X = np.load("./assets/data/featurized/")
-    #     for i in range(X_test_pre_seq.shape[1]):
-    #         # plt.plot(df.iloc[:,i], label=input_columns[i])
-    #         plt.plot(
-    #             X_test_pre_seq[:, i] * 250, label=input_columns[i + 1]
-    #         )
 
     plt.legend()
     plt.title("True vs pred", wrap=True)
     plt.autoscale()
     # plt.savefig(result_dir + time_id + "-pred.png")
     plt.show()
+
+    with open(PREDICTION_PLOT_PATH, "w") as f:
+        json.dump({"prediction": [{
+                "y_true": t,
+                "y_pred": p
+            } for t, p in zip(y_true, y_pred)
+        ]}, f)
 
 
 if __name__ == "__main__":

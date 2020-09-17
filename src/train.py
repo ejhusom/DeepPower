@@ -56,10 +56,6 @@ def train(filepath):
     # model.save(MODELS_PATH / (time_id + ".h5"))
     model.save(MODELS_FILE_PATH)
 
-    # with open(MODELS_PATH / (time_id + ".json"), "w") as f:
-    #     f.write(model.to_json())
-
-
 if __name__ == "__main__":
 
     train(sys.argv[1])

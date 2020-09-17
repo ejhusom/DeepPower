@@ -42,3 +42,15 @@ stages:
     - src/train.py
     outs:
     - assets/models
+  evaluate:
+    cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
+    deps:
+    - assets/data/scaled/test.npz
+    - assets/models/model.h5
+    - src/evaluate.py
+    metrics:
+    - assets/metrics/metrics.json:
+        cache: false
+    plots:
+    - assets/plots/prediction.json:
+        cache: false

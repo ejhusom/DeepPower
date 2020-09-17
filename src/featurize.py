@@ -112,11 +112,6 @@ def add_features(df, features):
         df["ribcage_range"] = ribcage_range
 
 
-    # import matplotlib.pyplot as plt
-    # df.plot()
-    # plt.show()
-
-
 def add_feature(df, name, feature_col):
     """Adding a feature to the data set.
 

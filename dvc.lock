@@ -58,3 +58,15 @@ train:
   outs:
   - path: assets/models
     md5: 459d60ae855e03ac312149a48e8b9149.dir
+evaluate:
+  cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
+  deps:
+  - path: assets/data/scaled/test.npz
+    md5: 8fd8727e602557a766a7c304503839e3
+  - path: assets/models/model.h5
+    md5: 38f65aad4eee9ac3763742cc72778479
+  - path: src/evaluate.py
+    md5: d9aa35d18eafd13b3cd117b25ac87a97
+  outs:
+  - path: assets/metrics/metrics.json
+    md5: ff1d0501b193cf829c016c98e4aecccc
