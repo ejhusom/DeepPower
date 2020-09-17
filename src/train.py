@@ -56,6 +56,7 @@ def train(filepath):
     # model.save(MODELS_PATH / (time_id + ".h5"))
     model.save(MODELS_FILE_PATH)
 
+
 if __name__ == "__main__":
 
     train(sys.argv[1])
