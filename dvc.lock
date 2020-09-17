@@ -1,0 +1,64 @@
+restructure:
+  cmd: python3 src/restructure.py assets/data/raw/20200511-1159.csv assets/data/raw/20200512-1108.csv
+    assets/data/raw/20200513-1053.csv assets/data/raw/20200622-2106.csv assets/data/raw/20200727-2055.csv
+    assets/data/raw/20200811-1726.csv assets/data/raw/20200812-1943.csv assets/data/raw/20200813-2012.csv
+  deps:
+  - path: assets/data/raw
+    md5: d1003606fd0eca9a719fac20904c00d6.dir
+  - path: src/restructure.py
+    md5: f9960c90574dc2e449c34383c7a831ee
+  outs:
+  - path: assets/data/restructured
+    md5: 0eaca40f9c75764f1e7df92ce9a291bc.dir
+featurize:
+  cmd: python3 src/featurize.py assets/data/restructured/20200511-1159-restructured.csv
+    assets/data/restructured/20200512-1108-restructured.csv assets/data/restructured/20200513-1053-restructured.csv
+    assets/data/restructured/20200622-2106-restructured.csv assets/data/restructured/20200727-2055-restructured.csv
+    assets/data/restructured/20200811-1726-restructured.csv assets/data/restructured/20200812-1943-restructured.csv
+    assets/data/restructured/20200813-2012-restructured.csv
+  deps:
+  - path: assets/data/restructured
+    md5: 0eaca40f9c75764f1e7df92ce9a291bc.dir
+  - path: src/featurize.py
+    md5: f5e968633a94a96b6ecc717dc5a969d1
+  outs:
+  - path: assets/data/featurized
+    md5: 3f73c49e145819b51f3d0304c8b0b6d1.dir
+sequentialize:
+  cmd: python3 src/sequentialize.py assets/data/featurized/20200511-1159-featurized.csv
+    assets/data/featurized/20200512-1108-featurized.csv assets/data/featurized/20200513-1053-featurized.csv
+    assets/data/featurized/20200622-2106-featurized.csv assets/data/featurized/20200727-2055-featurized.csv
+    assets/data/featurized/20200811-1726-featurized.csv assets/data/featurized/20200812-1943-featurized.csv
+    assets/data/featurized/20200813-2012-featurized.csv
+  deps:
+  - path: assets/data/featurized
+    md5: 3f73c49e145819b51f3d0304c8b0b6d1.dir
+  - path: src/sequentialize.py
+    md5: 57fe039d55c61f83287ece3882bdd1b7
+  outs:
+  - path: assets/data/sequentialized
+    md5: fbdbb73a8803c8b5d6151cf36bb48a21.dir
+split:
+  cmd: python3 src/split.py assets/data/sequentialized/20200511-1159-sequentialized.npz
+    assets/data/sequentialized/20200512-1108-sequentialized.npz assets/data/sequentialized/20200513-1053-sequentialized.npz
+    assets/data/sequentialized/20200622-2106-sequentialized.npz assets/data/sequentialized/20200727-2055-sequentialized.npz
+    assets/data/sequentialized/20200811-1726-sequentialized.npz assets/data/sequentialized/20200812-1943-sequentialized.npz
+    assets/data/sequentialized/20200813-2012-sequentialized.npz
+  deps:
+  - path: assets/data/sequentialized
+    md5: fbdbb73a8803c8b5d6151cf36bb48a21.dir
+  - path: src/split.py
+    md5: 7b17d3c50cc89e0de2cca6627b21b940
+  outs:
+  - path: assets/data/split
+    md5: be66f774f92dba71082c7cfbf129b73c.dir
+scale:
+  cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
+  deps:
+  - path: assets/data/split
+    md5: be66f774f92dba71082c7cfbf129b73c.dir
+  - path: src/scale.py
+    md5: fe9c4034c9e739dd04bafcf04ec54146
+  outs:
+  - path: assets/data/scaled
+    md5: be66f774f92dba71082c7cfbf129b73c.dir
