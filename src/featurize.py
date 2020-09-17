@@ -71,6 +71,7 @@ def featurize(filepaths):
         # df.plot()
         # plt.show()
 
+
 def add_features(df, features):
     """
     This function adds features to the input data, based on the arguments
@@ -111,8 +112,6 @@ def add_features(df, features):
         df["ribcage_range"] = ribcage_range
 
 
-
-
 def add_feature(df, name, feature_col):
     """Adding a feature to the data set.
 
@@ -135,6 +134,7 @@ def add_feature(df, name, feature_col):
     print("Feature added: {}".format(name))
 
     return df
+
 
 if __name__ == "__main__":
 

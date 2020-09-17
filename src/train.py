@@ -58,6 +58,7 @@ def train(filepath):
     with open(MODELS_PATH / (time_id + ".json"), "w") as f:
         f.write(model.to_json())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     train(sys.argv[1])

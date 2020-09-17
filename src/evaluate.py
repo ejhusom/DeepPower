@@ -21,6 +21,7 @@ import yaml
 
 from config import METRICS_PATH
 
+
 def evaluate(model_filepath, test_filepath):
     """Evaluate model to estimate power.
 
@@ -37,7 +38,7 @@ def evaluate(model_filepath, test_filepath):
 
     X_test = test["X"]
     y_test = test["y"]
-    
+
     model = models.load_model(model_filepath)
 
     # r_squared = model.scores(X_test, y_test)
@@ -83,6 +84,7 @@ def plot_prediction(y_true, y_pred, include_input=True):
     # plt.savefig(result_dir + time_id + "-pred.png")
     plt.show()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     evaluate(sys.argv[1], sys.argv[2])

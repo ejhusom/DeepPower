@@ -18,6 +18,7 @@ import yaml
 
 from config import DATA_SPLIT_PATH
 
+
 def combine(filepaths):
     """Combine data from multiple workouts into one dataset.
 
@@ -47,10 +48,10 @@ def combine(filepaths):
     X = np.concatenate(inputs)
     y = np.concatenate(outputs)
 
-
     import matplotlib.pyplot as plt
-    plt.plot(X[:,0,0], label="ribcage")
-    plt.plot(X[:,0,3]*5, label="ribcage_range")
+
+    plt.plot(X[:, 0, 0], label="ribcage")
+    plt.plot(X[:, 0, 3] * 5, label="ribcage_range")
     plt.legend()
     plt.show()
 
