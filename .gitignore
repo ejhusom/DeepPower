@@ -75,9 +75,5 @@ Session.vim
 # python venv
 env/
 
-# result dir
-results/*
-# data dir
-# data/*
-/data
+# models dir
 models
