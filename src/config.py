@@ -38,6 +38,9 @@ DATA_SCALED_PATH = DATA_PATH / "scaled"
 MODELS_PATH = ASSETS_PATH / "models"
 """Path to models."""
 
+MODELS_FILE_PATH = ASSETS_PATH / "models/model.h5"
+"""Path to model file."""
+
 METRICS_PATH = ASSETS_PATH / "metrics"
 """Path to folder containing metrics file."""
 

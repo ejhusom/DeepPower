@@ -16,7 +16,7 @@ import time
 import numpy as np
 import yaml
 
-from config import MODELS_PATH
+from config import MODELS_PATH, MODELS_FILE_PATH
 from model import cnn
 
 
@@ -53,10 +53,11 @@ def train(filepath):
 
     time_id = time.strftime("%Y%m%d%H%M%S")
 
-    model.save(MODELS_PATH / (time_id + ".h5"))
+    # model.save(MODELS_PATH / (time_id + ".h5"))
+    model.save(MODELS_FILE_PATH)
 
-    with open(MODELS_PATH / (time_id + ".json"), "w") as f:
-        f.write(model.to_json())
+    # with open(MODELS_PATH / (time_id + ".json"), "w") as f:
+    #     f.write(model.to_json())
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ from sklearn.metrics import mean_squared_error
 from tensorflow.keras import models
 import yaml
 
-from config import METRICS_PATH
+from config import METRICS_PATH, METRICS_FILE_PATH
 
 
 def evaluate(model_filepath, test_filepath):
@@ -41,17 +41,15 @@ def evaluate(model_filepath, test_filepath):
 
     model = models.load_model(model_filepath)
 
-    # r_squared = model.scores(X_test, y_test)
-
     y_pred = model.predict(X_test)
-    plot_prediction(y_test, y_pred)
     rmse = mean_squared_error(y_test, y_pred)
 
-    time_id, _ = os.path.splitext(os.path.basename(model_filepath))
+    plot_prediction(y_test, y_pred)
 
-    with open(METRICS_PATH / (time_id + "-metrics.json"), "w") as f:
+    # time_id, _ = os.path.splitext(os.path.basename(model_filepath))
+    # with open(METRICS_PATH / (time_id + "-metrics.json"), "w") as f:
+    with open(METRICS_FILE_PATH, "w") as f:
         json.dump(dict(rmse=rmse), f)
-        # json.dump(dict(r_squared=r_squared, rmse=rmse), f)
 
 
 def plot_prediction(y_true, y_pred, include_input=True):
