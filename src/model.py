@@ -52,4 +52,3 @@ def cnn(input_x, input_y, n_steps_out=1):
     model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
 
     return model
-

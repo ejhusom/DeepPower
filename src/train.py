@@ -19,7 +19,6 @@ def build_model():
     pass
 
 
-
 def train(filepath):
     """Train model to estimate power.
 
@@ -46,9 +45,5 @@ def train(filepath):
     print(model.summary())
 
     history = model.fit(
-            X_train,
-            y_train,
-            epochs=params["n_epochs"],
-            batch_size=params["batch_size"]
+        X_train, y_train, epochs=params["n_epochs"], batch_size=params["batch_size"]
     )
-

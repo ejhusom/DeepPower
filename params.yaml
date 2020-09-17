@@ -1,11 +1,16 @@
 restructure:
 
 featurize:
-  remove:
+  delete:
     - time
     - calories
     - abdomen
   features:
+    - ribcage_min
+    - ribcage_max
+    - ribcage_range
+  remove:
+    - ribcage
 
 sequentialize:
   hist_size: 100 # milliseconds
@@ -17,6 +22,8 @@ split:
 
 scale:
   method: minmax
+  heartrate_min: 35
+  heartrate_max: 185
 
 train:
   net: cnn
@@ -24,4 +31,3 @@ train:
   batch_size: 128
 
 evaluate:
-

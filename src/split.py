@@ -47,6 +47,13 @@ def combine(filepaths):
     X = np.concatenate(inputs)
     y = np.concatenate(outputs)
 
+
+    # import matplotlib.pyplot as plt
+    # plt.plot(X[:,0,0], label="ribcage")
+    # plt.plot(X[:,0,4]*5, label="ribcage_range")
+    # plt.legend()
+    # plt.show()
+
     return X, y
 
 
