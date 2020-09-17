@@ -1,0 +1,6 @@
+#!/bin/bash
+
+python src/restructure.py assets/data/raw/*
+python src/featurize.py assets/data/restructured/*
+python src/sequentialize.py assets/data/featurized/*
+python src/split.py assets/data/sequentialized/*

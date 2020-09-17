@@ -68,8 +68,8 @@ def featurize(filepaths):
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
 
-        df.plot()
-        plt.show()
+        # df.plot()
+        # plt.show()
 
 def add_features(df, features):
     """
