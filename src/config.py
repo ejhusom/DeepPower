@@ -50,5 +50,5 @@ METRICS_FILE_PATH = METRICS_PATH / "metrics.json"
 PLOTS_PATH = ASSETS_PATH / "plots"
 """Path to folder plots."""
 
-PREDICTION_PLOT_PATH = PLOTS_PATH / "prediction.json"
+PREDICTION_PLOT_PATH = PLOTS_PATH / "prediction.png"
 """Path to file containing prediction plot."""

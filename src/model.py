@@ -38,7 +38,8 @@ def cnn(input_x, input_y, n_steps_out=1):
             input_shape=(input_x, input_y),
         )
     )
-    model.add(layers.Conv1D(filters=32, kernel_size=kernel_size, activation="relu"))
+    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size, activation="relu"))
+    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size, activation="relu"))
     # model.add(layers.MaxPooling1D(pool_size=2))
     model.add(layers.Flatten())
     model.add(layers.Dense(128, activation="relu"))

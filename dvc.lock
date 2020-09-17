@@ -53,11 +53,13 @@ train:
   deps:
   - path: assets/data/scaled
     md5: be66f774f92dba71082c7cfbf129b73c.dir
+  - path: src/model.py
+    md5: 999143558c05b2b3f91ec526c32f249b
   - path: src/train.py
     md5: ad478d92261bbc194bb7eb3c297ff1f4
   outs:
   - path: assets/models
-    md5: 6f814849d052da1f4fd199f0b3733eda.dir
+    md5: 2651b8cc2c6255f278a831c5d2790857.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:

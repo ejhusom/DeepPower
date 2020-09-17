@@ -40,6 +40,7 @@ stages:
     deps:
     - assets/data/scaled
     - src/train.py
+    - src/model.py
     outs:
     - assets/models
   evaluate:
@@ -50,7 +51,4 @@ stages:
     - src/evaluate.py
     metrics:
     - assets/metrics/metrics.json:
-        cache: false
-    plots:
-    - assets/plots/prediction.json:
         cache: false
