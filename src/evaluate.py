@@ -72,15 +72,15 @@ def plot_prediction(y_true, y_pred, include_input=True):
     plt.legend()
     plt.title("True vs pred", wrap=True)
     plt.autoscale()
-    # plt.savefig(result_dir + time_id + "-pred.png")
+    plt.savefig(PREDICTION_PLOT_PATH)
     plt.show()
 
-    with open(PREDICTION_PLOT_PATH, "w") as f:
-        json.dump({"prediction": [{
-                "y_true": t,
-                "y_pred": p
-            } for t, p in zip(y_true, y_pred)
-        ]}, f)
+    # with open(PREDICTION_PLOT_PATH, "w") as f:
+    #     json.dump({"prediction": [{
+    #             "y_true": str(t),
+    #             "y_pred": str(p)
+    #         } for t, p in zip(y_true, y_pred)
+    #     ]}, f)
 
 
 if __name__ == "__main__":

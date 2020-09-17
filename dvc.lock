@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 0eaca40f9c75764f1e7df92ce9a291bc.dir
   - path: src/featurize.py
-    md5: 40316da63ea36a9212f39c0446b5ad78
+    md5: f5e968633a94a96b6ecc717dc5a969d1
   outs:
   - path: assets/data/featurized
     md5: 3f73c49e145819b51f3d0304c8b0b6d1.dir
@@ -54,19 +54,21 @@ train:
   - path: assets/data/scaled
     md5: be66f774f92dba71082c7cfbf129b73c.dir
   - path: src/train.py
-    md5: 4d9d124e3868e6179899e0c7d47efbd0
+    md5: ad478d92261bbc194bb7eb3c297ff1f4
   outs:
   - path: assets/models
-    md5: 459d60ae855e03ac312149a48e8b9149.dir
+    md5: 6f814849d052da1f4fd199f0b3733eda.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
     md5: 8fd8727e602557a766a7c304503839e3
   - path: assets/models/model.h5
-    md5: 38f65aad4eee9ac3763742cc72778479
+    md5: 63d3bb7125d2565cadb31c7952bc4546
   - path: src/evaluate.py
-    md5: d9aa35d18eafd13b3cd117b25ac87a97
+    md5: f3281ce6362da4c60e1cfbc47783c8a5
   outs:
   - path: assets/metrics/metrics.json
-    md5: ff1d0501b193cf829c016c98e4aecccc
+    md5: 52c8b19c29dc001e3c86166b5695e904
+  - path: assets/plots/prediction.json
+    md5: ac31f92d9a6e7d4008fe2eb2ca5bc9ea
