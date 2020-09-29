@@ -1,0 +1,18 @@
+{
+    "verbose": true,
+    "gnuplotlib": false,
+    "plotly": true,
+    "data_file": "../data/20200812-1809-merged.csv",
+    "hist_size": 50,
+    "train_split": 0.6,
+    "reverse_train_split": false,
+    "remove": [],
+    "features": "",
+    "net": "cnn",
+    "n_epochs": 10,
+    "train": true,
+    "predict": true,
+    "model": null,
+    "scaler": null,
+    "config": null
+}
