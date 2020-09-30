@@ -4,7 +4,7 @@ featurize:
   delete:
     - time
     - calories
-    - abdomen
+    # - abdomen
   features:
     - ribcage_min
     - ribcage_max

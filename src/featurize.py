@@ -33,6 +33,7 @@ def featurize(filepaths):
 
     DATA_FEATURIZED_PATH.mkdir(parents=True, exist_ok=True)
 
+    # Load parameters
     params = yaml.safe_load(open("params.yaml"))["featurize"]
 
     features = params["features"]
@@ -67,9 +68,6 @@ def featurize(filepaths):
             DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
-
-        # df.plot()
-        # plt.show()
 
 
 def add_features(df, features):

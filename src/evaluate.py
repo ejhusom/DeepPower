@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Evaluate deep learning model to estimate power from breathing data.
 
-
 Author:   
     Erik Johannes Husom
 
