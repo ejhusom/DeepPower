@@ -6,8 +6,8 @@ featurize:
     - calories
     # - abdomen
   features:
-    - ribcage_min
-    - ribcage_max
+    # - ribcage_min
+    # - ribcage_max
     - ribcage_range
   remove:
     - ribcage

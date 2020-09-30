@@ -54,4 +54,4 @@ To run experiments with another dataset, just change the content of
 
 ### Visualize data set
 
-TBA
+Data set can be visualized in to stages

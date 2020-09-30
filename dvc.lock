@@ -4,7 +4,7 @@ restructure:
   - path: assets/data/raw
     md5: b03808658dd86192cec94b7b84c60243.dir
   - path: src/restructure.py
-    md5: f9960c90574dc2e449c34383c7a831ee
+    md5: 5f30ef25d64f09dde2ad8977fd3520b9
   outs:
   - path: assets/data/restructured
     md5: 13abaa2093e40897eda5898fefd0b70f.dir
@@ -14,26 +14,24 @@ featurize:
   - path: assets/data/restructured
     md5: 13abaa2093e40897eda5898fefd0b70f.dir
   - path: src/featurize.py
-    md5: 8210aa341a2ae29572bdf28c0602f2db
+    md5: ef5901bc9313c9a6ba59e3147391754a
   params:
     params.yaml:
       featurize.delete:
       - time
       - calories
       featurize.features:
-      - ribcage_min
-      - ribcage_max
       - ribcage_range
       featurize.remove:
       - ribcage
   outs:
   - path: assets/data/featurized
-    md5: 1e04db9dfdd20bda0ad6242587d481c2.dir
+    md5: 881095d070737fd7eed4f3d0c53fc291.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 1e04db9dfdd20bda0ad6242587d481c2.dir
+    md5: 881095d070737fd7eed4f3d0c53fc291.dir
   - path: src/sequentialize.py
     md5: 57fe039d55c61f83287ece3882bdd1b7
   params:
@@ -41,25 +39,25 @@ sequentialize:
       sequentialize.hist_size: 200
   outs:
   - path: assets/data/sequentialized
-    md5: a6466ddc40ac05426495b492c02dd960.dir
+    md5: f99bf56963366b204f9665b9ad68b43f.dir
 split:
   cmd: python3 src/split.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: a6466ddc40ac05426495b492c02dd960.dir
+    md5: f99bf56963366b204f9665b9ad68b43f.dir
   - path: src/split.py
-    md5: 7b17d3c50cc89e0de2cca6627b21b940
+    md5: 476f9b769964f2ee5e7865dba59dfbbd
   params:
     params.yaml:
       split.train_split: 0.8
   outs:
   - path: assets/data/split
-    md5: 4743aee37399a404486452537aa330b0.dir
+    md5: 2c87db91754c97f06725eebca7cf9263.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
   deps:
   - path: assets/data/split
-    md5: 4743aee37399a404486452537aa330b0.dir
+    md5: 2c87db91754c97f06725eebca7cf9263.dir
   - path: src/scale.py
     md5: fe9c4034c9e739dd04bafcf04ec54146
   params:
@@ -69,7 +67,7 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 4743aee37399a404486452537aa330b0.dir
+    md5: 2c87db91754c97f06725eebca7cf9263.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:

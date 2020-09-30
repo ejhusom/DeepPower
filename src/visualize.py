@@ -38,7 +38,7 @@ def visualize(stage="restructured"):
         filepath = data_dir + filepath
 
         # Read csv, and delete specified columns
-        df, index = read_csv(filepath)
+        df = pd.read_csv(filepath, index_col=0)
 
         df.plot()
         plt.show()
@@ -48,10 +48,19 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Visualize data set")
 
-    parser.add_argument("-s", "--stage", choices=["restructured",
-        "featurized"], default="restructured",
-        help="""Which stage of the data to plot.""")
+    # parser.add_argument("-s", "--stage", choices=["restructured",
+    #     "featurized"], default="restructured",
+    #     help="""Which stage of the data to plot.""")
+
+    parser.add_argument("-r", "--restructured", help="Plot restructured data.",
+            action="store_true")
+    parser.add_argument("-f", "--featurized", help="Plot featurized data.",
+            action="store_true")
 
     args = parser.parse_args()
 
-    visualize(args.stage)
+    if args.restructured:
+        visualize("restructured")
+
+    if args.featurized:
+        visualize("featurized")
