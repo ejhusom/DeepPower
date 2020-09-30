@@ -85,4 +85,11 @@ def plot_prediction(y_true, y_pred, include_input=True):
 
 if __name__ == "__main__":
 
-    evaluate(sys.argv[1], sys.argv[2])
+    if len(sys.argv) < 3:
+        try:
+            evaluate("assets/models/model.h5", "assets/data/scaled/test.npz")
+        except:
+            print("Could not find model and test set.")
+            sys.exit(1)
+    else:
+        evaluate(sys.argv[1], sys.argv[2])
