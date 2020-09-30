@@ -52,4 +52,6 @@ To run experiments with another dataset, just change the content of
 `assets/data/raw/` to the files you want to use.
 
 
-###
+### Visualize data set
+
+TBA
