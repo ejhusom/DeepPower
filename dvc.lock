@@ -72,7 +72,7 @@ train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
   - path: assets/data/scaled
-    md5: 4743aee37399a404486452537aa330b0.dir
+    md5: 2c87db91754c97f06725eebca7cf9263.dir
   - path: src/model.py
     md5: 999143558c05b2b3f91ec526c32f249b
   - path: src/train.py
@@ -84,16 +84,16 @@ train:
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 4ddb9fda30b7e15c12c2f80beece6bdd.dir
+    md5: 0ed109f06be821ca1e1310719653e3e2.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
-    md5: e2037173364986c625622f70abc3bbc4
+    md5: 1ba7196076846c0ea9c7a02dbbe66ace
   - path: assets/models/model.h5
-    md5: 78feeb9179ebe6244c8dff0003205194
+    md5: cbe920c59de5eb0253418d54d6d035dd
   - path: src/evaluate.py
     md5: 747798a1b76a9d7ef821bfa5cab9af39
   outs:
   - path: assets/metrics/metrics.json
-    md5: 4c803227959bd8331f8aeeaf1c7fc945
+    md5: 11de39ced2c414171dcae04f206ef72f

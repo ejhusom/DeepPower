@@ -109,6 +109,28 @@ def add_features(df, features):
         # Add column to data frame
         df["ribcage_range"] = ribcage_range
 
+    if "abdomen_min" in features:
+        abdomen_min = df["abdomen"].rolling(win).min()
+
+        # Add column to data frame
+        df["abdomen_min"] = abdomen_min
+
+    if "abdomen_max" in features:
+        abdomen_max = df["abdomen"].rolling(win).max()
+
+        # Add column to data frame
+        df["abdomen_max"] = abdomen_max
+
+    if "abdomen_range" in features:
+
+        # Calculate min, max and range
+        abdomen_min = df["abdomen"].rolling(win).min()
+        abdomen_max = df["abdomen"].rolling(win).max()
+        abdomen_range = abdomen_max - abdomen_min
+
+        # Add column to data frame
+        df["abdomen_range"] = abdomen_range
+
 
 def add_feature(df, name, feature_col):
     """Adding a feature to the data set.

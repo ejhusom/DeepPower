@@ -9,11 +9,12 @@ featurize:
     # - ribcage_min
     # - ribcage_max
     - ribcage_range
+    - adbomen_range
   remove:
-    - ribcage
+    # - ribcage
 
 sequentialize:
-  hist_size: 200 # milliseconds
+  hist_size: 100 # milliseconds
 
 combine:
 
