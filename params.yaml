@@ -13,7 +13,7 @@ featurize:
     - ribcage
 
 sequentialize:
-  hist_size: 100 # milliseconds
+  hist_size: 200 # milliseconds
 
 combine:
 

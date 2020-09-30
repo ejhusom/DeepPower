@@ -14,6 +14,10 @@ stages:
     - src/featurize.py
     outs:
     - assets/data/featurized
+    params:
+    - featurize.delete
+    - featurize.features
+    - featurize.remove
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
     deps:
@@ -21,6 +25,8 @@ stages:
     - src/sequentialize.py
     outs:
     - assets/data/sequentialized
+    params:
+    - sequentialize.hist_size
   split:
     cmd: python3 src/split.py assets/data/sequentialized/*.npz
     deps:
@@ -28,6 +34,8 @@ stages:
     - src/split.py
     outs:
     - assets/data/split
+    params:
+    - split.train_split
   scale:
     cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
     deps:
@@ -35,6 +43,10 @@ stages:
     - src/scale.py
     outs:
     - assets/data/scaled
+    params:
+    - scale.method
+    - scale.heartrate_min
+    - scale.heartrate_max
   train:
     cmd: python3 src/train.py assets/data/scaled/train.npz
     deps:
@@ -43,6 +55,10 @@ stages:
     - src/model.py
     outs:
     - assets/models
+    params:
+    - train.net
+    - train.n_epochs
+    - train.batch_size
   evaluate:
     cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
     deps:
