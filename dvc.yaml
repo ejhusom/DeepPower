@@ -69,7 +69,7 @@ stages:
     - train.batch_size
 
   evaluate:
-    cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
+    cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
     deps:
     - assets/data/scaled/test.npz
     - assets/models/model.h5
