@@ -80,6 +80,10 @@ To evaluate model, run:
 python3 src/evaluate.py
 ```
 
+### Check previous experiments
+
+
+
 ### Change dataset
 
 To run experiments with another dataset, just change the content of

@@ -4,14 +4,15 @@ featurize:
   delete:
     - time
     - calories
-    # - abdomen
   features:
     - ribcage_min
     - ribcage_max
     - ribcage_range
-    - abdomen_range
+    # - abdomen_range
   remove:
     # - ribcage
+  scale:
+    - True
 
 sequentialize:
   hist_size: 100 # milliseconds
@@ -30,7 +31,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 100
+  n_epochs: 10
   batch_size: 128
 
 evaluate:

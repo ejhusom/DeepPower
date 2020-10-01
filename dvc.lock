@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 13abaa2093e40897eda5898fefd0b70f.dir
   - path: src/featurize.py
-    md5: 942365064ac08cc7c9c175449cde49ed
+    md5: 4e613b79b57a4dde4e10a2b4acac9a29
   params:
     params.yaml:
       featurize.delete:
@@ -24,7 +24,6 @@ featurize:
       - ribcage_min
       - ribcage_max
       - ribcage_range
-      - adbomen_range
       featurize.remove:
   outs:
   - path: assets/data/featurized
@@ -61,9 +60,11 @@ scale:
   - path: assets/data/split
     md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
   - path: src/scale.py
-    md5: fe9c4034c9e739dd04bafcf04ec54146
+    md5: 29c535c2a1378b03d5654d1eb1bed386
   params:
     params.yaml:
+      scale.breathing_max: 4096
+      scale.breathing_min: 0
       scale.heartrate_max: 185
       scale.heartrate_min: 35
       scale.method: minmax
@@ -74,7 +75,7 @@ train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
   - path: assets/data/scaled
-    md5: 86a1d89476ac0780d0018a1e7b93fe40.dir
+    md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
   - path: src/model.py
     md5: 999143558c05b2b3f91ec526c32f249b
   - path: src/train.py
@@ -86,16 +87,16 @@ train:
       train.net: cnn
   outs:
   - path: assets/models
-    md5: abd5bcb51e1cb825490746c78966e629.dir
+    md5: 870a4da5db7017c5d93f728426a4a36e.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
-    md5: be4ccb0e912f5a62701176bb83cbb65e
+    md5: f6521b93539e27591c57807d37ea2a48
   - path: assets/models/model.h5
-    md5: 25d7addb564a579666c7e9db41be125d
+    md5: 89408d47f33e45c8cd2c647eb67f2d43
   - path: src/evaluate.py
     md5: 747798a1b76a9d7ef821bfa5cab9af39
   outs:
   - path: assets/metrics/metrics.json
-    md5: ea05b1caddc87d399c48848b321d9f5e
+    md5: a2bfb591bbae7d1fcb516bd77a87e426

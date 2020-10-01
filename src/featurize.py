@@ -58,6 +58,8 @@ def featurize(filepaths):
         # Move target column to the beginning of dataframe
         df = move_column(df, column_name="power", new_idx=0)
 
+        # scale(df)
+
         add_features(df, features)
 
         # Remove columns from input. Check first if it is a list, to avoid
@@ -70,6 +72,36 @@ def featurize(filepaths):
             DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
+
+def scale(df):
+    """Scale input features.
+
+    Args:
+        df (DataFrame): Data frame containing data.
+
+    Returns:
+        scaled_df (DataFrame): Data frame containing scaled data.
+
+    """
+
+    # Load scaling parameters
+    params = yaml.safe_load(open("params.yaml"))["scale"]
+    method = params["method"]
+    heartrate_min = params["heartrate_min"]
+    heartrate_max = params["heartrate_max"]
+    breathing_min = params["breathing_min"]
+    breathing_max = params["breathing_max"]
+    
+    heartrate_range = heartrate_max - heartrate_min
+    breathing_range = breathing_max - breathing_min
+
+    df["heartrate"] = (df["heartrate"] - heartrate_min)/heartrate_range
+    df["ribcage"] = (df["ribcage"] - breathing_min)/breathing_range
+    df["abdomen"] = (df["abdomen"] - breathing_min)/breathing_range
+
+
+
+
 
 def add_features(df, features):
     """

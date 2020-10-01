@@ -51,7 +51,6 @@ def scale(train_file, test_file):
     y_test = test["y"]
 
     # TODO: Implement scaling.
-    print(X_train.shape)
 
     np.savez(DATA_SCALED_PATH / "train.npz", X=X_train, y=y_train)
     np.savez(DATA_SCALED_PATH / "test.npz", X=X_test, y=y_test)

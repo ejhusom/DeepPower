@@ -1,7 +1,6 @@
 stages:
 
   restructure:
-    # cmd: python3 src/restructure.py assets/data/raw/20200511-1159.csv 
     cmd: python3 src/restructure.py assets/data/raw/*.csv
     deps:
     - assets/data/raw
@@ -20,6 +19,7 @@ stages:
     - featurize.delete
     - featurize.features
     - featurize.remove
+    - featurize.scale
 
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
