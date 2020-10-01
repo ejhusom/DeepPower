@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Scaling data.
+"""Scaling the inputs of the data set.
 
-Scaling the inputs of data set.
+Possible scaling methods
 
 TODO:
     Implement scaling.
@@ -33,9 +33,15 @@ def scale(train_file, test_file):
 
     DATA_SCALED_PATH.mkdir(parents=True, exist_ok=True)
 
+    # Load parameters
     params = yaml.safe_load(open("params.yaml"))["scale"]
     method = params["method"]
+    heartrate_min = params["heartrate_min"]
+    heartrate_max = params["heartrate_max"]
+    breathing_min = params["breathing_min"]
+    breathing_max = params["breathing_max"]
 
+    # Load training and test files
     train = np.load(train_file)
     test = np.load(test_file)
 
@@ -45,6 +51,7 @@ def scale(train_file, test_file):
     y_test = test["y"]
 
     # TODO: Implement scaling.
+    print(X_train.shape)
 
     np.savez(DATA_SCALED_PATH / "train.npz", X=X_train, y=y_train)
     np.savez(DATA_SCALED_PATH / "test.npz", X=X_test, y=y_test)

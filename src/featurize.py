@@ -60,15 +60,16 @@ def featurize(filepaths):
 
         add_features(df, features)
 
-        # Remove columns from input.
-        for col in remove_features:
-            del df[col]
+        # Remove columns from input. Check first if it is a list, to avoid
+        # error if empty.
+        if isinstance(remove_features, list):
+            for col in remove_features:
+                del df[col]
 
         df.to_csv(
             DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
-
 
 def add_features(df, features):
     """

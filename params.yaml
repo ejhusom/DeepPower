@@ -6,10 +6,10 @@ featurize:
     - calories
     # - abdomen
   features:
-    # - ribcage_min
-    # - ribcage_max
+    - ribcage_min
+    - ribcage_max
     - ribcage_range
-    - adbomen_range
+    - abdomen_range
   remove:
     # - ribcage
 
@@ -23,12 +23,14 @@ split:
 
 scale:
   method: minmax
+  breathing_min: 0
+  breathing_max: 4096
   heartrate_min: 35
   heartrate_max: 185
 
 train:
   net: cnn
-  n_epochs: 1
+  n_epochs: 100
   batch_size: 128
 
 evaluate:

@@ -50,6 +50,8 @@ stages:
     - assets/data/scaled
     params:
     - scale.method
+    - scale.breathing_min
+    - scale.breathing_max
     - scale.heartrate_min
     - scale.heartrate_max
 
