@@ -12,7 +12,7 @@ featurize:
   remove:
     # - ribcage
     # - abdomen
-    - heartrate
+    # - heartrate
   scale: True
 
 sequentialize:
@@ -32,7 +32,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 10
+  n_epochs: 30
   batch_size: 128
 
 evaluate:
