@@ -11,8 +11,7 @@ featurize:
     # - abdomen_range
   remove:
     # - ribcage
-  scale:
-    - True
+  scale: True
 
 sequentialize:
   hist_size: 100 # milliseconds
@@ -31,7 +30,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 10
+  n_epochs: 1
   batch_size: 128
 
 evaluate:

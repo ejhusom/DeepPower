@@ -59,4 +59,6 @@ def train(filepath):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     train(sys.argv[1])

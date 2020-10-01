@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 13abaa2093e40897eda5898fefd0b70f.dir
   - path: src/featurize.py
-    md5: 4e613b79b57a4dde4e10a2b4acac9a29
+    md5: 1645bcd76a51c4aba12ec85e9ebde217
   params:
     params.yaml:
       featurize.delete:
@@ -25,14 +25,15 @@ featurize:
       - ribcage_max
       - ribcage_range
       featurize.remove:
+      featurize.scale: true
   outs:
   - path: assets/data/featurized
-    md5: 391ab475ea1ccef9d9dccbf0048a22b9.dir
+    md5: 46cb229c3b28946f0227d92cca471c60.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 391ab475ea1ccef9d9dccbf0048a22b9.dir
+    md5: 46cb229c3b28946f0227d92cca471c60.dir
   - path: src/sequentialize.py
     md5: 57fe039d55c61f83287ece3882bdd1b7
   params:
@@ -40,12 +41,12 @@ sequentialize:
       sequentialize.hist_size: 100
   outs:
   - path: assets/data/sequentialized
-    md5: 1a583242e5d493f26b14a5191c1ff96a.dir
+    md5: 906636842b8b5877401e8e278609a843.dir
 split:
   cmd: python3 src/split.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 1a583242e5d493f26b14a5191c1ff96a.dir
+    md5: 906636842b8b5877401e8e278609a843.dir
   - path: src/split.py
     md5: 1ef09f6ebcb73f39b31de24d2837ecda
   params:
@@ -53,12 +54,12 @@ split:
       split.train_split: 0.8
   outs:
   - path: assets/data/split
-    md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
+    md5: fc9969863edf501b71088b859c5d93e2.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
   deps:
   - path: assets/data/split
-    md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
+    md5: fc9969863edf501b71088b859c5d93e2.dir
   - path: src/scale.py
     md5: 29c535c2a1378b03d5654d1eb1bed386
   params:
@@ -70,33 +71,33 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
+    md5: fc9969863edf501b71088b859c5d93e2.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
   - path: assets/data/scaled
-    md5: 2e7bf13f890c8c07597fcbafafbf6faa.dir
+    md5: fc9969863edf501b71088b859c5d93e2.dir
   - path: src/model.py
-    md5: 999143558c05b2b3f91ec526c32f249b
+    md5: 960d368f7e9556b27fabea625491f3cc
   - path: src/train.py
-    md5: 42f06d3c85d4332bf51f21a553a8d0ec
+    md5: dca3f28570212cb7775fe0aed900b48a
   params:
     params.yaml:
       train.batch_size: 128
-      train.n_epochs: 10
+      train.n_epochs: 1
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 870a4da5db7017c5d93f728426a4a36e.dir
+    md5: 999d9e85e653d930f85200d4f98e091a.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
-    md5: f6521b93539e27591c57807d37ea2a48
+    md5: cfb106d12cd13ca5edcfec469c1121da
   - path: assets/models/model.h5
-    md5: 89408d47f33e45c8cd2c647eb67f2d43
+    md5: 39413611d0d1fa5981266c971c761ee0
   - path: src/evaluate.py
     md5: 747798a1b76a9d7ef821bfa5cab9af39
   outs:
   - path: assets/metrics/metrics.json
-    md5: a2bfb591bbae7d1fcb516bd77a87e426
+    md5: 63b66edabb153ae8291beddc84ae433a

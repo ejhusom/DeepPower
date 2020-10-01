@@ -11,9 +11,10 @@ Date:
 """
 from tensorflow.keras import layers
 from tensorflow.keras import models
+from tensorflow.random import set_seed
 
 
-def cnn(input_x, input_y, n_steps_out=1):
+def cnn(input_x, input_y, n_steps_out=1, seed=2020):
     """Define a CNN model architecture using Keras.
 
     Args:
@@ -26,6 +27,8 @@ def cnn(input_x, input_y, n_steps_out=1):
         model (keras model): Model to be trained.
 
     """
+
+    set_seed(seed)
 
     kernel_size = 2
 

@@ -47,6 +47,9 @@ def featurize(filepaths):
     feature engineereing.
     """
 
+    scale = params["scale"]
+    """Whether to scale the input features before feature engineering."""
+
     for filepath in filepaths:
 
         # Read csv, and delete specified columns
@@ -58,7 +61,8 @@ def featurize(filepaths):
         # Move target column to the beginning of dataframe
         df = move_column(df, column_name="power", new_idx=0)
 
-        # scale(df)
+        if scale:
+            df = scale_inputs(df)
 
         add_features(df, features)
 
@@ -68,12 +72,13 @@ def featurize(filepaths):
             for col in remove_features:
                 del df[col]
 
+        # Save data
         df.to_csv(
             DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
 
-def scale(df):
+def scale_inputs(df):
     """Scale input features.
 
     Args:
@@ -95,13 +100,16 @@ def scale(df):
     heartrate_range = heartrate_max - heartrate_min
     breathing_range = breathing_max - breathing_min
 
-    df["heartrate"] = (df["heartrate"] - heartrate_min)/heartrate_range
-    df["ribcage"] = (df["ribcage"] - breathing_min)/breathing_range
-    df["abdomen"] = (df["abdomen"] - breathing_min)/breathing_range
+    if "heartrate" in df.columns:
+        df["heartrate"] = (df["heartrate"] - heartrate_min)/heartrate_range
 
+    if "ribcage" in df.columns:
+        df["ribcage"] = (df["ribcage"] - breathing_min)/breathing_range
 
+    if "abdomen" in df.columns:
+        df["abdomen"] = (df["abdomen"] - breathing_min)/breathing_range
 
-
+    return df
 
 def add_features(df, features):
     """

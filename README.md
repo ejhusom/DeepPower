@@ -30,17 +30,18 @@ Restructure raw data into dataframes.
 
 ### Featurize
 
-This stage consists of three steps:
+This stage consists of these steps:
 
 1. Remove data that should not be a part of the model:
     - Time (the time of the workout do not matter).
     - Calories. Currently the calories are not a part of the model, but might be
       interesting as target values later on.
-2. Feature engineering. Examples:
+2. Optionally scale input features.
+3. Feature engineering. Examples:
     - Rolling minimum.
     - Rolling maximum.
     - Rolling range.
-3. Delete features that may be less important, since we prefer a simpler model.
+4. Delete features that may be less important, since we prefer a simpler model.
    This might for example be raw breathing data, if we have engineered features
    that work better.
 
