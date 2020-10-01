@@ -5,10 +5,10 @@ featurize:
     - time
     - calories
   features:
-    - ribcage_min
-    - ribcage_max
+    # - ribcage_min
+    # - ribcage_max
     - ribcage_range
-    # - abdomen_range
+    - abdomen_range
   remove:
     # - ribcage
   scale: True
@@ -30,7 +30,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 1
+  n_epochs: 10
   batch_size: 128
 
 evaluate:
