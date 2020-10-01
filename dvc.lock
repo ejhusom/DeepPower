@@ -24,15 +24,16 @@ featurize:
       - ribcage_range
       - abdomen_range
       featurize.remove:
+      - heartrate
       featurize.scale: true
   outs:
   - path: assets/data/featurized
-    md5: e7ef2d007117508c195bbfacf8ccb67a.dir
+    md5: 2b11727d91a8ddddabbea3d91eae4466.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: e7ef2d007117508c195bbfacf8ccb67a.dir
+    md5: 2b11727d91a8ddddabbea3d91eae4466.dir
   - path: src/sequentialize.py
     md5: 57fe039d55c61f83287ece3882bdd1b7
   params:
@@ -40,12 +41,12 @@ sequentialize:
       sequentialize.hist_size: 100
   outs:
   - path: assets/data/sequentialized
-    md5: ab0356b27d3400dc1678e5cc47213ee7.dir
+    md5: 706b9fc0ae0770894e1f65f27c6bbceb.dir
 split:
   cmd: python3 src/split.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: ab0356b27d3400dc1678e5cc47213ee7.dir
+    md5: 706b9fc0ae0770894e1f65f27c6bbceb.dir
   - path: src/split.py
     md5: 1ef09f6ebcb73f39b31de24d2837ecda
   params:
@@ -53,12 +54,12 @@ split:
       split.train_split: 0.8
   outs:
   - path: assets/data/split
-    md5: 7424d6b8c7fa58de614f34fca33712f3.dir
+    md5: 52ba111a318156a5497d960048243e89.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
   deps:
   - path: assets/data/split
-    md5: 7424d6b8c7fa58de614f34fca33712f3.dir
+    md5: 52ba111a318156a5497d960048243e89.dir
   - path: src/scale.py
     md5: 29c535c2a1378b03d5654d1eb1bed386
   params:
@@ -70,12 +71,12 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 7424d6b8c7fa58de614f34fca33712f3.dir
+    md5: 52ba111a318156a5497d960048243e89.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
   - path: assets/data/scaled
-    md5: 7424d6b8c7fa58de614f34fca33712f3.dir
+    md5: 52ba111a318156a5497d960048243e89.dir
   - path: src/model.py
     md5: 960d368f7e9556b27fabea625491f3cc
   - path: src/train.py
@@ -87,16 +88,16 @@ train:
       train.net: cnn
   outs:
   - path: assets/models
-    md5: af034a8ce29a01f9099ba8e0785d5dfd.dir
+    md5: 875646cd6489018fbcd66bfd520e173b.dir
 evaluate:
   cmd: python src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
-    md5: b3512b52ce4a5349a9076956330f09ba
+    md5: c9eda31ad3231e784cac11b7e69a0357
   - path: assets/models/model.h5
-    md5: ff6d7044d0a4de78634b60150907cb5b
+    md5: ce7cf0e18e8b59271afb85fa897fd8c0
   - path: src/evaluate.py
     md5: 747798a1b76a9d7ef821bfa5cab9af39
   outs:
   - path: assets/metrics/metrics.json
-    md5: 91d40fee5b824acf773bc33ce2cacf49
+    md5: 54bcd52605d80e09cf63ffe11f6228ab

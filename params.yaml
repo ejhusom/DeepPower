@@ -11,6 +11,8 @@ featurize:
     - abdomen_range
   remove:
     # - ribcage
+    # - abdomen
+    - heartrate
   scale: True
 
 sequentialize:
