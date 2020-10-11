@@ -16,7 +16,8 @@ featurize:
   scale: True
 
 sequentialize:
-  hist_size: 100 # milliseconds
+  hist_size:    100 # milliseconds
+  use_elements:  10 # use only every n-th sequence
 
 combine:
 

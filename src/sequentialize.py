@@ -33,6 +33,7 @@ def sequentialize(filepaths):
     params = yaml.safe_load(open("params.yaml"))["sequentialize"]
 
     hist_size = params["hist_size"]
+    use_elements = params["use_elements"]
 
     for filepath in filepaths:
 

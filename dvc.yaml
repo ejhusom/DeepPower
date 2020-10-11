@@ -30,6 +30,7 @@ stages:
     - assets/data/sequentialized
     params:
     - sequentialize.hist_size
+    - sequentialize.use_elements
 
   split:
     cmd: python3 src/split.py assets/data/sequentialized/*.npz

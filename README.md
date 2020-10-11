@@ -7,9 +7,10 @@
     - pandas
     - numpy 
     - matplotlib
-    - scipy
     - scikit-learn
     - Tensorflow 2.0
+    - pyyaml
+    - scipy
 
 
 ## Experiment pipeline
