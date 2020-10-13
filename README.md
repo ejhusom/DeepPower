@@ -11,6 +11,7 @@
     - Tensorflow 2.0
     - pyyaml
     - scipy
+    - dvc
 
 
 ## Experiment pipeline

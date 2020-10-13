@@ -33,7 +33,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 30
+  n_epochs: 1
   batch_size: 128
 
 evaluate:
