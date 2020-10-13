@@ -22,7 +22,6 @@ def visualize(stage="restructured"):
     """Visualize data set.
 
     Args:
-        # data_path (str): Path to folder containing raw data.
         stage (str): Which stage of the data to plot. Options:
             - restructured
             - featurized
@@ -47,10 +46,6 @@ def visualize(stage="restructured"):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Visualize data set")
-
-    # parser.add_argument("-s", "--stage", choices=["restructured",
-    #     "featurized"], default="restructured",
-    #     help="""Which stage of the data to plot.""")
 
     parser.add_argument("-r", "--restructured", help="Plot restructured data.",
             action="store_true")

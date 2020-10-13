@@ -46,6 +46,10 @@ def sequentialize(filepaths):
         X = data[:, 1:].copy()
         y = data[:, 0].copy().reshape(-1, 1)
 
+        if use_elements > 1:
+            X = X[::use_elements]
+            y = y[::use_elements]
+
         # Combine y and X to get correct format for sequentializing
         data = np.hstack((y, X))
 
