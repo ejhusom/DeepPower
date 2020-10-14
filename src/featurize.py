@@ -126,6 +126,10 @@ def add_features(df, features):
 
     """
 
+    # Stop function of features is not a list
+    if features == None:
+        return 0
+
     win = 50
 
     if "ribcage_min" in features:

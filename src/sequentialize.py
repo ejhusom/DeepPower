@@ -34,6 +34,7 @@ def sequentialize(filepaths):
 
     hist_size = params["hist_size"]
     use_elements = params["use_elements"]
+    target_mean_window = params["target_mean_window"]
 
     for filepath in filepaths:
 

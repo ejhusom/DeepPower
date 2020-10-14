@@ -42,7 +42,7 @@ def evaluate(model_filepath, test_filepath):
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
 
-    print("MSE: {}").format(mse)
+    print("MSE: {}".format(mse))
 
     plot_prediction(y_test, y_pred)
 
