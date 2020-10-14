@@ -31,17 +31,36 @@ def statistics():
 
         filepath = data_dir + filepath
 
-        # Read csv, and delete specified columns
         df = pd.read_csv(filepath, index_col=0)
 
         dfs.append(df)
 
+    # Merge all workouts to one dataframe
     merged_df = pd.concat(dfs, ignore_index=True)
 
+
+    # Power histogram
+    plt.subplot(221)
     merged_df.power.hist(bins=50)
     plt.title("Power histogram")
-    plt.show()
 
+    # Heart rate histogram
+    plt.subplot(222)
+    merged_df.heartrate.hist(bins=50)
+    plt.title("Heart rate histogram")
+
+    # Ribcage histogram
+    plt.subplot(223)
+    merged_df.ribcage.hist(bins=50)
+    plt.title("Ribcage histogram")
+    
+    # Abdomen histogram
+    plt.subplot(224)
+    merged_df.abdomen.hist(bins=50)
+    plt.title("Abdomen histogram")
+
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == '__main__':
 

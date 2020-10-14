@@ -52,3 +52,6 @@ PLOTS_PATH = ASSETS_PATH / "plots"
 
 PREDICTION_PLOT_PATH = PLOTS_PATH / "prediction.png"
 """Path to file containing prediction plot."""
+
+TRAININGLOSS_PLOT_PATH = PLOTS_PATH / "trainingloss.png"
+"""Path to file containing training loss plot."""

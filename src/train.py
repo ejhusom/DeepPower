@@ -13,6 +13,7 @@ Created:
 import sys
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 import yaml
 
@@ -55,6 +56,20 @@ def train(filepath):
 
     # model.save(MODELS_PATH / (time_id + ".h5"))
     model.save(MODELS_FILE_PATH)
+
+    TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    loss = history.history['loss']
+    # val_loss = history.history['val_loss']
+
+    n_epochs = range(len(loss))
+
+    plt.figure()
+    plt.plot(n_epochs, loss, label="Training loss")
+    # plt.plot(n_epochs, val_loss, label="Validation loss")
+    plt.legend()
+    plt.savefig(TRAININGLOSS_PLOT_PATH)
+    plt.show()
 
 
 if __name__ == "__main__":

@@ -37,16 +37,16 @@ sequentialize:
     md5: 988da404b42c0753a6197558f9e19c33
   params:
     params.yaml:
-      sequentialize.hist_size: 100
-      sequentialize.use_elements: 5
+      sequentialize.hist_size: 10
+      sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: d0c7dfa37f0d0ade5f327fc40592e443.dir
+    md5: 32aeec167c07271f92cabaae74749c6d.dir
 split:
   cmd: python3 src/split.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: d0c7dfa37f0d0ade5f327fc40592e443.dir
+    md5: 32aeec167c07271f92cabaae74749c6d.dir
   - path: src/split.py
     md5: 1ef09f6ebcb73f39b31de24d2837ecda
   params:
@@ -54,12 +54,12 @@ split:
       split.train_split: 0.8
   outs:
   - path: assets/data/split
-    md5: 83ca855d94424ca3c9f14e85366d58a1.dir
+    md5: a0d464cd1fda75ab1bdb6a68a09a97a8.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
   deps:
   - path: assets/data/split
-    md5: 83ca855d94424ca3c9f14e85366d58a1.dir
+    md5: a0d464cd1fda75ab1bdb6a68a09a97a8.dir
   - path: src/scale.py
     md5: 29c535c2a1378b03d5654d1eb1bed386
   params:
@@ -71,33 +71,33 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 83ca855d94424ca3c9f14e85366d58a1.dir
+    md5: a0d464cd1fda75ab1bdb6a68a09a97a8.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
   - path: assets/data/scaled
-    md5: 83ca855d94424ca3c9f14e85366d58a1.dir
+    md5: a0d464cd1fda75ab1bdb6a68a09a97a8.dir
   - path: src/model.py
     md5: 960d368f7e9556b27fabea625491f3cc
   - path: src/train.py
-    md5: dca3f28570212cb7775fe0aed900b48a
+    md5: 486dd4af2f8fcebaffcbd48f76f045cb
   params:
     params.yaml:
       train.batch_size: 128
-      train.n_epochs: 1
+      train.n_epochs: 5
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 061259b9b9515651dff7572309556e58.dir
+    md5: 9d04dd908ac78ba93c0a22d8db1dec79.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
-    md5: 6a0d400ed63a19b3bce2bae073c2feb7
+    md5: 3cef6041c7e7cb7b557bfac2bd303edb
   - path: assets/models/model.h5
-    md5: 36d44e9fdc32dd4b34d811ca32f000b8
+    md5: 24bee10c5390126e7d85acb358705280
   - path: src/evaluate.py
     md5: 747798a1b76a9d7ef821bfa5cab9af39
   outs:
   - path: assets/metrics/metrics.json
-    md5: 22df49a320e2c7100b360ca0a9393d07
+    md5: a1c6fe069ed42f477df9661980bd798b
