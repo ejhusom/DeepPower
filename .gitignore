@@ -78,3 +78,6 @@ venv/
 
 # models dir
 models
+
+# zip file for use in Colab
+colab.zip

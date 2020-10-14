@@ -1,0 +1,38 @@
+#!/bin/bash
+# ===================================================================
+# File:     colabzip
+# Author:   Erik Johannes Husom
+# Created:  2020-10-14
+# -------------------------------------------------------------------
+# Description: Zip files for uploading to Google Colab.
+# ===================================================================
+
+display_help() {
+    
+    echo "colabzip"
+    echo
+    echo "Usage: colabzip"
+    # echo "   or: colabzip [arguments]"
+    echo
+    echo "Arguments:"
+    echo "  -h, --help      Print Help (this message)"
+    echo
+    echo "Description:"
+    echo "  Zip the necessary files for uploading and running in Google Colab."
+    echo
+
+    exit 0
+
+}
+
+script_function () {
+    zip colab assets/data/raw/* dvc.yaml params.yaml src/*
+}
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    display_help
+else
+    script_function
+fi
+
+
