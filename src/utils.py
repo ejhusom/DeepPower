@@ -15,6 +15,7 @@ def get_terminal_size():
     """Get size of terminal.
 
     Returns
+    -------
     rows, columns : (int, int)
         Number of rows and columns in current terminal window.
 

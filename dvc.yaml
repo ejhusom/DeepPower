@@ -31,6 +31,7 @@ stages:
     params:
     - sequentialize.hist_size
     - sequentialize.use_elements
+    - sequentialize.target_mean_window
 
   split:
     cmd: python3 src/split.py assets/data/sequentialized/*.npz

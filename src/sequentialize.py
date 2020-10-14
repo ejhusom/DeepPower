@@ -55,7 +55,7 @@ def sequentialize(filepaths):
         data = np.hstack((y, X))
 
         # Split into sequences
-        X, y = split_sequences(data, hist_size)
+        X, y = split_sequences(data, hist_size, target_mean_window)
 
         # Save X and y into a binary file
         np.savez(

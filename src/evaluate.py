@@ -44,19 +44,20 @@ def evaluate(model_filepath, test_filepath):
 
     print("MSE: {}".format(mse))
 
-    plot_prediction(y_test, y_pred)
+    plot_prediction(y_test, y_pred, info="MSE: {}".format(mse))
 
     with open(METRICS_FILE_PATH, "w") as f:
         json.dump(dict(mse=mse), f)
 
 
-def plot_prediction(y_true, y_pred, include_input=True):
+def plot_prediction(y_true, y_pred, include_input=True, info=""):
     """Plot the prediction compared to the true targets.
 
     Args:
         y_true (array): True targets.
         y_pred (array): Predicted targets.
         include_input (bool): Whether to include inputs in plot. Default=True.
+        info (str): Information to include in the title string.
 
     """
 
@@ -68,7 +69,7 @@ def plot_prediction(y_true, y_pred, include_input=True):
     plt.plot(y_pred, label="pred")
 
     plt.legend()
-    plt.title("True vs pred", wrap=True)
+    plt.title("True vs pred " + info, wrap=True)
     plt.autoscale()
     plt.savefig(PREDICTION_PLOT_PATH)
     plt.show()
