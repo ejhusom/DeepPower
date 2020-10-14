@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import yaml
 
-from config import MODELS_PATH, MODELS_FILE_PATH
+from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
 from model import cnn
 
 
@@ -49,7 +49,10 @@ def train(filepath):
     print(model.summary())
 
     history = model.fit(
-        X_train, y_train, epochs=params["n_epochs"], batch_size=params["batch_size"]
+        X_train, y_train, 
+        epochs=params["n_epochs"], 
+        batch_size=params["batch_size"],
+        validation_split=0.2
     )
 
     time_id = time.strftime("%Y%m%d%H%M%S")
@@ -60,13 +63,13 @@ def train(filepath):
     TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     loss = history.history['loss']
-    # val_loss = history.history['val_loss']
+    val_loss = history.history['val_loss']
 
     n_epochs = range(len(loss))
 
     plt.figure()
     plt.plot(n_epochs, loss, label="Training loss")
-    # plt.plot(n_epochs, val_loss, label="Validation loss")
+    plt.plot(n_epochs, val_loss, label="Validation loss")
     plt.legend()
     plt.savefig(TRAININGLOSS_PLOT_PATH)
     plt.show()

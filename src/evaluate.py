@@ -32,7 +32,6 @@ def evaluate(model_filepath, test_filepath):
 
     METRICS_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    # Load training set
     test = np.load(test_filepath)
 
     X_test = test["X"]
@@ -41,14 +40,14 @@ def evaluate(model_filepath, test_filepath):
     model = models.load_model(model_filepath)
 
     y_pred = model.predict(X_test)
-    rmse = mean_squared_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+
+    print("MSE: {}").format(mse)
 
     plot_prediction(y_test, y_pred)
 
-    # time_id, _ = os.path.splitext(os.path.basename(model_filepath))
-    # with open(METRICS_PATH / (time_id + "-metrics.json"), "w") as f:
     with open(METRICS_FILE_PATH, "w") as f:
-        json.dump(dict(rmse=rmse), f)
+        json.dump(dict(mse=mse), f)
 
 
 def plot_prediction(y_true, y_pred, include_input=True):
