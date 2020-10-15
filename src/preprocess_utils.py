@@ -123,10 +123,10 @@ def split_sequences(sequences, hist_size, target_mean_window=1, n_steps_out=1):
         # Select all cols from sequences except target col, which leaves inputs
         seq_x = sequences[i:end_ix, 1:]
 
+        # Extract targets from sequences
         if target_mean_window > 1:
             seq_y = np.mean(sequences[target_start_ix: out_end_ix, 0])
         else:
-            # Extract targets from sequences
             seq_y = sequences[end_ix:out_end_ix, 0]
 
         X.append(seq_x)

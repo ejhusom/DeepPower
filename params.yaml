@@ -12,7 +12,7 @@ featurize:
   remove:
     # - ribcage
     # - abdomen
-    - heartrate
+    # - heartrate
   scale: True
 
 sequentialize:

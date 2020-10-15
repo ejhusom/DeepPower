@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import yaml
 
-from config import DATA_FEATURIZED_PATH
+from config import DATA_FEATURIZED_PATH, DATA_PATH
 from preprocess_utils import read_csv, move_column
 
 
@@ -77,6 +77,9 @@ def featurize(filepaths):
             DATA_FEATURIZED_PATH
             / (os.path.basename(filepath).replace("restructured", "featurized"))
         )
+
+    # Save list of features used
+    pd.DataFrame(df.columns).to_csv(DATA_PATH / "input_columns.csv")
 
 def scale_inputs(df):
     """Scale input features.

@@ -4,9 +4,10 @@
 ## Dependencies
 
 - Python 3.8
-    - pandas
-    - numpy 
     - matplotlib
+    - numpy 
+    - pandas
+    - plotly
     - scikit-learn
     - Tensorflow 2.0
     - pyyaml
