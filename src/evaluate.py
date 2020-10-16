@@ -57,6 +57,10 @@ def evaluate(model_filepath, test_filepath):
 def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
     """Plot the prediction compared to the true targets.
 
+    A matplotlib version of the plot is saved, while a plotly version by
+    default is shown. To show the plot with matplotlib instead, the 'backend'
+    parameter has to be changed to 'matplotlib'.
+
     Args:
         y_true (array): True targets.
         y_pred (array): Predicted targets.
@@ -71,32 +75,32 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
 
     PREDICTION_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
+    fig, ax1 = plt.subplots()
+
+    ax1.set_xlabel("time step")
+    ax1.set_ylabel("power (W)")
+
+    ax1.plot(y_true, label="true")
+    ax1.plot(y_pred, label="pred")
+
+    if inputs is not None:
+        input_columns = pd.read_csv(DATA_PATH / "input_columns.csv")
+        num_features = inputs.shape[-1]
+
+        ax2 = ax1.twinx()
+        ax2.set_ylabel("scaled units")
+
+        for i in range(num_features):
+            ax2.plot(inputs[:, -1, i], label=input_columns.iloc[i+1,1])
+         
+
+    fig.legend()
+
+    plt.title("True vs pred " + info, wrap=True)
+    plt.savefig(PREDICTION_PLOT_PATH)
+
     if backend == "matplotlib":
-        fig, ax1 = plt.subplots()
-
-        ax1.set_xlabel("time step")
-        ax1.set_ylabel("power (W)")
-
-        ax1.plot(y_true, label="true")
-        ax1.plot(y_pred, label="pred")
-
-        if inputs is not None:
-            input_columns = pd.read_csv(DATA_PATH / "input_columns.csv")
-            num_features = inputs.shape[-1]
-
-            ax2 = ax1.twinx()
-            ax2.set_ylabel("scaled units")
-
-            for i in range(num_features):
-                ax2.plot(inputs[:, -1, i], label=input_columns.iloc[i+1,1])
-             
-
-        fig.legend()
-
-        plt.title("True vs pred " + info, wrap=True)
-        plt.savefig(PREDICTION_PLOT_PATH)
         plt.show()
-
     else:
 
         x = np.linspace(0, len(y_true)-1, len(y_true))

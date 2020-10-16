@@ -101,7 +101,7 @@ evaluate:
   - path: assets/models/model.h5
     md5: 65e0f0c244a5490a4c2740ae27184456
   - path: src/evaluate.py
-    md5: 2a4d80f155bdab6b8ac2faa09f1cb7ce
+    md5: 560f06b58c86348712d733c050c0f7d9
   outs:
   - path: assets/metrics/metrics.json
     md5: 77685a7958a4fa740ea973bcfc632a76
