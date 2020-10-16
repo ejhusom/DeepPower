@@ -9,10 +9,12 @@ featurize:
     # - ribcage_max
     - ribcage_range
     - abdomen_range
+    - ribcage_gradient
+    - abdomen_gradient
   remove:
     # - ribcage
     # - abdomen
-    # - heartrate
+    - heartrate
   scale: True
 
 sequentialize:

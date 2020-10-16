@@ -12,6 +12,7 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -44,7 +45,7 @@ def featurize(filepaths):
 
     remove_features = params["remove"]
     """Features to be removed after adding new features, since they are used in
-    feature engineereing.
+    feature engineering.
     """
 
     scale = params["scale"]
@@ -55,7 +56,7 @@ def featurize(filepaths):
         # Read csv, and delete specified columns
         df, index = read_csv(
             filepath,
-            delete_columns=delete_features,
+            delete_columns=delete_features
         )
 
         # Move target column to the beginning of dataframe
@@ -133,51 +134,51 @@ def add_features(df, features):
     if features == None:
         return 0
 
-    win = 50
+    win = 100
 
     if "ribcage_min" in features:
         ribcage_min = df["ribcage"].rolling(win).min()
 
-        # Add column to data frame
         df["ribcage_min"] = ribcage_min
 
     if "ribcage_max" in features:
         ribcage_max = df["ribcage"].rolling(win).max()
 
-        # Add column to data frame
         df["ribcage_max"] = ribcage_max
 
     if "ribcage_range" in features:
 
-        # Calculate min, max and range
         ribcage_min = df["ribcage"].rolling(win).min()
         ribcage_max = df["ribcage"].rolling(win).max()
         ribcage_range = ribcage_max - ribcage_min
 
-        # Add column to data frame
         df["ribcage_range"] = ribcage_range
 
     if "abdomen_min" in features:
         abdomen_min = df["abdomen"].rolling(win).min()
 
-        # Add column to data frame
         df["abdomen_min"] = abdomen_min
 
     if "abdomen_max" in features:
         abdomen_max = df["abdomen"].rolling(win).max()
 
-        # Add column to data frame
         df["abdomen_max"] = abdomen_max
 
     if "abdomen_range" in features:
 
-        # Calculate min, max and range
         abdomen_min = df["abdomen"].rolling(win).min()
         abdomen_max = df["abdomen"].rolling(win).max()
         abdomen_range = abdomen_max - abdomen_min
 
-        # Add column to data frame
         df["abdomen_range"] = abdomen_range
+
+    if "ribcage_gradient" in features:
+
+        df["ribcage_gradient"] = np.gradient(df["ribcage"])
+
+    if "abdomen_gradient" in features:
+
+        df["abdomen_gradient"] = np.gradient(df["abdomen"])
 
 
 def add_feature(df, name, feature_col):
