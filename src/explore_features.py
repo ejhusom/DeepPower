@@ -62,9 +62,12 @@ def explore_features():
         ribcage_peaks_indices = find_peaks(df["ribcage"], distance=10)[0]
         ribcage_peaks = np.zeros(len(df["ribcage"]))
         ribcage_peaks[ribcage_peaks_indices] = 1
-        # ribcage_peaks = [True if i in ribcage_peaks_indices else False for i in
-        #         range(len(df["ribcage"]))]
         df["ribcage_peaks"] = ribcage_peaks
+
+        abdomen_peaks_indices = find_peaks(df["abdomen"], distance=10)[0]
+        abdomen_peaks = np.zeros(len(df["abdomen"]))
+        abdomen_peaks[abdomen_peaks_indices] = 1
+        df["abdomen_peaks"] = abdomen_peaks
 
         # Plot data frame with plotly as backend
         pd.options.plotting.backend = "plotly"
@@ -79,7 +82,19 @@ def explore_features():
                 color='red',
                 symbol='cross'
             ),
-            name='Detected Peaks'
+            name='Ribcage Peaks'
+        ))
+
+        fig.add_trace(go.Scatter(
+            x=abdomen_peaks_indices,
+            y=[df["abdomen"][j] for j in abdomen_peaks_indices],
+            mode='markers',
+            marker=dict(
+                size=8,
+                color='red',
+                symbol='cross'
+            ),
+            name='Abdomen Peaks'
         ))
 
         fig.show()
