@@ -58,7 +58,7 @@ def explore_features():
         # df["gradient_ribcage"] = np.gradient(df["ribcage"])
         # df["diff_ribcage"] = df["ribcage"].diff()
 
-        # Breath frequency
+        # Find peaks in breathing
         ribcage_peaks_indices = find_peaks(df["ribcage"], distance=10)[0]
         ribcage_peaks = np.zeros(len(df["ribcage"]))
         ribcage_peaks[ribcage_peaks_indices] = 1
@@ -68,6 +68,21 @@ def explore_features():
         abdomen_peaks = np.zeros(len(df["abdomen"]))
         abdomen_peaks[abdomen_peaks_indices] = 1
         df["abdomen_peaks"] = abdomen_peaks
+
+        # Find breathing frequency
+        win = 200 # deciseconds
+        # Sum up the number of peaks (breaths) over the window, divide by
+        # window size, which gives us breaths per second, and then multiply by
+        # 600 deciseconds to get breaths per minute
+        df["ribcage_freq"] = df["ribcage_peaks"].rolling(win).sum() * 600/win
+        df["abdomen_freq"] = df["abdomen_peaks"].rolling(win).sum() * 600/win
+
+        # FFT
+        # df["ribcage_fft"] = np.fft.fft(df["ribcage"])
+        ribcage_fft = np.fft.fft(df["ribcage"])
+        plt.plot(ribcage_fft)
+
+        plt.show()
 
         # Plot data frame with plotly as backend
         pd.options.plotting.backend = "plotly"
