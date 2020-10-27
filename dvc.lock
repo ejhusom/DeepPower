@@ -92,14 +92,14 @@ train:
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 1a6be25765af53a287eb38a86964a3e7.dir
+    md5: 7264365bbb3b6a12a776343e14fefbef.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
     md5: d5c807351029119cccca992413516969
   - path: assets/models/model.h5
-    md5: 65e0f0c244a5490a4c2740ae27184456
+    md5: ecdf9c74b6817472e853e8d9604e5bb8
   - path: src/evaluate.py
     md5: 560f06b58c86348712d733c050c0f7d9
   outs:
