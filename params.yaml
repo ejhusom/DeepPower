@@ -11,12 +11,14 @@ featurize:
     - abdomen_range
     - ribcage_gradient
     - abdomen_gradient
+    - ribcage_frequency
+    - abdomen_frequency
   remove:
     - ribcage
     - abdomen
     - heartrate
   scale: True
-  range_window: 100
+  range_window: 50
   slope_window: 10
 
 sequentialize:

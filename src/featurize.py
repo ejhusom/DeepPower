@@ -189,19 +189,29 @@ def add_features(df, features,
 
         df["abdomen_gradient"] = np.gradient(df["abdomen"])
 
+    if "ribcage_frequency" in features:
+        df["ribcage_frequency"] = calculate_frequency(df["ribcage"])
+
+    if "abdomen_frequency" in features:
+        df["abdomen_frequency"] = calculate_frequency(df["abdomen"])
+
     if "ribcage_slope" in features:
         pass
 
-def calculate_frequency(peaks):
+def calculate_frequency(data):
     """Calculate frequency based on peaks.
 
     Args:
-        peaks (array): Array with 1 as a peak, and 0 as no peak.
+        data (array): Data for frequency calculation.
 
     Returns:
         freq (array): Array of frequency.
 
     """
+
+    peaks_indices = find_peaks(data, distance=5)[0]
+    peaks = np.zeros(len(data))
+    peaks[peaks_indices] = 1
 
     freq = []
     f = 0
