@@ -115,7 +115,10 @@ def scale_inputs(df):
 
     return df
 
-def add_features(df, features):
+def add_features(df, features, 
+        range_window=100,
+        slope_window=10,
+    ):
     """
     This function adds features to the input data, based on the arguments
     given in the features-list.
@@ -124,6 +127,8 @@ def add_features(df, features):
     df (pandas DataFrame): Data frame to add features to.
     features (list): A list containing keywords specifying which features to
         add.
+    range_window (int): How many time steps to use when calculating range.
+    slope_window (int): How mant time steps to use when calculating slope.
 
     Returns:
         df (pandas DataFrame): Data frame with added features.
@@ -179,6 +184,9 @@ def add_features(df, features):
     if "abdomen_gradient" in features:
 
         df["abdomen_gradient"] = np.gradient(df["abdomen"])
+
+    if "ribcage_slope" in features:
+        pass
 
 
 def add_feature(df, name, feature_col):
