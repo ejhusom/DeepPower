@@ -125,7 +125,7 @@ def split_sequences(sequences, hist_size, target_mean_window=1, n_steps_out=1):
 
         # Extract targets from sequences
         if target_mean_window > 1:
-            seq_y = np.mean(sequences[target_start_ix: out_end_ix, 0])
+            seq_y = [np.mean(sequences[target_start_ix: out_end_ix, 0])]
         else:
             seq_y = sequences[end_ix:out_end_ix, 0]
 
@@ -134,7 +134,7 @@ def split_sequences(sequences, hist_size, target_mean_window=1, n_steps_out=1):
 
     X = np.array(X)
     y = np.array(y)
-
+    
     return X, y
 
 

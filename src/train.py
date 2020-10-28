@@ -33,6 +33,7 @@ def train(filepath):
 
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["train"]
+    net = params["net"]
 
     # Load training set
     train = np.load(filepath)
@@ -44,7 +45,16 @@ def train(filepath):
     n_features = X_train.shape[-1]
 
     # Build model
-    model = cnn(hist_size, n_features)
+    if net == "cnn":
+        model = cnn(hist_size, n_features,
+                kernel_size=params["kernel_size"]
+        )
+    elif net == "dnn":
+        pass
+    elif net == "lstm":
+        pass
+    elif net == "cnndnn":
+        pass
 
     print(model.summary())
 

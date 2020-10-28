@@ -146,37 +146,37 @@ def add_features(df, features,
         return 0
 
     if "ribcage_min" in features:
-        ribcage_min = df["ribcage"].rolling(range_win).min()
+        ribcage_min = df["ribcage"].rolling(range_window).min()
 
         df["ribcage_min"] = ribcage_min
 
     if "ribcage_max" in features:
-        ribcage_max = df["ribcage"].rolling(range_win).max()
+        ribcage_max = df["ribcage"].rolling(range_window).max()
 
         df["ribcage_max"] = ribcage_max
 
     if "ribcage_range" in features:
 
-        ribcage_min = df["ribcage"].rolling(range_win).min()
-        ribcage_max = df["ribcage"].rolling(range_win).max()
+        ribcage_min = df["ribcage"].rolling(range_window).min()
+        ribcage_max = df["ribcage"].rolling(range_window).max()
         ribcage_range = ribcage_max - ribcage_min
 
         df["ribcage_range"] = ribcage_range
 
     if "abdomen_min" in features:
-        abdomen_min = df["abdomen"].rolling(range_win).min()
+        abdomen_min = df["abdomen"].rolling(range_window).min()
 
         df["abdomen_min"] = abdomen_min
 
     if "abdomen_max" in features:
-        abdomen_max = df["abdomen"].rolling(range_win).max()
+        abdomen_max = df["abdomen"].rolling(range_window).max()
 
         df["abdomen_max"] = abdomen_max
 
     if "abdomen_range" in features:
 
-        abdomen_min = df["abdomen"].rolling(range_win).min()
-        abdomen_max = df["abdomen"].rolling(range_win).max()
+        abdomen_min = df["abdomen"].rolling(range_window).min()
+        abdomen_max = df["abdomen"].rolling(range_window).max()
         abdomen_range = abdomen_max - abdomen_min
 
         df["abdomen_range"] = abdomen_range

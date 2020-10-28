@@ -14,7 +14,11 @@ from tensorflow.keras import models
 from tensorflow.random import set_seed
 
 
-def cnn(input_x, input_y, n_steps_out=1, seed=2020):
+def cnn(input_x, input_y, 
+        n_steps_out=1, 
+        seed=2020
+        kernel_size=2
+    ):
     """Define a CNN model architecture using Keras.
 
     Args:
@@ -22,6 +26,8 @@ def cnn(input_x, input_y, n_steps_out=1, seed=2020):
             much history is matched with a given target.
         input_y (int): Number of features for each time step in the input data.
         n_steps_out (int): Number of output steps.
+        seed (int): Seed for random initialization of weights.
+        kernel_size (int): Size of kernel in CNN.
 
     Returns:
         model (keras model): Model to be trained.
@@ -100,7 +106,7 @@ def lstm(hist_size, n_features, n_steps_out=1):
 
     return model
 
-def DualNet(input_x, input_y, n_forecast_hours, n_steps_out=1):
+def cnndnn(input_x, input_y, n_forecast_hours, n_steps_out=1):
     """Define a model architecture that combines CNN and DNN.
 
     Parameters

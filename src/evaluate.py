@@ -108,7 +108,7 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
         config = dict({'scrollZoom': True})
 
         fig.add_trace(
-                go.Scatter(x=x, y=y_true, name="true"),
+                go.Scatter(x=x, y=y_true.reshape(-1), name="true"),
                 secondary_y=False,
         )
 

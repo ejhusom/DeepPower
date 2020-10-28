@@ -71,6 +71,7 @@ stages:
     - train.net
     - train.n_epochs
     - train.batch_size
+    - train.kernel_size
 
   evaluate:
     cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz

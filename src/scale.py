@@ -51,6 +51,18 @@ def scale(train_file, test_file):
     y_test = test["y"]
 
     # TODO: Implement scaling.
+    # if scaler_type == 'standard':
+    #     scaler = StandardScaler()
+    # elif scaler_type == 'minmax':
+    #     scaler = MinMaxScaler()
+    # elif scaler_type == 'robust':
+    #     scaler = RobustScaler()
+    # else:
+    #     print('Scaler must be "standard" or "minmax"!')
+    #     return None
+
+    # train_data = scaler.fit_transform(train_data)
+    # val_data = scaler.transform(val_data)
 
     np.savez(DATA_SCALED_PATH / "train.npz", X=X_train, y=y_train)
     np.savez(DATA_SCALED_PATH / "test.npz", X=X_test, y=y_test)
