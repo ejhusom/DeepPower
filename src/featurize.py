@@ -51,6 +51,9 @@ def featurize(filepaths):
     scale = params["scale"]
     """Whether to scale the input features before feature engineering."""
 
+    range_window = params["range_window"]
+    slope_window = params["slope_window"]
+
     for filepath in filepaths:
 
         # Read csv, and delete specified columns
@@ -65,7 +68,10 @@ def featurize(filepaths):
         if scale:
             df = scale_inputs(df)
 
-        add_features(df, features)
+        add_features(df, features, 
+                range_window=range_window,
+                slope_window=slope_window,
+        )
 
         # Remove columns from input. Check first if it is a list, to avoid
         # error if empty.
@@ -139,40 +145,38 @@ def add_features(df, features,
     if features == None:
         return 0
 
-    win = 100
-
     if "ribcage_min" in features:
-        ribcage_min = df["ribcage"].rolling(win).min()
+        ribcage_min = df["ribcage"].rolling(range_win).min()
 
         df["ribcage_min"] = ribcage_min
 
     if "ribcage_max" in features:
-        ribcage_max = df["ribcage"].rolling(win).max()
+        ribcage_max = df["ribcage"].rolling(range_win).max()
 
         df["ribcage_max"] = ribcage_max
 
     if "ribcage_range" in features:
 
-        ribcage_min = df["ribcage"].rolling(win).min()
-        ribcage_max = df["ribcage"].rolling(win).max()
+        ribcage_min = df["ribcage"].rolling(range_win).min()
+        ribcage_max = df["ribcage"].rolling(range_win).max()
         ribcage_range = ribcage_max - ribcage_min
 
         df["ribcage_range"] = ribcage_range
 
     if "abdomen_min" in features:
-        abdomen_min = df["abdomen"].rolling(win).min()
+        abdomen_min = df["abdomen"].rolling(range_win).min()
 
         df["abdomen_min"] = abdomen_min
 
     if "abdomen_max" in features:
-        abdomen_max = df["abdomen"].rolling(win).max()
+        abdomen_max = df["abdomen"].rolling(range_win).max()
 
         df["abdomen_max"] = abdomen_max
 
     if "abdomen_range" in features:
 
-        abdomen_min = df["abdomen"].rolling(win).min()
-        abdomen_max = df["abdomen"].rolling(win).max()
+        abdomen_min = df["abdomen"].rolling(range_win).min()
+        abdomen_max = df["abdomen"].rolling(range_win).max()
         abdomen_range = abdomen_max - abdomen_min
 
         df["abdomen_range"] = abdomen_range
@@ -188,6 +192,35 @@ def add_features(df, features,
     if "ribcage_slope" in features:
         pass
 
+def calculate_frequency(peaks):
+    """Calculate frequency based on peaks.
+
+    Args:
+        peaks (array): Array with 1 as a peak, and 0 as no peak.
+
+    Returns:
+        freq (array): Array of frequency.
+
+    """
+
+    freq = []
+    f = 0
+    counter = 0
+
+    for i, p in enumerate(peaks):
+
+        if p == 1:
+            f = 10 / counter
+            counter = 0
+        else:
+            counter += 1
+
+        freq.append(f)
+
+    freq = np.array(freq)*60
+    freq = freq.rolling(100).mean()
+
+    return freq
 
 def add_feature(df, name, feature_col):
     """Adding a feature to the data set.

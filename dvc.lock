@@ -2,7 +2,7 @@ restructure:
   cmd: python3 src/restructure.py assets/data/raw/*.csv
   deps:
   - path: assets/data/raw
-    md5: 76353696f1f39ab6da5f356324b7bc60.dir
+    md5: c701aa402d1a513636095685f2d5e609.dir
   - path: src/restructure.py
     md5: 5f30ef25d64f09dde2ad8977fd3520b9
   outs:
@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 8c2eda0c67854b441b01bf0b3a1d2c7b.dir
   - path: src/featurize.py
-    md5: b229e81a6084f0001d48a78096ee222e
+    md5: 8ad97e15b2e49c9f7c1d8fd05f23e210
   params:
     params.yaml:
       featurize.delete:
@@ -88,20 +88,20 @@ train:
   params:
     params.yaml:
       train.batch_size: 128
-      train.n_epochs: 2
+      train.n_epochs: 40
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 7264365bbb3b6a12a776343e14fefbef.dir
+    md5: 8dc513e460b70d1844ab0b52d9746d76.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
   deps:
   - path: assets/data/scaled/test.npz
     md5: d5c807351029119cccca992413516969
   - path: assets/models/model.h5
-    md5: ecdf9c74b6817472e853e8d9604e5bb8
+    md5: 4dfc67d35c47fe5fd62d1e58c243004d
   - path: src/evaluate.py
     md5: 560f06b58c86348712d733c050c0f7d9
   outs:
   - path: assets/metrics/metrics.json
-    md5: 77685a7958a4fa740ea973bcfc632a76
+    md5: 1f824d4396885bdb90bcd7b6b2f17fa6

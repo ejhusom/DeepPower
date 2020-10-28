@@ -22,7 +22,7 @@ from sklearn.metrics import mean_squared_error
 from tensorflow.keras import models
 import yaml
 
-from config import METRICS_FILE_PATH, PREDICTION_PLOT_PATH, DATA_PATH
+from config import METRICS_FILE_PATH, PLOTS_PATH, PREDICTION_PLOT_PATH, DATA_PATH
 
 
 def evaluate(model_filepath, test_filepath):
@@ -136,6 +136,7 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
         fig.update_yaxes(title_text="power (W)", secondary_y=False)
         fig.update_yaxes(title_text="scaled units", secondary_y=True)
 
+        fig.write_html(str(PLOTS_PATH / "prediction.html"))
         fig.show(config=config)
 
 

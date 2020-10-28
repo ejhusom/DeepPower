@@ -16,6 +16,8 @@ featurize:
     # - abdomen
     - heartrate
   scale: True
+  range_window: 100
+  slope_window: 10
 
 sequentialize:
   # History window size in deciseconds
@@ -39,7 +41,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 2
+  n_epochs: 40
   batch_size: 128
 
 evaluate:

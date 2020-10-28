@@ -20,6 +20,8 @@ stages:
     - featurize.features
     - featurize.remove
     - featurize.scale
+    - featurize.range_window
+    - featurize.slope_window
 
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/featurized/*.csv

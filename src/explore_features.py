@@ -58,6 +58,8 @@ def explore_features():
         # df["gradient_ribcage"] = np.gradient(df["ribcage"])
         # df["diff_ribcage"] = df["ribcage"].diff()
 
+        #=====================================================================
+        # PEAKS
         # Find peaks in breathing
         ribcage_peaks_indices = find_peaks(df["ribcage"], distance=5)[0]
         ribcage_peaks = np.zeros(len(df["ribcage"]))
@@ -69,7 +71,10 @@ def explore_features():
         abdomen_peaks[abdomen_peaks_indices] = 1
         df["abdomen_peaks"] = abdomen_peaks
 
-        # Find breathing frequency
+        #=====================================================================
+        # FREQUENCY
+        
+        # METHOD 1
         win = 100 # deciseconds
         # Sum up the number of peaks (breaths) over the window, divide by
         # window size, which gives us breaths per second, and then multiply by
@@ -77,46 +82,47 @@ def explore_features():
         df["ribcage_freq_old"] = df["ribcage_peaks"].rolling(win).sum() * 600/win
         df["abdomen_freq_old"] = df["abdomen_peaks"].rolling(win).sum() * 600/win
 
-        # freq = []
-        # f = 0
-        # counter = 0
 
-        # for i, p in enumerate(df["ribcage_peaks"]):
+        # METHOD 2
+        freq = []
+        f = 0
+        counter = 0
 
-        #     if p == 1:
-        #         if counter == 0:
-        #             f = 10
-        #         else:
-        #             f = 10 / counter
-        #         counter = 0
-        #     else:
-        #         counter += 1
+        for i, p in enumerate(df["ribcage_peaks"]):
 
-        #     freq.append(f)
+            if p == 1:
+                if counter == 0:
+                    f = 10
+                else:
+                    f = 10 / counter
+                counter = 0
+            else:
+                counter += 1
 
-        # df["ribcage_freq"] = np.array(freq)*60
-        # df["ribcage_freq"] = df["ribcage_freq"].rolling(200).mean()
+            freq.append(f)
 
-        # freq = []
-        # f = 0
-        # counter = 0
+        df["ribcage_freq"] = np.array(freq)*60
 
-        # for i, p in enumerate(df["abdomen_peaks"]):
+        freq = []
+        f = 0
+        counter = 0
 
-        #     if p == 1:
-        #         if counter == 0:
-        #             f = 10
-        #         else:
-        #             f = 10 / counter
-        #         counter = 0
-        #     else:
-        #         counter += 1
+        for i, p in enumerate(df["abdomen_peaks"]):
 
-        #     freq.append(f)
+            if p == 1:
+                f = 10 / counter
+                counter = 0
+            else:
+                counter += 1
 
-        # df["abdomen_freq"] = np.array(freq)*60
-        # df["abdomen_freq"] = df["abdomen_freq"].rolling(200).mean()
+            freq.append(f)
 
+        df["abdomen_freq"] = np.array(freq)*60
+
+        df["ribcage_freq_rm"] = df["ribcage_freq"].rolling(100).mean()
+        df["abdomen_freq_rm"] = df["abdomen_freq"].rolling(100).mean()
+        df["ribcage_freq_smooth"] = df["ribcage_freq"].ewm(span=100).mean()
+        df["abdomen_freq_smooth"] = df["abdomen_freq"].ewm(span=100).mean()
 
         # SLOPE
         # df["ribcage_slope"] =
