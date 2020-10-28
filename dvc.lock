@@ -54,10 +54,29 @@ split:
   cmd: python3 src/split.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 23c4c49937fd3c0a4114e3595b3cada1.dir
+    md5: ae8f3c26aca6d303cf3108c1b50fec75.dir
   - path: src/split.py
     md5: 1ef09f6ebcb73f39b31de24d2837ecda
   params:
     params.yaml:
       split.train_split: 0.6
-  outs
+  outs:
+  - path: assets/data/split
+    md5: 1618d4e0c293b0701db9f9bf83811044.dir
+scale:
+  cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
+  deps:
+  - path: assets/data/split
+    md5: 1618d4e0c293b0701db9f9bf83811044.dir
+  - path: src/scale.py
+    md5: 5b46b049ab1e2cb7b103285c04530c36
+  params:
+    params.yaml:
+      scale.breathing_max: 4096
+      scale.breathing_min: 0
+      scale.heartrate_max: 185
+      scale.heartrate_min: 35
+      scale.method: minmax
+  outs:
+  - path: assets/data/scaled
+    md5: 1618d4e0c293b0701db9f9bf83811044.dir

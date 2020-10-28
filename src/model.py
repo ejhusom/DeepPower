@@ -16,7 +16,7 @@ from tensorflow.random import set_seed
 
 def cnn(input_x, input_y, 
         n_steps_out=1, 
-        seed=2020
+        seed=2020,
         kernel_size=2
     ):
     """Define a CNN model architecture using Keras.
@@ -36,7 +36,7 @@ def cnn(input_x, input_y,
 
     set_seed(seed)
 
-    kernel_size = 2
+    kernel_size = kernel_size
 
     model = models.Sequential()
     model.add(

@@ -39,7 +39,7 @@ scale:
 
 train:
   net: cnn
-  n_epochs: 40
+  n_epochs: 1
   batch_size: 128
   kernel_size: 4
 
