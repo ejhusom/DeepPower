@@ -80,3 +80,33 @@ scale:
   outs:
   - path: assets/data/scaled
     md5: 1618d4e0c293b0701db9f9bf83811044.dir
+train:
+  cmd: python3 src/train.py assets/data/scaled/train.npz
+  deps:
+  - path: assets/data/scaled
+    md5: 1618d4e0c293b0701db9f9bf83811044.dir
+  - path: src/model.py
+    md5: 31176c3f7658a142646159f2a383d844
+  - path: src/train.py
+    md5: 46ec5d53ee84ed26ddaae4bec050cf29
+  params:
+    params.yaml:
+      train.batch_size: 128
+      train.kernel_size: 4
+      train.n_epochs: 1
+      train.net: cnn
+  outs:
+  - path: assets/models
+    md5: d54ad2fe8585e46deeb89d4157d3add4.dir
+evaluate:
+  cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
+  deps:
+  - path: assets/data/scaled/test.npz
+    md5: 2278cbc47df7daeff073b6e6e2db3819
+  - path: assets/models/model.h5
+    md5: 3db03f4edb3a8451a76a85498c00ebc5
+  - path: src/evaluate.py
+    md5: 6daa04d50ff3857e87d6f7acf7aa7cf7
+  outs:
+  - path: assets/metrics/metrics.json
+    md5: dfe6daac7bf674ae001fa56b97ae7114
