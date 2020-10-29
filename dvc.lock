@@ -48,12 +48,12 @@ featurize:
   - path: assets/data/featurized
     md5: f82c913e5d568679f15d2c3d4f71e84e.dir
 sequentialize:
-  cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
+  cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
-  - path: assets/data/featurized
-    md5: f82c913e5d568679f15d2c3d4f71e84e.dir
+  - path: assets/data/scaled
+    md5: 7d4233c005f7c759ca60c56bfd57a564.dir
   - path: src/sequentialize.py
-    md5: 35a547cfd56cf03f404d22e8c7d2713a
+    md5: 21321ff1e0c63b4287663ed864483df8
   params:
     params.yaml:
       sequentialize.hist_size: 100
@@ -61,33 +61,33 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 98a9f6cff3740525ba2668274cb3c7ca.dir
+    md5: 7641777cf201f5ed7ccfbb60b0197d39.dir
 split:
-  cmd: python3 src/split.py assets/data/sequentialized/*.npz
+  cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
-  - path: assets/data/sequentialized
-    md5: 98a9f6cff3740525ba2668274cb3c7ca.dir
+  - path: assets/data/featurized
+    md5: f82c913e5d568679f15d2c3d4f71e84e.dir
   - path: src/split.py
-    md5: 1ef09f6ebcb73f39b31de24d2837ecda
+    md5: 777f78045a884ed1d9ce81aa46ef7489
   params:
     params.yaml:
       split.train_split: 0.6
   outs:
   - path: assets/data/split
-    md5: 890f0e7de31284c684e7d760f2e2691e.dir
+    md5: cf414dd42db179641ea7df63eb949603.dir
 scale:
-  cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
+  cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 890f0e7de31284c684e7d760f2e2691e.dir
+    md5: cf414dd42db179641ea7df63eb949603.dir
   - path: src/scale.py
-    md5: 49c8b905c7cfeff848c5dcfe0d100fff
+    md5: 70d36bb5ff3d61b878ac6150272491a9
   params:
     params.yaml:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 890f0e7de31284c684e7d760f2e2691e.dir
+    md5: 7d4233c005f7c759ca60c56bfd57a564.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
@@ -118,3 +118,13 @@ evaluate:
   outs:
   - path: assets/metrics/metrics.json
     md5: b2b7fd7a00779737bb957d3731bc9c09
+combine:
+  cmd: python3 src/combine.py assets/data/sequentialized/*.npz
+  deps:
+  - path: assets/data/sequentialized
+    md5: 7641777cf201f5ed7ccfbb60b0197d39.dir
+  - path: src/combine.py
+    md5: db0030dcff907c31992e4102b41223e6
+  outs:
+  - path: assets/data/combined
+    md5: e2186fac7411bfcaaa28670a41b3ac06.dir

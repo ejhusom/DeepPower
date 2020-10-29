@@ -8,6 +8,7 @@ Date:
     2020-10-29
 
 """
+import os
 import sys
 
 import numpy as np
@@ -15,6 +16,7 @@ import yaml
 
 from config import DATA_SPLIT_PATH
 # from config import DATA_SPLIT_TRAIN_PATH, DATA_SPLIT_TEST_PATH
+from preprocess_utils import read_csv
 
 def split(filepaths):
     """Split data into train and test set.
@@ -44,6 +46,8 @@ def split(filepaths):
     test_files = filepaths[file_split:]
 
     for filepath in filepaths:
+
+        df, index = read_csv(filepath)
 
         if filepath in training_files:
             df.to_csv(

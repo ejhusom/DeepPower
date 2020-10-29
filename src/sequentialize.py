@@ -38,14 +38,10 @@ def sequentialize(filepaths):
 
     for filepath in filepaths:
 
-        df, index = read_csv(filepath)
+        infile = np.load(filepath)
 
-        # Convert to numpy
-        data = df.to_numpy()
-
-        # Split into input (X) and output/target (y)
-        X = data[:, 1:].copy()
-        y = data[:, 0].copy().reshape(-1, 1)
+        X = infile["X"]
+        y = infile["y"]
 
         if use_elements > 1:
             X = X[::use_elements]
@@ -62,7 +58,7 @@ def sequentialize(filepaths):
             DATA_SEQUENTIALIZED_PATH
             / (
                 os.path.basename(filepath).replace(
-                    "featurized.csv", "sequentialized.npz"
+                    "scaled.csv", "sequentialized.npz"
                 )
             ),
             X=X,

@@ -50,9 +50,9 @@ stages:
     - scale.method
 
   sequentialize:
-    cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
+    cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
     deps:
-    - assets/data/featurized
+    - assets/data/scaled
     - src/sequentialize.py
     outs:
     - assets/data/sequentialized
@@ -61,10 +61,18 @@ stages:
     - sequentialize.use_elements
     - sequentialize.target_mean_window
 
-  train:
-    cmd: python3 src/train.py assets/data/scaled/train.npz
+  combine:
+    cmd: python3 src/combine.py assets/data/sequentialized/*.npz
     deps:
-    - assets/data/scaled
+    - assets/data/sequentialized
+    - src/combine.py
+    outs:
+    - assets/data/combined
+
+  train:
+    cmd: python3 src/train.py assets/data/combined/train.npz
+    deps:
+    - assets/data/combined
     - src/train.py
     - src/model.py
     outs:

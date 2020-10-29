@@ -13,9 +13,11 @@ Created:
     2020-09-16
 
 """
+import os
 import sys
 
 import numpy as np
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 import yaml
 
 from config import DATA_SCALED_PATH
@@ -49,9 +51,6 @@ def scale(filepaths):
         raise NotImplementedError(f"{scaler_type} not implemented.")
 
     train_inputs = []
-    # train_targets = []
-    # test_inputs = []
-    # test_targets = []
 
     data_overview = {}
 
@@ -69,17 +68,13 @@ def scale(filepaths):
 
         if "train" in filepath:
             train_inputs.append(X)
-            # train_targets.append(y)
             category = "train"
         elif "test" in filepath:
-            # test_inputs.append(X)
-            # test_targets.append(y)
             category = "test"
             
         data_overview[filepath] = {"X": X, "y": y, "category": category}
 
     X_train = np.concatenate(train_inputs)
-    # X_test = np.concatenate(test_inputs)
 
     # Fit a scaler to the training data
     scaler = scaler.fit(X_train)
