@@ -13,13 +13,23 @@ featurize:
     - abdomen_gradient
     - ribcage_frequency
     - abdomen_frequency
+    - ribcage_slope
+    - abdomen_slope
+    - ribcage_slope_cyclic
+    - abdomen_slope_cyclic
   remove:
     - ribcage
     - abdomen
     - heartrate
+  breathing_min: 0
+  breathing_max: 4096
+  heartrate_min: 35
+  heartrate_max: 185
   scale: True
   range_window: 50
-  slope_window: 10
+  slope_shift: 2
+  slope_smoothing: 100
+  slope_abs: False
 
 sequentialize:
   # History window size in deciseconds
@@ -34,10 +44,6 @@ split:
 
 scale:
   method: minmax
-  breathing_min: 0
-  breathing_max: 4096
-  heartrate_min: 35
-  heartrate_max: 185
 
 train:
   net: cnn

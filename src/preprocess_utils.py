@@ -179,24 +179,18 @@ def merge_time_series_and_added_features(X):
 def scale_data(train_data, val_data, scaler_type="minmax"):
     """Scale train and test data.
 
-    Parameters
-    ----------
-    train_data : array
-        Train data to be scaled. Used as scale reference for test data.
-    val_data : array
-        Test data too be scaled, with train scaling as reference.
-    scaler_type : str, default='standard'
-        Options: 'standard, 'minmax'.
-        Specifies whether to use sklearn's StandardScaler or MinMaxScaler.
+    Args:
+        train_data (array): Train data to be scaled. Used as scale reference
+            for test data.
+        val_data (array): Test data too be scaled, with train scaling as
+            reference.
+        scaler_type (str, default='standard'): Options: 'standard, 'minmax'.
+            Specifies whether to use sklearn's StandardScaler or MinMaxScaler.
 
-    Returns
-    -------
-    train_data : array
-        Scaled train data.
-    val_data : array
-        Scaled test data.
-    sc : scikit-learn scaler
-        The scaler object that is used.
+    Returns:
+        train_data (array): Scaled train data.
+        val_data (array): Scaled test data.
+        scaler (scikit-learn scaler): The scaler object that is used.
 
     """
 
@@ -207,8 +201,7 @@ def scale_data(train_data, val_data, scaler_type="minmax"):
     elif scaler_type == "robust":
         scaler = RobustScaler()
     else:
-        print('Scaler must be "standard" or "minmax"!')
-        return None
+        raise NotImplementedError(f"{scaler_type} not implemented.")
 
     train_data = scaler.fit_transform(train_data)
     val_data = scaler.transform(val_data)

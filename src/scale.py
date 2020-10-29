@@ -20,6 +20,7 @@ import numpy as np
 import yaml
 
 from config import DATA_SCALED_PATH
+from preprocess_utils import scale_data
 
 
 def scale(train_file, test_file):
@@ -33,13 +34,7 @@ def scale(train_file, test_file):
 
     DATA_SCALED_PATH.mkdir(parents=True, exist_ok=True)
 
-    # Load parameters
     params = yaml.safe_load(open("params.yaml"))["scale"]
-    method = params["method"]
-    heartrate_min = params["heartrate_min"]
-    heartrate_max = params["heartrate_max"]
-    breathing_min = params["breathing_min"]
-    breathing_max = params["breathing_max"]
 
     # Load training and test files
     train = np.load(train_file)
@@ -50,19 +45,7 @@ def scale(train_file, test_file):
     y_train = train["y"]
     y_test = test["y"]
 
-    # TODO: Implement scaling.
-    # if scaler_type == 'standard':
-    #     scaler = StandardScaler()
-    # elif scaler_type == 'minmax':
-    #     scaler = MinMaxScaler()
-    # elif scaler_type == 'robust':
-    #     scaler = RobustScaler()
-    # else:
-    #     print('Scaler must be "standard" or "minmax"!')
-    #     return None
-
-    # train_data = scaler.fit_transform(train_data)
-    # val_data = scaler.transform(val_data)
+    # X_train, X_test = scale_data(X_train, X_test, scaler_type=params["method"])
 
     np.savez(DATA_SCALED_PATH / "train.npz", X=X_train, y=y_train)
     np.savez(DATA_SCALED_PATH / "test.npz", X=X_test, y=y_test)

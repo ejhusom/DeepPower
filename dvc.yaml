@@ -19,9 +19,15 @@ stages:
     - featurize.delete
     - featurize.features
     - featurize.remove
+    - featurize.breathing_min
+    - featurize.breathing_max
+    - featurize.heartrate_min
+    - featurize.heartrate_max
     - featurize.scale
     - featurize.range_window
-    - featurize.slope_window
+    - featurize.slope_shift
+    - featurize.slope_smoothing
+    - featurize.slope_abs
 
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
@@ -54,10 +60,6 @@ stages:
     - assets/data/scaled
     params:
     - scale.method
-    - scale.breathing_min
-    - scale.breathing_max
-    - scale.heartrate_min
-    - scale.heartrate_max
 
   train:
     cmd: python3 src/train.py assets/data/scaled/train.npz
