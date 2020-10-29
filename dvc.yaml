@@ -84,9 +84,9 @@ stages:
     - train.kernel_size
 
   evaluate:
-    cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/scaled/test.npz
+    cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
     deps:
-    - assets/data/scaled/test.npz
+    - assets/data/combined/test.npz
     - assets/models/model.h5
     - src/evaluate.py
     metrics:

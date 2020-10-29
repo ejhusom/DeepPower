@@ -23,30 +23,17 @@ featurize:
       - time
       - calories
       featurize.features:
-      - ribcage_range
-      - abdomen_range
-      - ribcage_gradient
-      - abdomen_gradient
-      - ribcage_frequency
-      - abdomen_frequency
-      - ribcage_slope
-      - abdomen_slope
-      - ribcage_slope_cyclic
-      - abdomen_slope_cyclic
       featurize.heartrate_max: 185
       featurize.heartrate_min: 35
       featurize.range_window: 50
       featurize.remove:
-      - ribcage
-      - abdomen
-      - heartrate
       featurize.scale: true
       featurize.slope_abs: false
       featurize.slope_shift: 2
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: f82c913e5d568679f15d2c3d4f71e84e.dir
+    md5: 444b5cab24135cee6b0402e4b75bac6b.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
@@ -66,7 +53,7 @@ split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: f82c913e5d568679f15d2c3d4f71e84e.dir
+    md5: 444b5cab24135cee6b0402e4b75bac6b.dir
   - path: src/split.py
     md5: 777f78045a884ed1d9ce81aa46ef7489
   params:
@@ -74,20 +61,20 @@ split:
       split.train_split: 0.6
   outs:
   - path: assets/data/split
-    md5: cf414dd42db179641ea7df63eb949603.dir
+    md5: feedf7effcb21ef46ecc8194c0634a28.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: cf414dd42db179641ea7df63eb949603.dir
+    md5: feedf7effcb21ef46ecc8194c0634a28.dir
   - path: src/scale.py
-    md5: 70d36bb5ff3d61b878ac6150272491a9
+    md5: ac298b80b8159096ee8c0d2c6f207f7c
   params:
     params.yaml:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 7d4233c005f7c759ca60c56bfd57a564.dir
+    md5: 21b908106c03897a716aa864b66d07ea.dir
 train:
   cmd: python3 src/train.py assets/data/scaled/train.npz
   deps:
