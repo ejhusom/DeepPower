@@ -29,6 +29,26 @@ stages:
     - featurize.slope_smoothing
     - featurize.slope_abs
 
+  split:
+    cmd: python3 src/split.py assets/data/featurized/*.csv
+    deps:
+    - assets/data/featurized
+    - src/split.py
+    outs:
+    - assets/data/split
+    params:
+    - split.train_split
+
+  scale:
+    cmd: python3 src/scale.py assets/data/split/*.csv
+    deps:
+    - assets/data/split
+    - src/scale.py
+    outs:
+    - assets/data/scaled
+    params:
+    - scale.method
+
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/featurized/*.csv
     deps:
@@ -40,26 +60,6 @@ stages:
     - sequentialize.hist_size
     - sequentialize.use_elements
     - sequentialize.target_mean_window
-
-  split:
-    cmd: python3 src/split.py assets/data/sequentialized/*.npz
-    deps:
-    - assets/data/sequentialized
-    - src/split.py
-    outs:
-    - assets/data/split
-    params:
-    - split.train_split
-
-  scale:
-    cmd: python3 src/scale.py assets/data/split/train.npz assets/data/split/test.npz
-    deps:
-    - assets/data/split
-    - src/scale.py
-    outs:
-    - assets/data/scaled
-    params:
-    - scale.method
 
   train:
     cmd: python3 src/train.py assets/data/scaled/train.npz

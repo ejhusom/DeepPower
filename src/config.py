@@ -32,6 +32,12 @@ DATA_SEQUENTIALIZED_PATH = DATA_PATH / "sequentialized"
 DATA_SPLIT_PATH = DATA_PATH / "split"
 """Path to data that is split into train and test set."""
 
+DATA_SPLIT_TRAIN_PATH = DATA_SPLIT_PATH / "train"
+"""Path to data that is split into train set."""
+
+DATA_SPLIT_TEST_PATH = DATA_SPLIT_PATH / "test"
+"""Path to data that is split into test set."""
+
 DATA_SCALED_PATH = DATA_PATH / "scaled"
 """Path to scaled data."""
 

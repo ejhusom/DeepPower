@@ -31,6 +31,12 @@ featurize:
   slope_smoothing: 100
   slope_abs: False
 
+split:
+  train_split: 0.6
+
+scale:
+  method: minmax
+
 sequentialize:
   # History window size in deciseconds
   hist_size: 100
@@ -38,12 +44,6 @@ sequentialize:
   use_elements: 1
   # Use mean power value over given window
   target_mean_window: 1
-
-split:
-  train_split: 0.6
-
-scale:
-  method: minmax
 
 train:
   net: cnn
