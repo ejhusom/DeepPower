@@ -103,7 +103,6 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
             if len(inputs.shape) == 3:
                 ax2.plot(inputs[:, -1, i], label=input_columns.iloc[i+1,1])
             elif len(inputs.shape) == 2:
-                print(i)
                 ax2.plot(inputs[:, i-n_features], label=input_columns.iloc[i+1,1])
          
 

@@ -48,12 +48,12 @@ sequentialize:
     md5: 07fd329cca76a4c1d3d12210d81fbe3d
   params:
     params.yaml:
-      sequentialize.hist_size: 100
+      sequentialize.hist_size: 10
       sequentialize.target_mean_window: 1
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: f9e0d278592b8a252c6b691eeaa148b1.dir
+    md5: a38b6dec171dfcdd41f3dd2517036aa5.dir
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
@@ -84,7 +84,7 @@ train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 38003f25f180406003ab13ef1093a504.dir
+    md5: 1f44acad14173cb71776e2922a7ab110.dir
   - path: src/model.py
     md5: b702f595a9ee4eb9882a57049f5c04d9
   - path: src/train.py
@@ -93,30 +93,30 @@ train:
     params.yaml:
       train.batch_size: 128
       train.kernel_size: 4
-      train.n_epochs: 1
+      train.n_epochs: 10
       train.net: dnn
   outs:
   - path: assets/models
-    md5: 0a3a845e67700617f8c756172518324a.dir
+    md5: 117f4dd24ba6da9e932f23316a85856b.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: 11929191b0b31810101eec65f0781c79
+    md5: 7ed7b679339f02f9d243904eac5ecebe
   - path: assets/models/model.h5
-    md5: 328034715ad5e2b5c75eaeb4879f782d
+    md5: 889e89b627f813e462b207a7eddb9bee
   - path: src/evaluate.py
     md5: 89ca05e71d0b5868d59e96f3dd3890bb
   outs:
   - path: assets/metrics/metrics.json
-    md5: d4f3f9ee242f1f7abe5657bb48fef6ad
+    md5: 87c152008fa6370a62ee87ca43a7e442
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: f9e0d278592b8a252c6b691eeaa148b1.dir
+    md5: a38b6dec171dfcdd41f3dd2517036aa5.dir
   - path: src/combine.py
     md5: db0030dcff907c31992e4102b41223e6
   outs:
   - path: assets/data/combined
-    md5: 38003f25f180406003ab13ef1093a504.dir
+    md5: 1f44acad14173cb71776e2922a7ab110.dir
