@@ -18,7 +18,7 @@ import numpy as np
 import yaml
 
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
-from model import cnn
+from model import cnn, dnn, lstm, cnndnn
 
 
 def train(filepath):
@@ -41,16 +41,16 @@ def train(filepath):
     X_train = train["X"]
     y_train = train["y"]
 
-    hist_size = X_train.shape[-2]
     n_features = X_train.shape[-1]
 
     # Build model
     if net == "cnn":
+        hist_size = X_train.shape[-2]
         model = cnn(hist_size, n_features,
                 kernel_size=params["kernel_size"]
         )
     elif net == "dnn":
-        pass
+        model = dnn(n_features)
     elif net == "lstm":
         pass
     elif net == "cnndnn":

@@ -28,7 +28,18 @@ from utils import *
 
 
 def read_csv(filename, delete_columns=[], verbose=False):
-    """Read csv file, and make proper adjustment to the resulting dataframe."""
+    """Read csv file, and make proper adjustment to the resulting dataframe.
+
+    Args:
+        filename (str): Name of csv file to read.
+        delete_columns (list): Columns to delete. Empty by default.
+        verbose (bool): Whether to print info about the file.
+
+    Returns:
+        df (DataFrame): Data frame read from file.
+        index (Index): Index of data frame read from file.
+
+    """
 
     # Get input matrix from file
     df = pd.read_csv(filename, index_col=0)
@@ -51,7 +62,13 @@ def read_csv(filename, delete_columns=[], verbose=False):
 
 
 def print_dataframe(df, message=""):
-    """Print dataframe to terminal, with boundary and message."""
+    """Print dataframe to terminal, with boundary and message.
+
+    Args:
+        df (DataFrame): Data frame to print.
+        message (str): Optional message to print.
+
+    """
 
     print_horizontal_line()
 
@@ -63,19 +80,13 @@ def move_column(df, column_name, new_idx):
     """
     Move a column in a dataframe.
 
-    Parameters
-    ----------
-    df : pandas DataFrame
-        Dataframe containing the column to be moved.
-    column_name : string
-        Name of the column to be moved.
-    new_idx : int
-        The column index the column should be moved to.
+    Args:
+        df (DataFrame): Dataframe containing the column to be moved.
+        column_name (str): Name of the column to be moved.
+        new_idx (int): The column index the column should be moved to.
 
-    Returns
-    -------
-    df : pandas DataFrame
-        Dataframe with the columns reordered.
+    Returns:
+        df (DataFrame): Data frame with the columns reordered.
 
     """
 
@@ -136,6 +147,21 @@ def split_sequences(sequences, hist_size, target_mean_window=1, n_steps_out=1):
     y = np.array(y)
     
     return X, y
+
+def flatten_sequentialized(X):
+    """Flatten sequentialized data.
+
+    Args:
+        X (array): Array of shape [num_sequences, hist_size, num_features].
+
+    Returns:
+        X_flat (array): Array of shape [num_sequences, hist_size*num_features].
+
+    """
+
+    X_flat = X.reshape(X.shape[0], X.shape[1]*X.shape[2])
+
+    return X_flat
 
 
 def merge_time_series_and_added_features(X):

@@ -21,9 +21,9 @@ Stages:
 
 1. **Restructure**: Restructure raw data into dataframes.
 2. **Featurize**: Add features to data set.
-3. **Sequentialize**: Split data into input/output sequences.
-4. **Split**: Split data set into training and test set.
+4. **Split**: Split data set into training and test data.
 5. **Scale**: Scale input data.
+3. **Sequentialize**: Split data into input/output sequences.
 6. **Train**: Train model.
 7. **Evaluate**: Evaluate model.
 
@@ -41,26 +41,26 @@ This stage consists of these steps:
       interesting as target values later on.
 2. Optionally scale input features.
 3. Feature engineering. Examples:
-    - Rolling minimum.
-    - Rolling maximum.
-    - Rolling range.
-4. Delete features that may be less important, since we prefer a simpler model.
-   This might for example be raw breathing data, if we have engineered features
-   that work better.
+    - Rolling range of breathing data.
+    - Gradient of breathing data.
+    - Slope angle of the breathing pattern.
+4. Optionally delete raw inputs that may be less important, since we prefer a
+   simpler model.  This might for example be raw breathing data, if we have
+   engineered features that work better.
+
+### Split
+
+This stage splits the data set into a training and test set.
+
+### Scale
+
+In this stage the data is scaled.
 
 ### Sequentialize
 
 In this stage the data is divided into sequences based on a chosen history
 size.
 
-### Split
-
-This stage first combines the data from all workouts in the data set, and then
-splits the data set into a training and test set.
-
-### Scale
-
-In this stage the data is scaled.
 
 ## Usage
 
@@ -69,7 +69,7 @@ In this stage the data is scaled.
 All stages are defined in the file `dvc.yaml`, and the parameters to be used
 are saved in `params.yaml`.
 
-To reproduce an experiment with any given parameters specified in
+To run/reproduce an experiment with any given parameters specified in
 `params.yaml`, run:
 
 ```
@@ -78,14 +78,19 @@ dvc repro
 
 ### Evaluate
 
-To evaluate model, run:
+If a model already exists and you want to test it on a test set, run:
 
 ```
 python3 src/evaluate.py
 ```
 
+This requires that the test data already is present in the correct folder.
+Because of this, it is usually better to use the command `dvc repro` when
+evaluating models.
+
 ### Check previous experiments
 
+N/A
 
 
 ### Change dataset
@@ -96,4 +101,9 @@ To run experiments with another dataset, just change the content of
 
 ### Visualize data set
 
-Data set can be visualized in to stages
+Data set can be visualized by running
+
+```
+python3 visualize.py
+```
+

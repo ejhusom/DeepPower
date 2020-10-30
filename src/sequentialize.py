@@ -19,7 +19,8 @@ import numpy as np
 import yaml
 
 from config import DATA_SEQUENTIALIZED_PATH
-from preprocess_utils import read_csv, split_sequences
+from preprocess_utils import flatten_sequentialized, read_csv
+from preprocess_utils import split_sequences
 
 
 def sequentialize(filepaths):
@@ -31,6 +32,7 @@ def sequentialize(filepaths):
     DATA_SEQUENTIALIZED_PATH.mkdir(parents=True, exist_ok=True)
 
     params = yaml.safe_load(open("params.yaml"))["sequentialize"]
+    net = yaml.safe_load(open("params.yaml"))["train"]["net"]
 
     hist_size = params["hist_size"]
     use_elements = params["use_elements"]
@@ -52,6 +54,9 @@ def sequentialize(filepaths):
 
         # Split into sequences
         X, y = split_sequences(data, hist_size, target_mean_window)
+
+        if net == "dnn":
+            X = flatten_sequentialized(X)
 
         # Save X and y into a binary file
         np.savez(

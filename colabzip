@@ -26,7 +26,7 @@ display_help() {
 }
 
 script_function () {
-    zip colab assets/data/raw/* dvc.yaml params.yaml src/*
+    zip colab assets/data/raw/* dvc.yaml params.yaml src/* README.md requirements.txt
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then

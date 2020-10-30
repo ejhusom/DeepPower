@@ -85,13 +85,26 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
 
     if inputs is not None:
         input_columns = pd.read_csv(DATA_PATH / "input_columns.csv")
-        num_features = inputs.shape[-1]
+
+        if len(inputs.shape) == 3:
+            n_features = inputs.shape[-1]
+        elif len(inputs.shape) == 2:
+            # If data is flattened, the number of input features are equal
+            # to the length of input columns minus the  power column
+            n_features = len(input_columns) - 1
 
         ax2 = ax1.twinx()
         ax2.set_ylabel("scaled units")
 
-        for i in range(num_features):
-            ax2.plot(inputs[:, -1, i], label=input_columns.iloc[i+1,1])
+        for i in range(n_features):
+            # Plot the features of the last time step in each sequence. The
+            # if/else block makes sure the indexing is done correctly based on
+            # whether the data is sequentialized or not.
+            if len(inputs.shape) == 3:
+                ax2.plot(inputs[:, -1, i], label=input_columns.iloc[i+1,1])
+            elif len(inputs.shape) == 2:
+                print(i)
+                ax2.plot(inputs[:, i-n_features], label=input_columns.iloc[i+1,1])
          
 
     fig.legend()
@@ -119,17 +132,30 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
 
         if inputs is not None:
             input_columns = pd.read_csv(DATA_PATH / "input_columns.csv")
-            num_features = inputs.shape[-1]
+            
+            if len(inputs.shape) == 3:
+                n_features = inputs.shape[-1]
+            elif len(inputs.shape) == 2:
+                n_features = len(input_columns) - 1
 
-            for i in range(num_features):
+            for i in range(n_features):
 
-                fig.add_trace(
-                        go.Scatter(
-                            x=x, y=inputs[:, -1, i],
-                            name=input_columns.iloc[i+1, 1]
-                        ),
-                        secondary_y=True,
-                )
+                if len(inputs.shape) == 3:
+                    fig.add_trace(
+                            go.Scatter(
+                                x=x, y=inputs[:, -1, i],
+                                name=input_columns.iloc[i+1, 1]
+                            ),
+                            secondary_y=True,
+                    )
+                elif len(inputs.shape) == 2:
+                    fig.add_trace(
+                            go.Scatter(
+                                x=x, y=inputs[:, i-n_features],
+                                name=input_columns.iloc[i+1, 1]
+                            ),
+                            secondary_y=True,
+                    )
 
         fig.update_layout(title_text="True vs pred " + info)
         fig.update_xaxes(title_text="time step")
@@ -144,7 +170,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 3:
         try:
-            evaluate("assets/models/model.h5", "assets/data/scaled/test.npz")
+            evaluate("assets/models/model.h5", "assets/data/combined/test.npz")
         except:
             print("Could not find model and test set.")
             sys.exit(1)

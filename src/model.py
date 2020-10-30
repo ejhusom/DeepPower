@@ -58,7 +58,6 @@ def cnn(input_x, input_y,
 
     return model
 
-
 def dnn(input_x, n_steps_out=1, seed=2020):
     """Define a DNN model architecture using Keras.
 
