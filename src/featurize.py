@@ -68,6 +68,7 @@ def featurize(filepaths):
 
         add_features(df, features, 
                 range_window=params["range_window"],
+                range_smoothing=params["range_smoothing"],
                 slope_shift=params["slope_shift"],
                 slope_smoothing=params["slope_smoothing"],
         )
@@ -121,6 +122,7 @@ def scale_inputs(df):
 
 def add_features(df, features, 
         range_window=100,
+        range_smoothing=1,
         slope_shift=2,
         slope_smoothing=1,
     ):
@@ -133,6 +135,7 @@ def add_features(df, features,
     features (list): A list containing keywords specifying which features to
         add.
     range_window (int): How many time steps to use when calculating range.
+    range_smoothing (int): Rolling mean window for smoothing range.
     slope_shift (int): How many time steps to use when calculating slope.
     slope_smoothing (int): Rolling mean window for smoothing slope.
 
@@ -161,7 +164,7 @@ def add_features(df, features,
         ribcage_max = df["ribcage"].rolling(range_window).max()
         ribcage_range = ribcage_max - ribcage_min
 
-        df["ribcage_range"] = ribcage_range
+        df["ribcage_range"] = ribcage_range.rolling(range_smoothing).mean()
 
     if "abdomen_min" in features:
         abdomen_min = df["abdomen"].rolling(range_window).min()
@@ -179,7 +182,7 @@ def add_features(df, features,
         abdomen_max = df["abdomen"].rolling(range_window).max()
         abdomen_range = abdomen_max - abdomen_min
 
-        df["abdomen_range"] = abdomen_range
+        df["abdomen_range"] = abdomen_range.rolling(range_smoothing).mean()
 
     if "ribcage_gradient" in features:
 

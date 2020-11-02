@@ -2,7 +2,7 @@ restructure:
   cmd: python3 src/restructure.py assets/data/raw/*.csv
   deps:
   - path: assets/data/raw
-    md5: c701aa402d1a513636095685f2d5e609.dir
+    md5: 529464f0833c3fc2a2222db8fa27973a.dir
   - path: src/restructure.py
     md5: 5f30ef25d64f09dde2ad8977fd3520b9
   outs:
@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 8c2eda0c67854b441b01bf0b3a1d2c7b.dir
   - path: src/featurize.py
-    md5: 85137f195b4afed011cbb08e2e2d0072
+    md5: a37fa88eec7a3d3b778da4c2ffead921
   params:
     params.yaml:
       featurize.breathing_max: 4096
@@ -23,12 +23,11 @@ featurize:
       - time
       - calories
       featurize.features:
-      - ribcage_range
-      - abdomen_range
       - ribcage_gradient
       - abdomen_gradient
       featurize.heartrate_max: 185
       featurize.heartrate_min: 35
+      featurize.range_smoothing: 50
       featurize.range_window: 50
       featurize.remove:
       - ribcage
@@ -40,12 +39,12 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: 5f2f9d7cf40933a115d5d131c52d80f8.dir
+    md5: 1717e38bf35cd46eec7380b764bc3d2c.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 45028417e8381e9610ef9d55d8d0bf36.dir
+    md5: 7c49af277810caeff2ae6f90cd6d8e73.dir
   - path: src/sequentialize.py
     md5: 07fd329cca76a4c1d3d12210d81fbe3d
   params:
@@ -55,12 +54,12 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 4bf5ad0f4644185d20d29df261064ee5.dir
+    md5: 6f2262ef12318dc110d8a5acaa8fc9aa.dir
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 5f2f9d7cf40933a115d5d131c52d80f8.dir
+    md5: 1717e38bf35cd46eec7380b764bc3d2c.dir
   - path: src/split.py
     md5: 777f78045a884ed1d9ce81aa46ef7489
   params:
@@ -68,12 +67,12 @@ split:
       split.train_split: 0.6
   outs:
   - path: assets/data/split
-    md5: 0812977ad1e37ea2dcf3ca18a082ef5b.dir
+    md5: 97c50537e704544034ebc92ee3a9d72b.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 0812977ad1e37ea2dcf3ca18a082ef5b.dir
+    md5: 97c50537e704544034ebc92ee3a9d72b.dir
   - path: src/scale.py
     md5: 70d36bb5ff3d61b878ac6150272491a9
   params:
@@ -81,12 +80,12 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 45028417e8381e9610ef9d55d8d0bf36.dir
+    md5: 7c49af277810caeff2ae6f90cd6d8e73.dir
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 80cc4fdd0e5c00ea14bbbe51fdd7c9ed.dir
+    md5: 4c708ac6ce393a6f200ffb952c19c086.dir
   - path: src/model.py
     md5: b702f595a9ee4eb9882a57049f5c04d9
   - path: src/train.py
@@ -95,30 +94,30 @@ train:
     params.yaml:
       train.batch_size: 128
       train.kernel_size: 4
-      train.n_epochs: 30
-      train.net: dnn
+      train.n_epochs: 1
+      train.net: cnn
   outs:
   - path: assets/models
-    md5: d50565a0298a096045d627d501024c99.dir
+    md5: 888ba5b19be043325f2032715ac0c127.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: c0ff4b5899b1319e232a489056c2d8ea
+    md5: ec0d750ec0c9f2be6e7364f9da81ab2a
   - path: assets/models/model.h5
-    md5: b0d3a74b31600490704e2712de7f7128
+    md5: 118c35bc9598eb190d59c565e390d593
   - path: src/evaluate.py
     md5: 162175d3f09d02b36e373603ef252c03
   outs:
   - path: assets/metrics/metrics.json
-    md5: e91c499580af363e6aa99d36680f5e69
+    md5: 7698ea9dcba7fe3ff76f299628e21c4b
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 4bf5ad0f4644185d20d29df261064ee5.dir
+    md5: 6f2262ef12318dc110d8a5acaa8fc9aa.dir
   - path: src/combine.py
     md5: db0030dcff907c31992e4102b41223e6
   outs:
   - path: assets/data/combined
-    md5: 80cc4fdd0e5c00ea14bbbe51fdd7c9ed.dir
+    md5: 4c708ac6ce393a6f200ffb952c19c086.dir

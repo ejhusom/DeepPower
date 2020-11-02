@@ -25,6 +25,7 @@ stages:
     - featurize.heartrate_max
     - featurize.scale
     - featurize.range_window
+    - featurize.range_smoothing
     - featurize.slope_shift
     - featurize.slope_smoothing
     - featurize.slope_abs
