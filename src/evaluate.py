@@ -162,7 +162,7 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
         fig.update_yaxes(title_text="scaled units", secondary_y=True)
 
         fig.write_html(str(PLOTS_PATH / "prediction.html"))
-        fig.show(config=config)
+        # fig.show(config=config)
 
 
 if __name__ == "__main__":

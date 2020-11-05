@@ -82,7 +82,7 @@ def train(filepath):
     plt.plot(n_epochs, val_loss, label="Validation loss")
     plt.legend()
     plt.savefig(TRAININGLOSS_PLOT_PATH)
-    plt.show()
+    # plt.show()
 
 
 if __name__ == "__main__":
