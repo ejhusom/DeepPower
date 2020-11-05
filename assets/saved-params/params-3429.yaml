@@ -15,8 +15,8 @@ featurize:
     # - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    # - ribcage_slope_cyclic
-    # - abdomen_slope_cyclic
+    - ribcage_slope_cyclic
+    - abdomen_slope_cyclic
   remove:
     - ribcage
     - abdomen
@@ -48,7 +48,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 20
+  n_epochs: 30
   batch_size: 128
   kernel_size: 4
 

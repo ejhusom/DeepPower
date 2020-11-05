@@ -18,7 +18,7 @@ import pandas as pd
 # import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 from tensorflow.keras import models
 import yaml
 
@@ -45,8 +45,10 @@ def evaluate(model_filepath, test_filepath):
 
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
 
     print("MSE: {}".format(mse))
+    print("R2: {}".format(r2))
 
     plot_prediction(y_test, y_pred, inputs=X_test, info="(MSE: {})".format(mse))
 

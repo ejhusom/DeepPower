@@ -9,14 +9,14 @@ featurize:
     # - ribcage_max
     # - ribcage_range
     # - abdomen_range
-    - ribcage_gradient
-    - abdomen_gradient
+    # - ribcage_gradient
+    # - abdomen_gradient
     # - ribcage_frequency
     # - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    # - ribcage_slope_cyclic
-    # - abdomen_slope_cyclic
+    - ribcage_slope_cyclic
+    - abdomen_slope_cyclic
   remove:
     - ribcage
     - abdomen
@@ -28,7 +28,7 @@ featurize:
   scale: True
   range_window: 50
   range_smoothing: 50
-  slope_shift: 1
+  slope_shift: 2
   slope_smoothing: 100
   slope_abs: True
 
