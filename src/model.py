@@ -11,7 +11,11 @@ Date:
 """
 from tensorflow.keras import layers
 from tensorflow.keras import models
-from tensorflow.random import set_seed
+
+try:
+    from tensorflow.random import set_seed
+except:
+    import tensorflow as tf
 
 
 def cnn(input_x, input_y, 
@@ -34,7 +38,13 @@ def cnn(input_x, input_y,
 
     """
 
-    set_seed(seed)
+    try:
+        set_seed(seed)
+    except:
+        try:
+            tf.random.set_seed(seed)
+        except:
+            print("Failed setting Tensorflow seed.")
 
     kernel_size = kernel_size
 
