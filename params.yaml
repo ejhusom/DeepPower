@@ -15,8 +15,8 @@ featurize:
     # - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    # - ribcage_slope_cyclic
-    # - abdomen_slope_cyclic
+    - ribcage_slope_cyclic
+    - abdomen_slope_cyclic
   remove:
     - ribcage
     - abdomen
