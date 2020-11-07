@@ -40,6 +40,7 @@ def visualize(stage="restructured"):
         df = pd.read_csv(filepath, index_col=0)
 
         df.plot()
+        plt.title(filepath)
         plt.show()
 
 
