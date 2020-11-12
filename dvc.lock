@@ -96,23 +96,23 @@ train:
     params.yaml:
       train.batch_size: 128
       train.kernel_size: 4
-      train.n_epochs: 20
+      train.n_epochs: 50
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 2c1ff3364b0fa251cc9abf7ab70ebdda.dir
+    md5: ebea9bf3b079654eef9fbfe0419ea717.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
     md5: df07a2291b2592873a756bb96ee31c25
   - path: assets/models/model.h5
-    md5: 3387f723c13cd32c58cd256d95f5b566
+    md5: 0cddfc2e17e1c98d52110efb0bffb34a
   - path: src/evaluate.py
     md5: 9b8ea3a9a1c9e1c8821fdd7cee67414a
   outs:
   - path: assets/metrics/metrics.json
-    md5: 25cc58fd25ad294e20801f61ebc9b9e2
+    md5: 7c1feeec8435d783560d01bab6ed65c3
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:

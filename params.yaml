@@ -48,7 +48,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 20
+  n_epochs: 50
   batch_size: 128
   kernel_size: 4
 
