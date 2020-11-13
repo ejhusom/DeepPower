@@ -52,6 +52,11 @@ def featurize(filepaths):
     scale = params["scale"]
     """Whether to scale the input features before feature engineering."""
 
+    diff_targets = params["diff_targets"]
+    """Whether to use the change in power as target, as opposed to the power
+    value itself.
+    """
+
     for filepath in filepaths:
 
         # Read csv, and delete specified columns
@@ -78,6 +83,10 @@ def featurize(filepaths):
         if isinstance(remove_features, list):
             for col in remove_features:
                 del df[col]
+
+        if diff_targets:
+            df["power"] = df["power"].diff(diff_targets)
+            df["power"].fillna(0, inplace=True)
 
         # Save data
         df.to_csv(

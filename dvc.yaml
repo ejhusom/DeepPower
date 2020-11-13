@@ -29,6 +29,7 @@ stages:
     - featurize.slope_shift
     - featurize.slope_smoothing
     - featurize.slope_abs
+    - featurize.diff_targets
 
   split:
     cmd: python3 src/split.py assets/data/featurized/*.csv
