@@ -13,6 +13,7 @@
     - pyyaml
     - scipy
     - dvc
+- graphviz, for creating a plot of the model architecture.
 
 
 ## Experiment pipeline

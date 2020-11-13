@@ -12,6 +12,7 @@ Date:
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
+# Some older versions of Tensorflow do not support the set_seed function.
 try:
     from tensorflow.random import set_seed
 except:
@@ -38,6 +39,7 @@ def cnn(input_x, input_y,
 
     """
 
+    # Some older versions of Tensorflow do not support the set_seed function.
     try:
         set_seed(seed)
     except:

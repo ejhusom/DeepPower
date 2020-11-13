@@ -15,10 +15,13 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
+from tensorflow.keras.utils import plot_model
 import yaml
 
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
+from config import PLOTS_PATH
 from model import cnn, dnn, lstm, cnndnn
+
 
 
 def train(filepath):
@@ -57,6 +60,17 @@ def train(filepath):
         pass
 
     print(model.summary())
+
+    # Save a plot of the model
+    plot_model(
+        model,
+        to_file=PLOTS_PATH / 'model.png',
+        show_shapes=False,
+        show_layer_names=True,
+        rankdir='TB',
+        expand_nested=True,
+        dpi=96
+    )
 
     history = model.fit(
         X_train, y_train, 
