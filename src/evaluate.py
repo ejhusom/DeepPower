@@ -36,6 +36,9 @@ def evaluate(model_filepath, test_filepath):
 
     METRICS_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
+    # Load parameters
+    params = yaml.safe_load(open("params.yaml"))["evaluate"]
+
     test = np.load(test_filepath)
 
     X_test = test["X"]
@@ -44,6 +47,12 @@ def evaluate(model_filepath, test_filepath):
     model = models.load_model(model_filepath)
 
     y_pred = model.predict(X_test)
+
+    if params["smooth_targets"]:
+        y_pred = pd.Series(y_pred.reshape(-1)).rolling(10).mean()
+        y_pred.fillna(0, inplace=True)
+        y_pred = np.array(y_pred)
+
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
 

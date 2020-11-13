@@ -93,3 +93,5 @@ stages:
     metrics:
     - assets/metrics/metrics.json:
         cache: false
+    params:
+    - evaluate.smooth_targets

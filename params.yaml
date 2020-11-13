@@ -55,8 +55,9 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 50
+  n_epochs: 1
   batch_size: 128
   kernel_size: 4
 
 evaluate:
+  smooth_targets: True
