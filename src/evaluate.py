@@ -38,6 +38,7 @@ def evaluate(model_filepath, test_filepath):
 
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["evaluate"]
+    smooth_targets = params["smooth_targets"]
 
     test = np.load(test_filepath)
 
@@ -48,8 +49,8 @@ def evaluate(model_filepath, test_filepath):
 
     y_pred = model.predict(X_test)
 
-    if params["smooth_targets"]:
-        y_pred = pd.Series(y_pred.reshape(-1)).rolling(10).mean()
+    if smooth_targets > 1:
+        y_pred = pd.Series(y_pred.reshape(-1)).rolling(smooth_targets).mean()
         y_pred.fillna(0, inplace=True)
         y_pred = np.array(y_pred)
 

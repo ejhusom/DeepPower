@@ -111,13 +111,13 @@ evaluate:
   - path: assets/models/model.h5
     md5: 1946890a8b1a492bbe2a168476ad2fe9
   - path: src/evaluate.py
-    md5: 40c35f6ebaf4c7f3e21ac6f303e9c298
+    md5: d4ab1b0f9dd2876433f714b241b2b073
   params:
     params.yaml:
-      evaluate.smooth_targets: true
+      evaluate.smooth_targets: 30
   outs:
   - path: assets/metrics/metrics.json
-    md5: 1774ede09bfda1c0214b0cc2cbe121d9
+    md5: 2a4d6de5856ba250e31b0f315763a56c
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
