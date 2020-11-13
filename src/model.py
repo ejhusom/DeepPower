@@ -57,15 +57,19 @@ def cnn(input_x, input_y,
             kernel_size=kernel_size,
             activation="relu",
             input_shape=(input_x, input_y),
+            name="input_layer"
         )
     )
-    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size, activation="relu"))
-    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size, activation="relu"))
+    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size,
+        activation="relu", name="conv1d_1"))
+    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size,
+        activation="relu", name="conv1d_2"))
     # model.add(layers.MaxPooling1D(pool_size=2))
-    model.add(layers.Flatten())
-    model.add(layers.Dense(128, activation="relu"))
-    model.add(layers.Dense(64, activation="relu"))
-    model.add(layers.Dense(n_steps_out, activation="linear"))
+    model.add(layers.Flatten(name="flatten"))
+    model.add(layers.Dense(128, activation="relu", name="dense_1"))
+    model.add(layers.Dense(64, activation="relu", name="dense_2"))
+    model.add(layers.Dense(n_steps_out, activation="linear",
+        name="output_layer"))
     model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
 
     return model

@@ -89,7 +89,7 @@ train:
   - path: assets/data/combined
     md5: 2d9d55d45974050b0d6190bae011933a.dir
   - path: src/model.py
-    md5: fc0f79919b92aea374320bd1a102a5d0
+    md5: b8e5bba762f65c6d3ace582297e00afd
   - path: src/train.py
     md5: 229bf02b6c8d8759eec734997334cd79
   params:
@@ -100,14 +100,14 @@ train:
       train.net: cnn
   outs:
   - path: assets/models
-    md5: 91408de8036e59e5278244ad32fff4b9.dir
+    md5: 69305f38db4527e9e9daab51c171670b.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
     md5: f41b56757fa319a560ddaa7083347d1b
   - path: assets/models/model.h5
-    md5: eca6f64e5f851f669d37f9cd2a20093b
+    md5: 99eb9a1efb477cca4e368ae5972ee83a
   - path: src/evaluate.py
     md5: 9b8ea3a9a1c9e1c8821fdd7cee67414a
   outs:
