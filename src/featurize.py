@@ -185,12 +185,13 @@ def add_features(df, features,
         df["abdomen_range"] = abdomen_range.rolling(range_smoothing).mean()
 
     if "ribcage_gradient" in features:
-
         df["ribcage_gradient"] = np.gradient(df["ribcage"])
 
     if "abdomen_gradient" in features:
-
         df["abdomen_gradient"] = np.gradient(df["abdomen"])
+        
+    if "heartrate_gradient" in features:
+        df["heartrate_gradient"] = np.gradient(df["heartrate"])
 
     if "ribcage_frequency" in features:
         df["ribcage_frequency"] = calculate_frequency(df["ribcage"])
@@ -206,6 +207,11 @@ def add_features(df, features,
     if "abdomen_slope" in features:
         df["abdomen_slope"] = calculate_slope(
                 df["abdomen"], slope_shift, slope_smoothing
+        )
+
+    if "heartrate_slope" in features:
+        df["heartrate_slope"] = calculate_slope(
+                df["heartrate"], slope_shift, slope_smoothing
         )
 
     if "ribcage_slope_cyclic" in features:
@@ -225,6 +231,16 @@ def add_features(df, features,
         )
         df["abdomen_slope_cos"] = np.cos(
                 calculate_slope(df["abdomen"], slope_shift,
+                    rolling_mean_window=1, absvalue=False)
+        )
+
+    if "heartrate_slope_cyclic" in features:
+        df["heartrate_slope_sin"] = np.sin(
+                calculate_slope(df["heartrate"], slope_shift,
+                    rolling_mean_window=1, absvalue=False)
+        )
+        df["heartrate_slope_cos"] = np.cos(
+                calculate_slope(df["heartrate"], slope_shift,
                     rolling_mean_window=1, absvalue=False)
         )
 
