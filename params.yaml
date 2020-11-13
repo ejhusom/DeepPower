@@ -13,14 +13,14 @@ featurize:
     # - abdomen_range
     - ribcage_gradient
     - abdomen_gradient
-    - heartrate_gradient
+    # - heartrate_gradient
     # - ribcage_frequency
     # - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
     - ribcage_slope_cyclic
     - abdomen_slope_cyclic
-    - heartrate_slope_cyclic
+    # - heartrate_slope_cyclic
   # The variables listed under 'remove' is removed after adding additional
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
@@ -59,7 +59,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 1
+  n_epochs: 50
   batch_size: 128
   kernel_size: 4
 
