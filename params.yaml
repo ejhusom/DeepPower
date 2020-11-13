@@ -60,4 +60,4 @@ train:
   kernel_size: 4
 
 evaluate:
-  smooth_targets: 30
+  smooth_targets: 100
