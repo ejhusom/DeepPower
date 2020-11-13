@@ -84,7 +84,7 @@ def featurize(filepaths):
             for col in remove_features:
                 del df[col]
 
-        if diff_targets:
+        if diff_targets > 0:
             df["power"] = df["power"].diff(diff_targets)
             df["power"].fillna(0, inplace=True)
 
