@@ -1,9 +1,8 @@
 restructure:
 
 featurize:
-  """The variables listed under 'delete' is deleted before starting preprocessing,
-  and should only be done to variables that are not going to be used at all.
-  """
+  # The variables listed under 'delete' is deleted before starting preprocessing,
+  # and should only be done to variables that are not going to be used at all.
   delete:
     - time
     - calories
@@ -22,10 +21,9 @@ featurize:
     - ribcage_slope_cyclic
     - abdomen_slope_cyclic
     - heartrate_slope_cyclic
-  """The variables listed under 'remove' is removed after adding additional
-  features, which means that they might be used for feature engineering, but
-  should not be used as input the the neural network.
-  """
+  # The variables listed under 'remove' is removed after adding additional
+  # features, which means that they might be used for feature engineering, but
+  # should not be used as input the the neural network.
   remove:
     - ribcage
     - abdomen
