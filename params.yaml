@@ -41,7 +41,7 @@ featurize:
   # If 'diff_targets' > 0, the change in the target value will be used as
   # target, and the value 'diff_targets' will indicate the step size when
   # calculating the change/difference.
-  diff_targets: 10
+  diff_targets: 0
 
 split:
   train_split: 0.6
@@ -64,4 +64,4 @@ train:
   kernel_size: 4
 
 evaluate:
-  smooth_targets: 100
+  smooth_targets: 0
