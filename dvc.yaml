@@ -84,6 +84,7 @@ stages:
     - train.n_epochs
     - train.batch_size
     - train.kernel_size
+    - train.weigh_samples
 
   evaluate:
     cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz

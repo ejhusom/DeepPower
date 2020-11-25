@@ -37,6 +37,7 @@ def train(filepath):
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["train"]
     net = params["net"]
+    weigh_samples = params["weigh_samples"]
 
     # Load training set
     train = np.load(filepath)
@@ -45,6 +46,12 @@ def train(filepath):
     y_train = train["y"]
 
     n_features = X_train.shape[-1]
+
+    # Create sample weights
+    sample_weights = np.ones_like(y_train)
+
+    if weigh_samples:
+        sample_weights[y_train > 300] = 1.5
 
     # Build model
     if net == "cnn":
@@ -76,7 +83,8 @@ def train(filepath):
         X_train, y_train, 
         epochs=params["n_epochs"], 
         batch_size=params["batch_size"],
-        validation_split=0.2
+        validation_split=0.2,
+        sample_weight=sample_weights
     )
 
     time_id = time.strftime("%Y%m%d%H%M%S")
