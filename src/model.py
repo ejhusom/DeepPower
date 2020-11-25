@@ -60,9 +60,9 @@ def cnn(input_x, input_y,
             name="input_layer"
         )
     )
-    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size,
+    model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
         activation="relu", name="conv1d_1"))
-    model.add(layers.Conv1D(filters=256, kernel_size=kernel_size,
+    model.add(layers.Conv1D(filters=128, kernel_size=kernel_size,
         activation="relu", name="conv1d_2"))
     # model.add(layers.MaxPooling1D(pool_size=2))
     model.add(layers.Flatten(name="flatten"))
