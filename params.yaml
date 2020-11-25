@@ -26,7 +26,7 @@ featurize:
   remove:
     - ribcage
     - abdomen
-    - heartrate
+    # - heartrate
   breathing_min: 0
   breathing_max: 4096
   heartrate_min: 35
@@ -58,9 +58,9 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 50
+  n_epochs: 100
   batch_size: 128
-  kernel_size: 4
+  kernel_size: 6
   weigh_samples: True
 
 evaluate:
