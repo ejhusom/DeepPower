@@ -78,7 +78,7 @@ scale:
     md5: 70d36bb5ff3d61b878ac6150272491a9
   params:
     params.yaml:
-      scale.method: minmax
+      scale.method: standard
   outs:
   - path: assets/data/scaled
     md5: 80f366dc0215c295e36d0759b4d9a161.dir
@@ -100,14 +100,14 @@ train:
       train.weigh_samples: true
   outs:
   - path: assets/models
-    md5: 0df76e60c3685f70b98496ab62227555.dir
+    md5: cbdfa3dbdd92c799c1e78b4ef638a809.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
     md5: 9faf411be63de98013dd930330b035f4
   - path: assets/models/model.h5
-    md5: 50cd1ffd35e869b426f9461b12d8527d
+    md5: 6f3692300b1cefbd60df703c8deac76f
   - path: src/evaluate.py
     md5: d4ab1b0f9dd2876433f714b241b2b073
   params:
@@ -115,7 +115,7 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: d8da32726e3782240fb6fc0a73d56581
+    md5: 5a34f3403c30a5d07b24b1f75b05a3d2
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
