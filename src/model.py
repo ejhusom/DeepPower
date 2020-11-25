@@ -53,7 +53,7 @@ def cnn(input_x, input_y,
     model = models.Sequential()
     model.add(
         layers.Conv1D(
-            filters=64,
+            filters=32,
             kernel_size=kernel_size,
             activation="relu",
             input_shape=(input_x, input_y),

@@ -88,7 +88,7 @@ train:
   - path: assets/data/combined
     md5: f8082012b00c48263be974db71208101.dir
   - path: src/model.py
-    md5: 094b1cbf8ed146b43f99734e99e58cf3
+    md5: 5f777843a35572657e0c783a9e8fe12c
   - path: src/train.py
     md5: 5486ec74efba37920c2ca1d554bc46c8
   params:
@@ -100,14 +100,14 @@ train:
       train.weigh_samples: true
   outs:
   - path: assets/models
-    md5: b23540b70fb29250f0648b67994f1fc4.dir
+    md5: 8b77852e96467778e3194b75745d6d85.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
     md5: 9faf411be63de98013dd930330b035f4
   - path: assets/models/model.h5
-    md5: 02d26fd5b319d01fc22cf7c6c07af01b
+    md5: 2ab218a55b2bf552b530ad07983c1101
   - path: src/evaluate.py
     md5: d4ab1b0f9dd2876433f714b241b2b073
   params:
@@ -115,7 +115,7 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 734c8a967cbb0ab427ea9a56c6ab8a30
+    md5: a6f6267d0fe1e87a1f32fd8a699eb80c
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
