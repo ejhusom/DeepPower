@@ -41,12 +41,12 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: 97489db33629db84553b0341c569752a.dir
+    md5: a75f0af28b2f2487310ba4c8e76f7a20.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 152f3795e8466d7fc62d1e8bf1b41932.dir
+    md5: 3765dfc525af7e2379aa0f5faa6a6dbb.dir
   - path: src/sequentialize.py
     md5: 07fd329cca76a4c1d3d12210d81fbe3d
   params:
@@ -56,12 +56,12 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 0c230325e30e18d697f1ab7892ed1072.dir
+    md5: 7693955bd870e6360704a4d4992f5e6e.dir
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 97489db33629db84553b0341c569752a.dir
+    md5: a75f0af28b2f2487310ba4c8e76f7a20.dir
   - path: src/split.py
     md5: 777f78045a884ed1d9ce81aa46ef7489
   params:
@@ -69,12 +69,12 @@ split:
       split.train_split: 0.6
   outs:
   - path: assets/data/split
-    md5: 33c913b22ce12dac159558258d176b0a.dir
+    md5: ae98e6450f343aa4ff2c5dd516f6b775.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 33c913b22ce12dac159558258d176b0a.dir
+    md5: ae98e6450f343aa4ff2c5dd516f6b775.dir
   - path: src/scale.py
     md5: 70d36bb5ff3d61b878ac6150272491a9
   params:
@@ -82,12 +82,12 @@ scale:
       scale.method: minmax
   outs:
   - path: assets/data/scaled
-    md5: 152f3795e8466d7fc62d1e8bf1b41932.dir
+    md5: 3765dfc525af7e2379aa0f5faa6a6dbb.dir
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 2f0cce0ea1392b0705f8906a4d9ee66f.dir
+    md5: d6f20a9292e2bbf51b3152ba111314f0.dir
   - path: src/model.py
     md5: b8e5bba762f65c6d3ace582297e00afd
   - path: src/train.py
@@ -96,19 +96,19 @@ train:
     params.yaml:
       train.batch_size: 128
       train.kernel_size: 4
-      train.n_epochs: 1
+      train.n_epochs: 50
       train.net: cnn
       train.weigh_samples: true
   outs:
   - path: assets/models
-    md5: b556b5981b58ca171d8fd8111a6b55e1.dir
+    md5: 6a8fa5472f972c00b2239f7579acc851.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: aeaab67c7223ffe201db487d1c4a241c
+    md5: e3a76f0e4ab9d76a0d0c3fda071f507e
   - path: assets/models/model.h5
-    md5: 9bd4decf080cf7dbe83f3f1381c95474
+    md5: 416645a602e817f093bdd3a8f10e8d98
   - path: src/evaluate.py
     md5: d4ab1b0f9dd2876433f714b241b2b073
   params:
@@ -116,14 +116,14 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 0d708f0fffbca4a3764fba348acc4bbc
+    md5: 0bd95641dc78d5a44448b4e7a89842ac
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 0c230325e30e18d697f1ab7892ed1072.dir
+    md5: 7693955bd870e6360704a4d4992f5e6e.dir
   - path: src/combine.py
     md5: db0030dcff907c31992e4102b41223e6
   outs:
   - path: assets/data/combined
-    md5: 2f0cce0ea1392b0705f8906a4d9ee66f.dir
+    md5: d6f20a9292e2bbf51b3152ba111314f0.dir

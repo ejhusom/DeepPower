@@ -58,7 +58,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 1
+  n_epochs: 50
   batch_size: 128
   kernel_size: 4
   weigh_samples: True
