@@ -120,25 +120,25 @@ class DeepPowerHyperModel(HyperModel):
             )
         )
 
-        for i in range(hp.Int("num_conv1d_layers", 1, 3, default=1)):
-            model.add(layers.Conv1D(
-                filters=64,
-                # filters=hp.Int(
-                #     "filters_" + str(i),
-                #     min_value=32,
-                #     max_value=512,
-                #     step=32,
-                #     default=64), 
-                # kernel_size=hp.Int(
-                #     "kernel_size_" + str(i),
-                #     min_value=2,
-                #     max_value=6,
-                #     step=2,
-                #     default=4),
-                kernel_size=4,
-                activation="relu", 
-                name=f"conv1d_{i}"
-            ))
+        # for i in range(hp.Int("num_conv1d_layers", 1, 3, default=1)):
+        #     model.add(layers.Conv1D(
+        #         filters=64,
+        #         # filters=hp.Int(
+        #         #     "filters_" + str(i),
+        #         #     min_value=32,
+        #         #     max_value=512,
+        #         #     step=32,
+        #         #     default=64), 
+        #         # kernel_size=hp.Int(
+        #         #     "kernel_size_" + str(i),
+        #         #     min_value=2,
+        #         #     max_value=6,
+        #         #     step=2,
+        #         #     default=4),
+        #         kernel_size=4,
+        #         activation="relu", 
+        #         name=f"conv1d_{i}"
+        #     ))
 
         # model.add(layers.MaxPooling1D(pool_size=2, name="pool_1"))
         # model.add(layers.Dropout(rate=0.2))
