@@ -107,12 +107,13 @@ class DeepPowerHyperModel(HyperModel):
                     max_value=512,
                     step=32,
                     default=64),
-                kernel_size=hp.Int(
-                    "kernel_size",
-                    min_value=2,
-                    max_value=10,
-                    step=2,
-                    default=4),
+                # kernel_size=hp.Int(
+                #     "kernel_size",
+                #     min_value=2,
+                #     max_value=6,
+                #     step=2,
+                #     default=4),
+                kernel_size=4,
                 activation="relu",
                 name="input_layer"
             )
@@ -129,7 +130,7 @@ class DeepPowerHyperModel(HyperModel):
                 kernel_size=hp.Int(
                     "kernel_size_" + str(i),
                     min_value=2,
-                    max_value=10,
+                    max_value=6,
                     step=2,
                     default=4),
                 activation="relu", 

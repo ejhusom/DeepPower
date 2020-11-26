@@ -81,3 +81,4 @@ models
 
 # zip file for use in Colab
 colab.zip
+model_tuning/

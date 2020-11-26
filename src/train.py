@@ -59,19 +59,21 @@ def train(filepath):
 
     hypermodel = DeepPowerHyperModel(hist_size, n_features)
 
-    # hp = HyperParameters()
+    hp = HyperParameters()
 
     # hp.Choice("num_layers", values=[1, 2])
+    # hp.Fixed("kernel_size", value=4)
+    # hp.Fixed("kernel_size_0", value=4)
 
     tuner = RandomSearch(
             hypermodel,
             # hyperparameters=hp,
-            # tune_new_entries=False,
-            objective="loss",
+            # tune_new_entries=True,
+            objective="val_loss",
             max_trials=4,
             executions_per_trial=1,
-            directory="test",
-            project_name="YoMama"
+            directory="model_tuning",
+            project_name="DeepPower"
     )
 
     tuner.search_space_summary()
