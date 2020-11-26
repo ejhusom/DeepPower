@@ -68,7 +68,7 @@ def train(filepath):
             objective="val_loss",
             # max_trials=10,
             # min_epochs=20,
-            max_epochs=1,
+            max_epochs=50,
             executions_per_trial=2,
             directory="model_tuning",
             project_name="DeepPower"
