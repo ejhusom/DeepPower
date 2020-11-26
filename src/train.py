@@ -50,7 +50,7 @@ def train(filepath):
     sample_weights = np.ones_like(y_train)
 
     if params["weigh_samples"]:
-        sample_weights[y_train > params["weights_thresh"]] = params["weight"]
+        sample_weights[y_train > params["weight_thresh"]] = params["weight"]
 
     hist_size = X_train.shape[-2]
 
