@@ -63,6 +63,8 @@ train:
   batch_size: 128
   kernel_size: 4
   weigh_samples: True
+  weight_thresh: 250
+  weight: 1.5
 
 evaluate:
   smooth_targets: 0

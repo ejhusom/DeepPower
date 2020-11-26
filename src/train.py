@@ -24,8 +24,6 @@ from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
 from config import PLOTS_PATH
 from model import DeepPowerHyperModel, cnn, dnn, lstm, cnndnn
 
-
-
 def train(filepath):
     """Train model to estimate power.
 
@@ -39,7 +37,6 @@ def train(filepath):
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["train"]
     net = params["net"]
-    weigh_samples = params["weigh_samples"]
 
     # Load training set
     train = np.load(filepath)
@@ -52,15 +49,14 @@ def train(filepath):
     # Create sample weights
     sample_weights = np.ones_like(y_train)
 
-    if weigh_samples:
-        sample_weights[y_train > 300] = 1.5
+    if params["weigh_samples"]:
+        sample_weights[y_train > params["weights_thresh"]] = params["weight"]
 
     hist_size = X_train.shape[-2]
 
     hypermodel = DeepPowerHyperModel(hist_size, n_features)
 
     # hp = HyperParameters()
-
     # hp.Choice("num_layers", values=[1, 2])
     # hp.Fixed("kernel_size", value=4)
     # hp.Fixed("kernel_size_0", value=4)
@@ -85,7 +81,7 @@ def train(filepath):
         epochs=params["n_epochs"], 
         batch_size=params["batch_size"],
         validation_split=0.2,
-        # sample_weight=sample_weights
+        sample_weight=sample_weights
     )
 
     tuner.results_summary()
@@ -106,6 +102,7 @@ def train(filepath):
     model = tuner.get_best_models()[0]
 
     print(model.summary())
+
     model.save(MODELS_FILE_PATH)
 
     """
