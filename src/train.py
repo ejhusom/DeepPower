@@ -59,23 +59,23 @@ def train(filepath):
 
     hypermodel = DeepPowerHyperModel(hist_size, n_features)
 
-    hp = HyperParameters()
+    # hp = HyperParameters()
 
     # hp.Choice("num_layers", values=[1, 2])
     # hp.Fixed("kernel_size", value=4)
     # hp.Fixed("kernel_size_0", value=4)
 
-    tuner = RandomSearch(
+    tuner = Hyperband(
             hypermodel,
             # hyperparameters=hp,
             # tune_new_entries=True,
             objective="val_loss",
-            max_trials=10,
-            min_epochs=20,
+            # max_trials=10,
+            # min_epochs=20,
             max_epochs=50,
             executions_per_trial=2,
-            # directory="model_tuning",
-            # project_name="DeepPower"
+            directory="model_tuning",
+            project_name="DeepPower"
     )
 
     tuner.search_space_summary()
@@ -89,25 +89,24 @@ def train(filepath):
     )
 
     tuner.results_summary()
-    best_hyperparameters = tuner.get_best_hyperparameters(1)[0]
+    # best_hyperparameters = tuner.get_best_hyperparameters(1)[0]
 
-    model = tuner.hypermodel.build(best_hyperparameters)
+    # model = tuner.hypermodel.build(best_hyperparameters)
+
+    # print(model.summary())
+
+    # history = model.fit(
+    #     X_train, y_train, 
+    #     epochs=params["n_epochs"], 
+    #     batch_size=params["batch_size"],
+    #     validation_split=0.2,
+    #     sample_weight=sample_weights
+    # )
+
+    model = tuner.get_best_models()[0]
 
     print(model.summary())
-
-    history = model.fit(
-        X_train, y_train, 
-        epochs=params["n_epochs"], 
-        batch_size=params["batch_size"],
-        validation_split=0.2,
-        sample_weight=sample_weights
-    )
-
     model.save(MODELS_FILE_PATH)
-    # models = tuner.get_best_models()
-    # print(models)
-
-    # models[0].save(MODELS_FILE_PATH)
 
     """
     # Build model

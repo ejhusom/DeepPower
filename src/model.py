@@ -120,7 +120,7 @@ class DeepPowerHyperModel(HyperModel):
             )
         )
 
-        for i in range(hp.Int("num_layers", 1, 3, default=1)):
+        for i in range(hp.Int("num_conv1d_layers", 1, 3, default=1)):
             model.add(layers.Conv1D(
                 filters=64,
                 # filters=hp.Int(
@@ -144,15 +144,15 @@ class DeepPowerHyperModel(HyperModel):
         # model.add(layers.Dropout(rate=0.2))
         model.add(layers.Flatten(name="flatten"))
 
-        for i in range(hp.Int("num_layers", 1, 3, default=2)):
+        for i in range(hp.Int("num_dense_layers", 1, 3, default=2)):
             model.add(layers.Dense(
-                units=64,
-                # units=hp.Int(
-                #     "units_" + str(i),
-                #     min_value=32,
-                #     max_value=256,
-                #     step=32,
-                #     default=64), 
+                # units=64,
+                units=hp.Int(
+                    "units_" + str(i),
+                    min_value=32,
+                    max_value=256,
+                    step=32,
+                    default=64), 
                 activation="relu",
                 name=f"dense_{i}"
             ))
