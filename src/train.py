@@ -70,10 +70,12 @@ def train(filepath):
             # hyperparameters=hp,
             # tune_new_entries=True,
             objective="val_loss",
-            max_trials=4,
-            executions_per_trial=1,
-            directory="model_tuning",
-            project_name="DeepPower"
+            max_trials=10,
+            min_epochs=20,
+            max_epochs=50,
+            executions_per_trial=2,
+            # directory="model_tuning",
+            # project_name="DeepPower"
     )
 
     tuner.search_space_summary()
@@ -88,7 +90,6 @@ def train(filepath):
 
     tuner.results_summary()
     best_hyperparameters = tuner.get_best_hyperparameters(1)[0]
-    print(best_hyperparameters)
 
     model = tuner.hypermodel.build(best_hyperparameters)
 
