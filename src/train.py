@@ -13,6 +13,7 @@ Created:
 import sys
 import time
 
+from kerastuner.tuners import Hyperband, RandomSearch
 import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.utils import plot_model
@@ -20,7 +21,7 @@ import yaml
 
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
 from config import PLOTS_PATH
-from model import cnn, dnn, lstm, cnndnn
+from model import DeepPowerHyperModel, cnn, dnn, lstm, cnndnn
 
 
 
@@ -53,6 +54,32 @@ def train(filepath):
     if weigh_samples:
         sample_weights[y_train > 300] = 1.5
 
+    hist_size = X_train.shape[-2]
+
+    hypermodel = DeepPowerHyperModel(hist_size, n_features)
+
+    tuner = RandomSearch(
+            hypermodel,
+            objective="val_mse",
+            max_trials=3,
+            executions_per_trial=1,
+            my_dir="test",
+            project_name="YoMama"
+    )
+
+    tuner.search_space_summary()
+
+    tuner.search(
+        X_train, y_train, 
+        epochs=params["n_epochs"], 
+        batch_size=params["batch_size"],
+        validation_split=0.2,
+        sample_weight=sample_weights
+    )
+
+   tuner.results_summary()
+
+    """
     # Build model
     if net == "cnn":
         hist_size = X_train.shape[-2]
@@ -68,9 +95,10 @@ def train(filepath):
 
     print(model.summary())
 
+
     # Save a plot of the model
     plot_model(
-        model,
+        hypermodel.build,
         to_file=PLOTS_PATH / 'model.png',
         show_shapes=False,
         show_layer_names=True,
@@ -89,7 +117,6 @@ def train(filepath):
 
     time_id = time.strftime("%Y%m%d%H%M%S")
 
-    # model.save(MODELS_PATH / (time_id + ".h5"))
     model.save(MODELS_FILE_PATH)
 
     TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -104,7 +131,7 @@ def train(filepath):
     plt.plot(n_epochs, val_loss, label="Validation loss")
     plt.legend()
     plt.savefig(TRAININGLOSS_PLOT_PATH)
-    # plt.show()
+    """
 
 
 if __name__ == "__main__":

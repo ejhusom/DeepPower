@@ -316,30 +316,6 @@ def calculate_slope(data, shift=2, rolling_mean_window=1, absvalue=False):
 
     return slope
 
-def add_feature(df, name, feature_col):
-    """Adding a feature to the data set.
-
-    Args:
-        df (pandas DataFrame): Data frame to add features to.
-        name (str): What to call the new feature.
-        feature_col (array-like): The actual data to add to the input matrix.
-        add_to_hist_matrix (bool): Whether to use the feature in as historical
-            data, meaning that data points from previous time steps also will be
-            included in the input matrix. If set to True, only the current data
-            point will be used as input. Default=False.
-
-    Returns:
-        df (pandas DataFrame): Data frame with added features.
-
-    """
-
-    df[name] = feature_col
-
-    print("Feature added: {}".format(name))
-
-    return df
-
-
 if __name__ == "__main__":
 
     np.random.seed(2020)

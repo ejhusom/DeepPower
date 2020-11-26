@@ -9,15 +9,11 @@ Date:
     2020-09-16
 
 """
+from kerastuner import HyperModel
 from tensorflow.keras import layers
 from tensorflow.keras import models
 
-# Some older versions of Tensorflow do not support the set_seed function.
-# try:
 from tensorflow.random import set_seed
-# except:
-#     import tensorflow as tf
-
 
 def cnn(input_x, input_y, 
         n_steps_out=1, 
@@ -39,14 +35,7 @@ def cnn(input_x, input_y,
 
     """
 
-    # Some older versions of Tensorflow do not support the set_seed function.
-    # try:
     set_seed(seed)
-    # except:
-    #     try:
-    #         tf.random.set_seed(seed)
-    #     except:
-    #         print("Failed setting Tensorflow seed.")
 
     kernel_size = kernel_size
 
@@ -75,6 +64,100 @@ def cnn(input_x, input_y,
     model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
 
     return model
+
+
+class DeepPowerHyperModel(HyperModel):
+
+    def __init__(self, input_x, input_y, n_steps_out=1):
+        """Define size of model.
+
+        Args:
+            input_x (int): Number of time steps to include in each sample, i.e. how
+                much history is matched with a given target.
+            input_y (int): Number of features for each time step in the input data.
+            n_steps_out (int): Number of output steps.
+
+        """
+
+        self.input_x = input_x
+        self.input_y = input_y
+        self.n_steps_out = n_steps_out
+
+    def build(self, hp, seed=2020):
+        """Build model.
+
+        Args:
+            hp: HyperModel instance.
+            seed (int): Seed for random initialization of weights.
+
+        Returns:
+            model (keras model): Model to be trained.
+
+        """
+
+        set_seed(seed)
+
+        kernel_size = kernel_size
+
+        model = models.Sequential()
+        model.add(
+            layers.Conv1D(
+                input_shape=(self.input_x, self.input_y),
+                filters=hp.Int(
+                    "filters",
+                    min_value=32,
+                    max_value=512,
+                    step=32,
+                    default=64),
+                kernel_size=filters=hp.Int(
+                    "kernel_size",
+                    min_value=2,
+                    max_value=10,
+                    step=2,
+                    default=4),
+                activation="relu",
+                name="input_layer"
+            )
+        )
+
+        for i in range(hp.Int("num_layers", 1, 3, default=1)):
+            model.add(layers.Conv1D(
+                filters=hp.Int(
+                    "filters_" + str(i),
+                    min_value=32,
+                    max_value=512,
+                    step=32,
+                    default=64), 
+                kernel_size=hp.Int(
+                    "kernel_size_" + str(i),
+                    min_value=2,
+                    max_value=10,
+                    step=2,
+                    default=4),
+                activation="relu", 
+                name=f"conv1d_{i}"
+            ))
+
+        # model.add(layers.MaxPooling1D(pool_size=2, name="pool_1"))
+        # model.add(layers.Dropout(rate=0.2))
+        model.add(layers.Flatten(name="flatten"))
+
+        for i in range(hp.Int("num_layers", 1, 3, default=2)):
+            model.add(layers.Dense(units=hp.Int(
+                    "units_" + str(i),
+                    min_value=32,
+                    max_value=256,
+                    step=32,
+                    default=64), 
+                activation="relu",
+                name="dense_1"
+            ))
+
+        model.add(layers.Dense(self.n_steps_out, activation="linear",
+            name="output_layer"))
+        model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
+
+        return model
 
 def dnn(input_x, n_steps_out=1, seed=2020):
     """Define a DNN model architecture using Keras.
