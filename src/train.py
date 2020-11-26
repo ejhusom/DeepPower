@@ -63,7 +63,7 @@ def train(filepath):
             objective="val_mse",
             max_trials=3,
             executions_per_trial=1,
-            my_dir="test",
+            directory="test",
             project_name="YoMama"
     )
 
@@ -73,11 +73,11 @@ def train(filepath):
         X_train, y_train, 
         epochs=params["n_epochs"], 
         batch_size=params["batch_size"],
-        validation_split=0.2,
-        sample_weight=sample_weights
+        # validation_split=0.2,
+        # sample_weight=sample_weights
     )
 
-   tuner.results_summary()
+    tuner.results_summary()
 
     """
     # Build model

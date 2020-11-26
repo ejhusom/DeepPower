@@ -97,8 +97,6 @@ class DeepPowerHyperModel(HyperModel):
 
         set_seed(seed)
 
-        kernel_size = kernel_size
-
         model = models.Sequential()
         model.add(
             layers.Conv1D(
@@ -109,7 +107,7 @@ class DeepPowerHyperModel(HyperModel):
                     max_value=512,
                     step=32,
                     default=64),
-                kernel_size=filters=hp.Int(
+                kernel_size=hp.Int(
                     "kernel_size",
                     min_value=2,
                     max_value=10,

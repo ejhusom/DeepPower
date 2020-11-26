@@ -19,8 +19,8 @@ featurize:
     size: 8765032
     nfiles: 13
   - path: src/featurize.py
-    md5: 5b7ef4f30344f81bcfd64903272bea0a
-    size: 10118
+    md5: c3d36cc9d47c97e7d233236c1f032013
+    size: 9364
   params:
     params.yaml:
       featurize.breathing_max: 4096
