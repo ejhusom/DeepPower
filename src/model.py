@@ -116,7 +116,8 @@ class DeepPowerHyperModel(HyperModel):
                 #     default=4),
                 kernel_size=4,
                 activation="relu",
-                name="input_layer"
+                name="input_layer",
+                padding="same"
             )
         )
 
