@@ -13,10 +13,10 @@ from tensorflow.keras import layers
 from tensorflow.keras import models
 
 # Some older versions of Tensorflow do not support the set_seed function.
-try:
-    from tensorflow.random import set_seed
-except:
-    import tensorflow as tf
+# try:
+from tensorflow.random import set_seed
+# except:
+#     import tensorflow as tf
 
 
 def cnn(input_x, input_y, 
@@ -40,13 +40,13 @@ def cnn(input_x, input_y,
     """
 
     # Some older versions of Tensorflow do not support the set_seed function.
-    try:
-        set_seed(seed)
-    except:
-        try:
-            tf.random.set_seed(seed)
-        except:
-            print("Failed setting Tensorflow seed.")
+    # try:
+    set_seed(seed)
+    # except:
+    #     try:
+    #         tf.random.set_seed(seed)
+    #     except:
+    #         print("Failed setting Tensorflow seed.")
 
     kernel_size = kernel_size
 

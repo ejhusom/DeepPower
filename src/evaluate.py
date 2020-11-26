@@ -179,6 +179,8 @@ def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     if len(sys.argv) < 3:
         try:
             evaluate("assets/models/model.h5", "assets/data/combined/test.npz")

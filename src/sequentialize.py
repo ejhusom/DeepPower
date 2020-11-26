@@ -73,4 +73,6 @@ def sequentialize(filepaths):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     sequentialize(sys.argv[1:])

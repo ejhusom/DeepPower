@@ -55,4 +55,6 @@ def combine(filepaths):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     combine(sys.argv[1:])

@@ -14,7 +14,7 @@ featurize:
   - path: assets/data/restructured
     md5: 69770205e7b59bb9c1a3ec5be62d8ca6.dir
   - path: src/featurize.py
-    md5: e56f7c92a5cb82234a71ced7ecc27674
+    md5: 5b7ef4f30344f81bcfd64903272bea0a
   params:
     params.yaml:
       featurize.breathing_max: 4096
@@ -55,7 +55,7 @@ sequentialize:
   - path: assets/data/scaled
     md5: 6c96d3f641cd15c54ee5a8fccc71c170.dir
   - path: src/sequentialize.py
-    md5: 07fd329cca76a4c1d3d12210d81fbe3d
+    md5: 6c65e8104bba6964fda79415a50f1b4b
   params:
     params.yaml:
       sequentialize.hist_size: 100
@@ -70,7 +70,7 @@ split:
   - path: assets/data/featurized
     md5: 6cba969be553bf1a59b00b4513245cd3.dir
   - path: src/split.py
-    md5: 777f78045a884ed1d9ce81aa46ef7489
+    md5: c58db56cadcad1da6a2ef0c4790bba0d
   params:
     params.yaml:
       split.train_split: 0.6
@@ -83,7 +83,7 @@ scale:
   - path: assets/data/split
     md5: 46f7e1c7a0477af9e5d0d27428fed185.dir
   - path: src/scale.py
-    md5: 70d36bb5ff3d61b878ac6150272491a9
+    md5: a4c562c7441b634288aea397b26d50ec
   params:
     params.yaml:
       scale.method: robust
@@ -96,41 +96,41 @@ train:
   - path: assets/data/combined
     md5: 633d64ddecd7ca309490e722bd68b76c.dir
   - path: src/model.py
-    md5: 6f15cac61a478095cb0ad754a5f519a5
+    md5: 5c6a8142706084fb7a704f12ff7d653b
   - path: src/train.py
-    md5: 5486ec74efba37920c2ca1d554bc46c8
+    md5: d3839b5ebbe085d1541e607e9744accc
   params:
     params.yaml:
       train.batch_size: 128
       train.kernel_size: 8
-      train.n_epochs: 100
+      train.n_epochs: 1
       train.net: cnn
       train.weigh_samples: true
   outs:
   - path: assets/models
-    md5: 921bdc3206d7cb98c087987dc5993b3b.dir
+    md5: 8e6a6408a590685fc9dedb5fcce64927.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
     md5: b31500d21a06eec367a5ae6f26e6769c
   - path: assets/models/model.h5
-    md5: cf2bfdab9f9b6684492e1249ecbfad1c
+    md5: 958e3d40060519b627f52d797e9cd9d5
   - path: src/evaluate.py
-    md5: d4ab1b0f9dd2876433f714b241b2b073
+    md5: 21ab5ad84e6b48b4c074443c3df94232
   params:
     params.yaml:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 0fa645fc970eef1939b196a467e3b1a0
+    md5: b62b0f0b87ce49b294265e1ef8af6365
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
     md5: 6f7808bc8d4217d7512a68f00caee560.dir
   - path: src/combine.py
-    md5: db0030dcff907c31992e4102b41223e6
+    md5: 7fa83d562e697f7f2c2bc807af7ea4e1
   outs:
   - path: assets/data/combined
     md5: 633d64ddecd7ca309490e722bd68b76c.dir

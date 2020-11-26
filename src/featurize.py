@@ -342,4 +342,6 @@ def add_feature(df, name, feature_col):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     featurize(sys.argv[1:])

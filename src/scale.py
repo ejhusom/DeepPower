@@ -99,4 +99,6 @@ def scale(filepaths):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     scale(sys.argv[1:])

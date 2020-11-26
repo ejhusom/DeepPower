@@ -31,7 +31,7 @@ def train(filepath):
         filepath (str): Path to training set.
 
     """
-
+    
     MODELS_PATH.mkdir(parents=True, exist_ok=True)
 
     # Load parameters

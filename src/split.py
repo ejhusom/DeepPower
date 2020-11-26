@@ -62,4 +62,6 @@ def split(filepaths):
 
 if __name__ == "__main__":
 
+    np.random.seed(2020)
+
     split(sys.argv[1:])
