@@ -24,7 +24,15 @@ featurize:
       - calories
       featurize.diff_targets: 0
       featurize.features:
+      - ribcage_range
+      - abdomen_range
+      - ribcage_gradient
       - abdomen_gradient
+      - heartrate_gradient
+      - ribcage_frequency
+      - abdomen_frequency
+      - ribcage_slope
+      - abdomen_slope
       - ribcage_slope_cyclic
       - abdomen_slope_cyclic
       featurize.heartrate_max: 185
@@ -40,12 +48,12 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: f70eb737fa0bda36f0d04c96b8482fbe.dir
+    md5: 6cba969be553bf1a59b00b4513245cd3.dir
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 80f366dc0215c295e36d0759b4d9a161.dir
+    md5: 6c96d3f641cd15c54ee5a8fccc71c170.dir
   - path: src/sequentialize.py
     md5: 07fd329cca76a4c1d3d12210d81fbe3d
   params:
@@ -55,12 +63,12 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 44a1ca41befc1c2f01e893bcbf9b4603.dir
+    md5: 6f7808bc8d4217d7512a68f00caee560.dir
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: f70eb737fa0bda36f0d04c96b8482fbe.dir
+    md5: 6cba969be553bf1a59b00b4513245cd3.dir
   - path: src/split.py
     md5: 777f78045a884ed1d9ce81aa46ef7489
   params:
@@ -68,12 +76,12 @@ split:
       split.train_split: 0.6
   outs:
   - path: assets/data/split
-    md5: 52a075b96f8654ff47f46203c9dbfa7c.dir
+    md5: 46f7e1c7a0477af9e5d0d27428fed185.dir
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 52a075b96f8654ff47f46203c9dbfa7c.dir
+    md5: 46f7e1c7a0477af9e5d0d27428fed185.dir
   - path: src/scale.py
     md5: 70d36bb5ff3d61b878ac6150272491a9
   params:
@@ -81,33 +89,33 @@ scale:
       scale.method: robust
   outs:
   - path: assets/data/scaled
-    md5: 80f366dc0215c295e36d0759b4d9a161.dir
+    md5: 6c96d3f641cd15c54ee5a8fccc71c170.dir
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: f8082012b00c48263be974db71208101.dir
+    md5: 633d64ddecd7ca309490e722bd68b76c.dir
   - path: src/model.py
-    md5: 5f777843a35572657e0c783a9e8fe12c
+    md5: 6f15cac61a478095cb0ad754a5f519a5
   - path: src/train.py
     md5: 5486ec74efba37920c2ca1d554bc46c8
   params:
     params.yaml:
       train.batch_size: 128
-      train.kernel_size: 6
-      train.n_epochs: 50
+      train.kernel_size: 8
+      train.n_epochs: 100
       train.net: cnn
       train.weigh_samples: true
   outs:
   - path: assets/models
-    md5: 8b77852e96467778e3194b75745d6d85.dir
+    md5: 921bdc3206d7cb98c087987dc5993b3b.dir
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: 9faf411be63de98013dd930330b035f4
+    md5: b31500d21a06eec367a5ae6f26e6769c
   - path: assets/models/model.h5
-    md5: 2ab218a55b2bf552b530ad07983c1101
+    md5: cf2bfdab9f9b6684492e1249ecbfad1c
   - path: src/evaluate.py
     md5: d4ab1b0f9dd2876433f714b241b2b073
   params:
@@ -115,14 +123,14 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: a6f6267d0fe1e87a1f32fd8a699eb80c
+    md5: 0fa645fc970eef1939b196a467e3b1a0
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 44a1ca41befc1c2f01e893bcbf9b4603.dir
+    md5: 6f7808bc8d4217d7512a68f00caee560.dir
   - path: src/combine.py
     md5: db0030dcff907c31992e4102b41223e6
   outs:
   - path: assets/data/combined
-    md5: f8082012b00c48263be974db71208101.dir
+    md5: 633d64ddecd7ca309490e722bd68b76c.dir

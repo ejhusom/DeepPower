@@ -9,14 +9,15 @@ featurize:
   features:
     # - ribcage_min
     # - ribcage_max
-    # - ribcage_range
-    # - abdomen_range - ribcage_gradient
+    - ribcage_range
+    - abdomen_range 
+    - ribcage_gradient
     - abdomen_gradient
-    # - heartrate_gradient
-    # - ribcage_frequency
-    # - abdomen_frequency
-    # - ribcage_slope
-    # - abdomen_slope
+    - heartrate_gradient
+    - ribcage_frequency
+    - abdomen_frequency
+    - ribcage_slope
+    - abdomen_slope
     - ribcage_slope_cyclic
     - abdomen_slope_cyclic
     # - heartrate_slope_cyclic
@@ -58,9 +59,9 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 50
+  n_epochs: 100
   batch_size: 128
-  kernel_size: 6
+  kernel_size: 8
   weigh_samples: True
 
 evaluate:
