@@ -148,7 +148,7 @@ class DeepPowerHyperModel(HyperModel):
                     step=32,
                     default=64), 
                 activation="relu",
-                name="dense_1"
+                name=f"dense_{i}"
             ))
 
         model.add(layers.Dense(self.n_steps_out, activation="linear",

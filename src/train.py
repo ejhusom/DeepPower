@@ -13,6 +13,7 @@ Created:
 import sys
 import time
 
+from kerastuner import HyperParameters
 from kerastuner.tuners import Hyperband, RandomSearch
 import matplotlib.pyplot as plt
 import numpy as np
@@ -58,10 +59,16 @@ def train(filepath):
 
     hypermodel = DeepPowerHyperModel(hist_size, n_features)
 
+    # hp = HyperParameters()
+
+    # hp.Choice("num_layers", values=[1, 2])
+
     tuner = RandomSearch(
             hypermodel,
-            objective="val_mse",
-            max_trials=3,
+            # hyperparameters=hp,
+            # tune_new_entries=False,
+            objective="loss",
+            max_trials=4,
             executions_per_trial=1,
             directory="test",
             project_name="YoMama"
@@ -73,11 +80,15 @@ def train(filepath):
         X_train, y_train, 
         epochs=params["n_epochs"], 
         batch_size=params["batch_size"],
-        # validation_split=0.2,
+        validation_split=0.2,
         # sample_weight=sample_weights
     )
 
     tuner.results_summary()
+
+    models = tuner.get_best_models(num_models=1)
+
+    models[0].save(MODELS_FILE_PATH)
 
     """
     # Build model
@@ -114,8 +125,6 @@ def train(filepath):
         validation_split=0.2,
         sample_weight=sample_weights
     )
-
-    time_id = time.strftime("%Y%m%d%H%M%S")
 
     model.save(MODELS_FILE_PATH)
 
