@@ -87,10 +87,26 @@ def train(filepath):
     )
 
     tuner.results_summary()
+    best_hyperparameters = tuner.get_best_hyperparameters(1)[0]
+    print(best_hyperparameters)
 
-    models = tuner.get_best_models(num_models=1)
+    model = tuner.hypermodel.build(best_hyperparameters)
 
-    models[0].save(MODELS_FILE_PATH)
+    print(model.summary())
+
+    history = model.fit(
+        X_train, y_train, 
+        epochs=params["n_epochs"], 
+        batch_size=params["batch_size"],
+        validation_split=0.2,
+        sample_weight=sample_weights
+    )
+
+    model.save(MODELS_FILE_PATH)
+    # models = tuner.get_best_models()
+    # print(models)
+
+    # models[0].save(MODELS_FILE_PATH)
 
     """
     # Build model

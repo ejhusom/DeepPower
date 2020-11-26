@@ -101,12 +101,13 @@ class DeepPowerHyperModel(HyperModel):
         model.add(
             layers.Conv1D(
                 input_shape=(self.input_x, self.input_y),
-                filters=hp.Int(
-                    "filters",
-                    min_value=32,
-                    max_value=512,
-                    step=32,
-                    default=64),
+                filters=64,
+                # filters=hp.Int(
+                #     "filters",
+                #     min_value=32,
+                #     max_value=512,
+                #     step=32,
+                #     default=64),
                 # kernel_size=hp.Int(
                 #     "kernel_size",
                 #     min_value=2,
@@ -121,18 +122,20 @@ class DeepPowerHyperModel(HyperModel):
 
         for i in range(hp.Int("num_layers", 1, 3, default=1)):
             model.add(layers.Conv1D(
-                filters=hp.Int(
-                    "filters_" + str(i),
-                    min_value=32,
-                    max_value=512,
-                    step=32,
-                    default=64), 
-                kernel_size=hp.Int(
-                    "kernel_size_" + str(i),
-                    min_value=2,
-                    max_value=6,
-                    step=2,
-                    default=4),
+                filters=64,
+                # filters=hp.Int(
+                #     "filters_" + str(i),
+                #     min_value=32,
+                #     max_value=512,
+                #     step=32,
+                #     default=64), 
+                # kernel_size=hp.Int(
+                #     "kernel_size_" + str(i),
+                #     min_value=2,
+                #     max_value=6,
+                #     step=2,
+                #     default=4),
+                kernel_size=4,
                 activation="relu", 
                 name=f"conv1d_{i}"
             ))
@@ -142,12 +145,14 @@ class DeepPowerHyperModel(HyperModel):
         model.add(layers.Flatten(name="flatten"))
 
         for i in range(hp.Int("num_layers", 1, 3, default=2)):
-            model.add(layers.Dense(units=hp.Int(
-                    "units_" + str(i),
-                    min_value=32,
-                    max_value=256,
-                    step=32,
-                    default=64), 
+            model.add(layers.Dense(
+                units=64,
+                # units=hp.Int(
+                #     "units_" + str(i),
+                #     min_value=32,
+                #     max_value=256,
+                #     step=32,
+                #     default=64), 
                 activation="relu",
                 name=f"dense_{i}"
             ))
