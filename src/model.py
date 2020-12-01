@@ -114,7 +114,7 @@ class DeepPowerHyperModel(HyperModel):
                 #     max_value=6,
                 #     step=2,
                 #     default=4),
-                kernel_size=4,
+                kernel_size=6,
                 activation="relu",
                 name="input_layer",
                 padding="same"
@@ -136,7 +136,7 @@ class DeepPowerHyperModel(HyperModel):
                 #     max_value=6,
                 #     step=2,
                 #     default=4),
-                kernel_size=4,
+                kernel_size=6,
                 activation="relu", 
                 name=f"conv1d_{i}"
             ))
