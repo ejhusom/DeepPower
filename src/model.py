@@ -104,8 +104,8 @@ class DeepPowerHyperModel(HyperModel):
                 # filters=64,
                 filters=hp.Int(
                     "filters",
-                    min_value=32,
-                    max_value=512,
+                    min_value=16,
+                    max_value=256,
                     step=32,
                     default=64),
                 # kernel_size=hp.Int(
@@ -126,8 +126,8 @@ class DeepPowerHyperModel(HyperModel):
                 # filters=64,
                 filters=hp.Int(
                     "filters_" + str(i),
-                    min_value=32,
-                    max_value=512,
+                    min_value=16,
+                    max_value=256,
                     step=32,
                     default=64), 
                 # kernel_size=hp.Int(
