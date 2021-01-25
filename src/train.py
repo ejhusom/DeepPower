@@ -20,6 +20,7 @@ import numpy as np
 from tensorflow.keras.utils import plot_model
 import yaml
 
+from autoencoder import Autoencoder
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
 from config import PLOTS_PATH
 from model import DeepPowerHyperModel, cnn, dnn, lstm, cnndnn
@@ -37,12 +38,26 @@ def train(filepath):
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["train"]
     net = params["net"]
+    autoencode = params["autoencode"]
 
     # Load training set
     train = np.load(filepath)
 
     X_train = train["X"]
     y_train = train["y"]
+
+
+    if autoencode:
+        test = np.load("assets/data/combined/test.npz")
+        X_test = test["X"]
+
+        autoencoder = Autoencoder(X_train, X_test)
+        autoencoder.train()
+        autoencoder.test()
+        X_train, X_test = autoencoder.encode_inputs()
+        # X_train, X_test = autoencoder.denoise_inputs()
+        autoencoder.encoder.save(MODELS_PATH / "encoder.h5")
+        net = "dnn"
 
     n_features = X_train.shape[-1]
 
@@ -54,6 +69,7 @@ def train(filepath):
 
     hist_size = X_train.shape[-2]
 
+    """
     hypermodel = DeepPowerHyperModel(hist_size, n_features)
 
     # hp = HyperParameters()
@@ -104,8 +120,8 @@ def train(filepath):
     print(model.summary())
 
     model.save(MODELS_FILE_PATH)
-
     """
+
     # Build model
     if net == "cnn":
         hist_size = X_train.shape[-2]
@@ -124,7 +140,7 @@ def train(filepath):
 
     # Save a plot of the model
     plot_model(
-        hypermodel.build,
+        model,
         to_file=PLOTS_PATH / 'model.png',
         show_shapes=False,
         show_layer_names=True,
@@ -155,7 +171,7 @@ def train(filepath):
     plt.plot(n_epochs, val_loss, label="Validation loss")
     plt.legend()
     plt.savefig(TRAININGLOSS_PLOT_PATH)
-    """
+
 
 
 if __name__ == "__main__":

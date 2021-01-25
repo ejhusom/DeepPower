@@ -21,6 +21,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from tensorflow.keras import models
 import yaml
 
+from autoencoder import Autoencoder
 from config import METRICS_FILE_PATH, PLOTS_PATH, PREDICTION_PLOT_PATH, DATA_PATH
 
 
@@ -38,11 +39,17 @@ def evaluate(model_filepath, test_filepath):
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["evaluate"]
     smooth_targets = params["smooth_targets"]
+    params_train = yaml.safe_load(open("params.yaml"))["train"]
+    autoencode = params_train["autoencode"]
 
     test = np.load(test_filepath)
 
     X_test = test["X"]
     y_test = test["y"]
+
+    if autoencode:
+        encoder = models.load_model("assets/models/encoder.h5")
+        X_test = encoder.predict(X_test)
 
     model = models.load_model(model_filepath)
 
