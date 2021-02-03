@@ -15,10 +15,12 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from preprocess_utils import read_csv, move_column
 
-def visualize(stage="restructured"):
+def visualize(stage="restructured", backend="plotly"):
     """Visualize data set.
 
     Args:
@@ -32,6 +34,9 @@ def visualize(stage="restructured"):
 
     filepaths = os.listdir(data_dir)
 
+    if backend == "plotly":
+        pd.options.plotting.backend = "plotly"
+
     for filepath in filepaths:
 
         filepath = data_dir + filepath
@@ -39,10 +44,11 @@ def visualize(stage="restructured"):
         # Read csv, and delete specified columns
         df = pd.read_csv(filepath, index_col=0)
 
-        df.plot()
-        plt.title(filepath)
-        plt.show()
+        fig = df.plot()
 
+        # plt.title(filepath)
+        # plt.show()
+        fig.show()
 
 if __name__ == '__main__':
 
