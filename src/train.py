@@ -131,7 +131,8 @@ def train(filepath):
     elif net == "dnn":
         model = dnn(n_features)
     elif net == "lstm":
-        pass
+        hist_size = X_train.shape[-2]
+        model = lstm(hist_size, n_features)
     elif net == "cnndnn":
         pass
 

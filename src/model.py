@@ -207,7 +207,7 @@ def lstm(hist_size, n_features, n_steps_out=1):
     # model.add(layers.LSTM(16, activation='relu'))
     # model.add(layers.Dense(n_steps_out, activation='linear'))
     model.add(layers.Dense(n_steps_out))
-    model.compile(optimizer='adam', loss='mae', metrics=['mean_absolute_error'])
+    model.compile(optimizer='adam', loss='mse', metrics=['mean_absolute_error'])
 
     return model
 
