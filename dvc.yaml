@@ -1,5 +1,6 @@
 stages:
 
+
   restructure:
     cmd: python3 src/restructure.py assets/data/raw/*.csv
     deps:
