@@ -264,8 +264,12 @@ def restructure(filepaths, show=False, output=None):
                 merged_dfs = merged_dfs.merge(df, on="time", how="outer", sort=True)
                 merged_dfs.rename(columns={"value": df_name}, inplace=True)
 
-        # Drop all rows where we do not have power data
-        merged_dfs = merged_dfs[merged_dfs["power"].notna()]
+        if "rest" in filepath:
+            # If the file is recorded under rest, set all power values to zero
+            merged_dfs["power"] = 0
+        else:
+            # Drop all rows where we do not have power data
+            merged_dfs = merged_dfs[merged_dfs["power"].notna()]
 
         # Plot resulting dataframe.
         if show:
