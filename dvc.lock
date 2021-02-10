@@ -34,6 +34,7 @@ featurize:
       featurize.features:
       - ribcage_gradient
       - abdomen_gradient
+      - heartrate_gradient
       - ribcage_slope_cyclic
       - abdomen_slope_cyclic
       - heartrate_slope_cyclic
@@ -50,15 +51,15 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: 0426f1f7408f857f1ecae245df92c18d.dir
-    size: 39741158
+    md5: 2294cb5f5991fe05e5d09930379bb80b.dir
+    size: 41191800
     nfiles: 18
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 0426f1f7408f857f1ecae245df92c18d.dir
-    size: 39741158
+    md5: 2294cb5f5991fe05e5d09930379bb80b.dir
+    size: 41191800
     nfiles: 18
   - path: src/split.py
     md5: 8054ea3b1160aba800218ded05d9eb38
@@ -68,15 +69,15 @@ split:
       split.train_split: 0.7
   outs:
   - path: assets/data/split
-    md5: 70b7e3af525a1cff5652b6291363e3e6.dir
-    size: 39662817
+    md5: ace6fd3407115a4498e65f2f58fdecc8.dir
+    size: 41122571
     nfiles: 18
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 70b7e3af525a1cff5652b6291363e3e6.dir
-    size: 39662817
+    md5: ace6fd3407115a4498e65f2f58fdecc8.dir
+    size: 41122571
     nfiles: 18
   - path: src/scale.py
     md5: a4c562c7441b634288aea397b26d50ec
@@ -86,15 +87,15 @@ scale:
       scale.method: robust
   outs:
   - path: assets/data/scaled
-    md5: 892f15553fb136d9ee1d657796d01ebd.dir
-    size: 22286420
+    md5: 740c5c1aafb4a26486b8f2e18602fb46.dir
+    size: 24514180
     nfiles: 18
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 892f15553fb136d9ee1d657796d01ebd.dir
-    size: 22286420
+    md5: 740c5c1aafb4a26486b8f2e18602fb46.dir
+    size: 24514180
     nfiles: 18
   - path: src/sequentialize.py
     md5: 6c65e8104bba6964fda79415a50f1b4b
@@ -106,30 +107,30 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: affe6195ab1c64e3c8358feb2fc08429.dir
-    size: 1994246180
+    md5: a12c6edd26c0c72549e5892c30c69e7d.dir
+    size: 2215582180
     nfiles: 18
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: affe6195ab1c64e3c8358feb2fc08429.dir
-    size: 1994246180
+    md5: a12c6edd26c0c72549e5892c30c69e7d.dir
+    size: 2215582180
     nfiles: 18
   - path: src/combine.py
     md5: 7fa83d562e697f7f2c2bc807af7ea4e1
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: ae0e171f18b1e9c18c0af0f4d2106c19.dir
-    size: 1994238340
+    md5: cbffb7f600f8b3cf06fb42f57e9d5325.dir
+    size: 2215574340
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: ae0e171f18b1e9c18c0af0f4d2106c19.dir
-    size: 1994238340
+    md5: cbffb7f600f8b3cf06fb42f57e9d5325.dir
+    size: 2215574340
     nfiles: 2
   - path: src/autoencoder.py
     md5: 19a7245addaed8a5a78f39d3fef05355
@@ -150,18 +151,18 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 5262c5c864ecc2c1fe98cd5561f32ad5.dir
-    size: 9145960
+    md5: 960e55ee8597a8f35cb6dc0eae4690b7.dir
+    size: 9150568
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: a2e89d19afc944168451329e32118b2c
-    size: 532455450
+    md5: 8da7d1b0cb758f28681c35feaba1585e
+    size: 591551450
   - path: assets/models/model.h5
-    md5: 34528fba818d6196f53be4acebd90309
-    size: 9145960
+    md5: 1239e47226b20a87cbb53988fe05d2bb
+    size: 9150568
   - path: src/evaluate.py
     md5: 08525d9f37321dbe8aaaa55d5441b93f
     size: 6197
@@ -170,5 +171,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: abefdf4d6e8f7f6821ee14cf17abc509
+    md5: 0cb288448a680c07ac6becbee897e1a2
     size: 27

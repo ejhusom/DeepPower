@@ -13,7 +13,7 @@ featurize:
     # - abdomen_range 
     - ribcage_gradient
     - abdomen_gradient
-    # - heartrate_gradient
+    - heartrate_gradient
     # - ribcage_frequency
     # - abdomen_frequency
     # - ribcage_slope
