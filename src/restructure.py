@@ -266,6 +266,10 @@ def restructure(filepaths, show=False, output=None):
 
         if "rest" in filepath:
             # If the file is recorded under rest, set all power values to zero
+            # Must first delete all rows were we do not have all other data
+            merged_dfs = merged_dfs[merged_dfs["heartrate"].notna()]
+            merged_dfs = merged_dfs[merged_dfs["ribcage"].notna()]
+            merged_dfs = merged_dfs[merged_dfs["abdomen"].notna()]
             merged_dfs["power"] = 0
         else:
             # Drop all rows where we do not have power data
