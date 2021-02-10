@@ -61,8 +61,8 @@ train:
   net: cnn
   n_epochs: 50
   batch_size: 128
-  kernel_size: 6
-  weigh_samples: True
+  kernel_size: 8
+  weigh_samples: False
   weight_thresh: 250
   weight: 1.5
   autoencode: False
