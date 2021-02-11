@@ -28,9 +28,9 @@ featurize:
     - ribcage
     - abdomen
     # - heartrate
-  breathing_min: 0
+  breathing_min: 500
   breathing_max: 4096
-  heartrate_min: 0
+  heartrate_min: 35
   heartrate_max: 185
   scale: True
   range_window: 50
