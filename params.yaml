@@ -30,7 +30,7 @@ featurize:
     # - heartrate
   breathing_min: 0
   breathing_max: 4096
-  heartrate_min: 35
+  heartrate_min: 0
   heartrate_max: 185
   scale: True
   range_window: 50
@@ -47,7 +47,7 @@ split:
   train_split: 0.7
 
 scale:
-  method: minmax
+  method: none
 
 sequentialize:
   # History window size in deciseconds
