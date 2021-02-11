@@ -47,6 +47,8 @@ def scale(filepaths):
         scaler = MinMaxScaler()
     elif method == "robust":
         scaler = RobustScaler()
+    elif method == "none":
+        scaler = StandardScaler()
     else:
         raise NotImplementedError(f"{scaler_type} not implemented.")
 
@@ -82,7 +84,10 @@ def scale(filepaths):
     for filepath in data_overview:
 
         # Scale inputs
-        X = scaler.transform(data_overview[filepath]["X"])
+        if method == "none":
+            X=data_overview[filepath]["X"]
+        else:
+            X = scaler.transform(data_overview[filepath]["X"])
 
         # Save X and y into a binary file
         np.savez(
@@ -95,7 +100,7 @@ def scale(filepaths):
             ),
             #X=data_overview[filepath]["X"],
             X = X, 
-            y=data_overview[filepath]["y"]
+            y = data_overview[filepath]["y"]
         )
 
 if __name__ == "__main__":
