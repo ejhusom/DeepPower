@@ -93,7 +93,8 @@ def scale(filepaths):
                     data_overview[filepath]["category"] + "-scaled.npz"
                 )
             ),
-            X=data_overview[filepath]["X"],
+            #X=data_overview[filepath]["X"],
+            X = X, 
             y=data_overview[filepath]["y"]
         )
 
