@@ -49,6 +49,7 @@ split:
 scale:
   method: standard
 
+
 sequentialize:
   # History window size in deciseconds
   hist_size: 90
