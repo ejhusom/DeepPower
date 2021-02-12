@@ -47,31 +47,10 @@ def split(filepaths):
     training_files = filepaths[:file_split]
     test_files = filepaths[file_split:]
 
-    from_test_to_training_files = []
-
-    # Check for rest data files
     for f in test_files:
         if "-rest-" in f:
-            from_test_to_training_files.append(f)
-
-    # Move some files to test set 
-    for i in range(len(from_test_to_training_files)):
-        test_files.append(training_files[-1])
-        training_files.remove(training_files[-1])
-
-    # Move rest data files to training set
-    for f in from_test_to_training_files:
-        training_files.append(f)
-        test_files.remove(f)
-
-    # print("_______________________________________")
-    # print("TRAINING")
-    # for f in training_files:
-    #     print(f)
-
-    # print("TEST")
-    # for f in test_files:
-    #     print(f)
+            training_files.append(f)
+            test_files.remove(f)
 
     for filepath in filepaths:
 
