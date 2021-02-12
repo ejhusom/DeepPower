@@ -45,11 +45,17 @@ def split(filepaths):
     training_files = filepaths[:file_split]
     test_files = filepaths[file_split:]
 
+    from_test_to_training_files = []
+
     for f in test_files:
+        print(f)
         if "-rest-" in f:
+            #print(f)
             training_files.append(f)
             test_files.remove(f)
 
+    #print(training_files)
+    #print(test_files)
     for filepath in filepaths:
 
         df, index = read_csv(filepath)
