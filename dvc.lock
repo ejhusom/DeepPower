@@ -32,6 +32,8 @@ featurize:
       - calories
       featurize.diff_targets: 0
       featurize.features:
+      - ribcage_range
+      - abdomen_range
       - ribcage_gradient
       - abdomen_gradient
       - ribcage_frequency
@@ -52,15 +54,15 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: b7a62a268095765dd72a848209d2f416.dir
-    size: 49792196
+    md5: 160bfd26ce78c116a4ac8d5d6e602a85.dir
+    size: 58092381
     nfiles: 18
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: b7a62a268095765dd72a848209d2f416.dir
-    size: 49792196
+    md5: 160bfd26ce78c116a4ac8d5d6e602a85.dir
+    size: 58092381
     nfiles: 18
   - path: src/split.py
     md5: 8054ea3b1160aba800218ded05d9eb38
@@ -70,33 +72,33 @@ split:
       split.train_split: 0.7
   outs:
   - path: assets/data/split
-    md5: 8a977e9b369ffb9c8f9519f3163c0d13.dir
-    size: 49446632
+    md5: 963e21ee8159ece59a7859dc0f3480fa.dir
+    size: 57742753
     nfiles: 18
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 8a977e9b369ffb9c8f9519f3163c0d13.dir
-    size: 49446632
+    md5: 963e21ee8159ece59a7859dc0f3480fa.dir
+    size: 57742753
     nfiles: 18
   - path: src/scale.py
     md5: 87ad0101b147db4a28075de27fe30522
     size: 2698
   params:
     params.yaml:
-      scale.method: robust
+      scale.method: standard
   outs:
   - path: assets/data/scaled
-    md5: cdfa22edbf3a80cb27966c33ea7b30b3.dir
-    size: 26572596
+    md5: a4b5daac785dbd5dc7ef954b7a74d9ce.dir
+    size: 30999892
     nfiles: 18
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: cdfa22edbf3a80cb27966c33ea7b30b3.dir
-    size: 26572596
+    md5: a4b5daac785dbd5dc7ef954b7a74d9ce.dir
+    size: 30999892
     nfiles: 18
   - path: src/sequentialize.py
     md5: 6c65e8104bba6964fda79415a50f1b4b
@@ -108,30 +110,30 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: b6c6f70beafb9c8afac4fa3922a5641f.dir
-    size: 2180890628
+    md5: c14dad195deff5867e384994a9c4d022.dir
+    size: 2577014468
     nfiles: 18
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: b6c6f70beafb9c8afac4fa3922a5641f.dir
-    size: 2180890628
+    md5: c14dad195deff5867e384994a9c4d022.dir
+    size: 2577014468
     nfiles: 18
   - path: src/combine.py
     md5: 7fa83d562e697f7f2c2bc807af7ea4e1
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: d81c501dcdf89a50bd61abd75ef70455.dir
-    size: 2180882788
+    md5: cd6466dfd383a7e607e0abbce9ac2b1c.dir
+    size: 2577006628
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: d81c501dcdf89a50bd61abd75ef70455.dir
-    size: 2180882788
+    md5: cd6466dfd383a7e607e0abbce9ac2b1c.dir
+    size: 2577006628
     nfiles: 2
   - path: src/autoencoder.py
     md5: 19a7245addaed8a5a78f39d3fef05355
@@ -152,18 +154,18 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 1ff3924347c483408cc9d74730d15555.dir
-    size: 7987648
+    md5: c7c916a5a3ce8cdade8c000e2cbfa99c.dir
+    size: 7996864
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: d494d59186e4a01ef78b6478e54d71fb
-    size: 582153530
+    md5: 0399c35c70811ce76e98caea02716c55
+    size: 687892730
   - path: assets/models/model.h5
-    md5: 47bdd2d9c6c89d5ff85d67aebafcb07a
-    size: 7987648
+    md5: 8bab375ae5bbdf6becc3d97635f7c2a8
+    size: 7996864
   - path: src/evaluate.py
     md5: 08525d9f37321dbe8aaaa55d5441b93f
     size: 6197
@@ -172,5 +174,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: a20c07e5fe4f989877e968586d5df501
-    size: 25
+    md5: 32073c3d9517a5dbb97cca4bd46affbf
+    size: 26

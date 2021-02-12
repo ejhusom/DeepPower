@@ -9,8 +9,8 @@ featurize:
   features:
     # - ribcage_min
     # - ribcage_max
-    # - ribcage_range
-    # - abdomen_range 
+    - ribcage_range
+    - abdomen_range 
     - ribcage_gradient
     - abdomen_gradient
     # - heartrate_gradient
@@ -47,7 +47,7 @@ split:
   train_split: 0.7
 
 scale:
-  method: robust
+  method: standard
 
 
 sequentialize:
