@@ -51,9 +51,9 @@ def cnn(input_x, input_y,
     )
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
         activation="elu", name="conv1d_1"))
+    model.add(layers.Dropout(rate=0.2))
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
         activation="relu", name="conv1d_2"))
-    model.add(layers.MaxPooling1D(pool_size=2, name="pool_1"))
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
         activation="relu", name="conv1d_3"))
     # model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
