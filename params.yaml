@@ -47,7 +47,7 @@ split:
   train_split: 0.7
 
 scale:
-  method: minmax
+  method: standard
 
 sequentialize:
   # History window size in deciseconds
