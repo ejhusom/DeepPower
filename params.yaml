@@ -47,7 +47,7 @@ split:
   train_split: 0.7
 
 scale:
-  method: standard
+  method: robust
 
 
 sequentialize:

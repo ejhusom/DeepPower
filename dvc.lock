@@ -85,17 +85,17 @@ scale:
     size: 2698
   params:
     params.yaml:
-      scale.method: standard
+      scale.method: robust
   outs:
   - path: assets/data/scaled
-    md5: e6032829c3e8a88b23840aee8dffbced.dir
+    md5: cdfa22edbf3a80cb27966c33ea7b30b3.dir
     size: 26572596
     nfiles: 18
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: e6032829c3e8a88b23840aee8dffbced.dir
+    md5: cdfa22edbf3a80cb27966c33ea7b30b3.dir
     size: 26572596
     nfiles: 18
   - path: src/sequentialize.py
@@ -108,14 +108,14 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 60ddd4c55bd4e769a7bfc4e566767898.dir
+    md5: b6c6f70beafb9c8afac4fa3922a5641f.dir
     size: 2180890628
     nfiles: 18
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 60ddd4c55bd4e769a7bfc4e566767898.dir
+    md5: b6c6f70beafb9c8afac4fa3922a5641f.dir
     size: 2180890628
     nfiles: 18
   - path: src/combine.py
@@ -123,14 +123,14 @@ combine:
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: a36766e7d1e8d4a311f5316e8f3239ae.dir
+    md5: d81c501dcdf89a50bd61abd75ef70455.dir
     size: 2180882788
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: a36766e7d1e8d4a311f5316e8f3239ae.dir
+    md5: d81c501dcdf89a50bd61abd75ef70455.dir
     size: 2180882788
     nfiles: 2
   - path: src/autoencoder.py
@@ -152,17 +152,17 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 8b87d57d5abc285cf59e2ddc47a0244b.dir
+    md5: 1ff3924347c483408cc9d74730d15555.dir
     size: 7987648
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: c9ed006b75eb4e5584533028734fc9d0
+    md5: d494d59186e4a01ef78b6478e54d71fb
     size: 582153530
   - path: assets/models/model.h5
-    md5: 0cee91046faa466f6633f33839df07fc
+    md5: 47bdd2d9c6c89d5ff85d67aebafcb07a
     size: 7987648
   - path: src/evaluate.py
     md5: 08525d9f37321dbe8aaaa55d5441b93f
@@ -172,5 +172,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: ef5899da01f24f574caae5ec507ac9b3
-    size: 27
+    md5: a20c07e5fe4f989877e968586d5df501
+    size: 25
