@@ -14,8 +14,8 @@ featurize:
     - ribcage_gradient
     - abdomen_gradient
     # - heartrate_gradient
-    # - ribcage_frequency
-    # - abdomen_frequency
+    - ribcage_frequency
+    - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
     - ribcage_slope_cyclic
@@ -47,7 +47,7 @@ split:
   train_split: 0.7
 
 scale:
-  method: none
+  method: minmax
 
 sequentialize:
   # History window size in deciseconds
@@ -59,7 +59,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 500
+  n_epochs: 50
   batch_size: 128
   kernel_size: 6
   weigh_samples: False
