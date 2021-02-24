@@ -71,7 +71,7 @@ def featurize(filepaths):
         if scale:
             df = scale_inputs(df)
 
-        add_features(df, features, 
+        df = add_features(df, features, 
                 range_window=params["range_window"],
                 range_smoothing=params["range_smoothing"],
                 slope_shift=params["slope_shift"],
@@ -140,13 +140,13 @@ def add_features(df, features,
     given in the features-list.
 
     Args:
-    df (pandas DataFrame): Data frame to add features to.
-    features (list): A list containing keywords specifying which features to
-        add.
-    range_window (int): How many time steps to use when calculating range.
-    range_smoothing (int): Rolling mean window for smoothing range.
-    slope_shift (int): How many time steps to use when calculating slope.
-    slope_smoothing (int): Rolling mean window for smoothing slope.
+        df (pandas DataFrame): Data frame to add features to.
+        features (list): A list containing keywords specifying which features to
+            add.
+        range_window (int): How many time steps to use when calculating range.
+        range_smoothing (int): Rolling mean window for smoothing range.
+        slope_shift (int): How many time steps to use when calculating slope.
+        slope_smoothing (int): Rolling mean window for smoothing slope.
 
     Returns:
         df (pandas DataFrame): Data frame with added features.
@@ -252,6 +252,8 @@ def add_features(df, features,
                 calculate_slope(df["heartrate"], slope_shift,
                     rolling_mean_window=1, absvalue=False)
         )
+
+    return df
 
 def calculate_frequency(data, rolling_mean_window=100):
     """Calculate frequency based on peaks.
