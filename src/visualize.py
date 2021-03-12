@@ -62,17 +62,46 @@ def plot_example_workouts():
 
     data_dir = "assets/data/" + stage + "/"
 
-    filepaths = os.listdir(data_dir)
+    paths = sorted(os.listdir(data_dir))
+
+    filepaths = []
+
+    for p in paths:
+        if p.endswith(".csv"):
+            filepaths.append(p)
+
+
+    steadystate = np.ones(12000)*200
+    intervals = np.concatenate([
+            np.ones(600)*100,
+            np.ones(3000)*300,
+            np.ones(1300)*100,
+            np.ones(1800)*300,
+            np.ones(1200)*100,
+            np.ones(2400)*300,
+            np.ones(1700)*100
+            ])
+    ramp = np.concatenate([
+            np.ones(3000)*100,
+            np.ones(3000)*150,
+            np.ones(2400)*200,
+            np.ones(1800)*250,
+            np.ones(1200)*300,
+            np.ones(600)*350,
+    ])
+
+    workoutplans = [
+            steadystate,
+            intervals,
+            ramp
+    ]
+
+    workout_labels = ["A", "B", "C"]
 
     fig = plt.figure(figsize=(WIDTH,HEIGHT))
-    # axes = plt.gca()
-    # axes.set_ylim([0, 400])
     ax = None
 
     for i, filepath in enumerate(filepaths):
-
-        if not filepath.endswith(".csv"):
-            continue
 
         filepath = data_dir + filepath
 
@@ -84,19 +113,26 @@ def plot_example_workouts():
         t = (df["time"] - df["time"].iloc[0]) / 60
 
         if i == 0:
-            ax = fig.add_subplot(3,1,i)
+            ax = fig.add_subplot(3,1,i+1)
         else:
-            ax = fig.add_subplot(3,1,i, sharex = ax, sharey = ax)
+            ax = fig.add_subplot(3,1,i+1, sharex = ax, sharey = ax)
 
-        ax.set_ylabel("power (W)")
 
         ax.set_ylim([0, 400])
         ax.set_xlabel("time (min)")
-        ax.plot(t[t0:t0+12000], df["power"].iloc[t0:t0+12000])
-        # ax.title(filepath)
+        l1 = ax.plot(t[t0:t0+12000], workoutplans[i][t0:t0+12000], alpha=0.8,
+                label="planned structure")
+        l2 = ax.plot(t[t0:t0+12000], df["power"].iloc[t0:t0+12000], 
+                label="actual structure") 
 
-    plt.show()
+        if i == 1:
+            ax.set_ylabel("power (W)")
+
+    fig.legend( labels=["planned", "actual"], loc="center right")
+
+    plt.subplots_adjust(right=0.85)
     plt.savefig("assets/plots/workout_examples.pdf")
+    plt.show()
 
 
 if __name__ == '__main__':
