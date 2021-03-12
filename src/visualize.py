@@ -96,6 +96,7 @@ def plot_example_workouts():
         # ax.title(filepath)
 
     plt.show()
+    plt.savefig("assets/plots/workout_examples.pdf")
 
 
 if __name__ == '__main__':
