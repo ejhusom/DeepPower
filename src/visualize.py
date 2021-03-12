@@ -20,6 +20,10 @@ from plotly.subplots import make_subplots
 
 from preprocess_utils import read_csv, move_column
 
+plt.style.use("ggplot")
+WIDTH = 9
+HEIGHT = 5
+
 def visualize(stage="restructured", backend="plotly"):
     """Visualize data set.
 
@@ -46,9 +50,33 @@ def visualize(stage="restructured", backend="plotly"):
 
         fig = df.plot()
 
-        # plt.title(filepath)
-        # plt.show()
-        fig.show()
+        if backend == "plotly":
+            fig.show()
+        else:
+            # plt.title(filepath)
+            plt.show()
+
+def plot_example_workouts():
+
+    stage = "restructured"
+
+    data_dir = "assets/data/" + stage + "/"
+
+    filepaths = os.listdir(data_dir)
+
+    for filepath in filepaths:
+
+        filepath = data_dir + filepath
+
+        # Read csv, and delete specified columns
+        df = pd.read_csv(filepath, index_col=0)
+
+        fig = plt.figure(figsize=(WIDTH,HEIGHT))
+        plt.plot(df["power"])
+        plt.title(filepath)
+
+        plt.show()
+
 
 if __name__ == '__main__':
 
@@ -58,11 +86,18 @@ if __name__ == '__main__':
             action="store_true")
     parser.add_argument("-f", "--featurized", help="Plot featurized data.",
             action="store_true")
+    parser.add_argument("-b", "--backend", default="plotly",
+        help="Backend, plotly or matplotlib")
+    parser.add_argument("-e", "--examples", help="Plot example workouts",
+            action="store_true")
 
     args = parser.parse_args()
 
     if args.restructured:
-        visualize("restructured")
+        visualize("restructured", backend=args.backend)
 
     if args.featurized:
-        visualize("featurized")
+        visualize("featurized", backend=args.backend)
+    
+    if args.examples:
+        plot_example_workouts()

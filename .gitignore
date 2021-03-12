@@ -9,6 +9,8 @@ build*
 *.csv
 *.npz
 
+!assets/data/examples/*
+
 # doconce:
 .*_html_file_collection
 
