@@ -22,7 +22,7 @@ from preprocess_utils import read_csv, move_column
 
 plt.style.use("ggplot")
 WIDTH = 9
-HEIGHT = 5
+HEIGHT = 6
 
 def visualize(stage="restructured", backend="plotly"):
     """Visualize data set.
@@ -58,24 +58,44 @@ def visualize(stage="restructured", backend="plotly"):
 
 def plot_example_workouts():
 
-    stage = "restructured"
+    stage = "examples"
 
     data_dir = "assets/data/" + stage + "/"
 
     filepaths = os.listdir(data_dir)
 
-    for filepath in filepaths:
+    fig = plt.figure(figsize=(WIDTH,HEIGHT))
+    # axes = plt.gca()
+    # axes.set_ylim([0, 400])
+    ax = None
+
+    for i, filepath in enumerate(filepaths):
+
+        if not filepath.endswith(".csv"):
+            continue
 
         filepath = data_dir + filepath
 
         # Read csv, and delete specified columns
         df = pd.read_csv(filepath, index_col=0)
 
-        fig = plt.figure(figsize=(WIDTH,HEIGHT))
-        plt.plot(df["power"])
-        plt.title(filepath)
+        t0 = 0
 
-        plt.show()
+        t = (df["time"] - df["time"].iloc[0]) / 60
+
+        if i == 0:
+            ax = fig.add_subplot(3,1,i)
+        else:
+            ax = fig.add_subplot(3,1,i, sharex = ax, sharey = ax)
+
+        ax.set_ylabel("power (W)")
+
+        ax.set_ylim([0, 400])
+        ax.set_xlabel("time (min)")
+        ax.plot(t[t0:t0+12000], df["power"].iloc[t0:t0+12000])
+        # ax.title(filepath)
+
+    plt.show()
 
 
 if __name__ == '__main__':
