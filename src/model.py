@@ -69,7 +69,6 @@ def cnn(input_x, input_y,
 
     return model
 
-
 class DeepPowerHyperModel(HyperModel):
 
     def __init__(self, input_x, input_y, n_steps_out=1):
