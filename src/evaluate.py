@@ -61,11 +61,10 @@ def evaluate(model_filepath, test_filepath):
         y_pred = np.array(y_pred)
 
     mse = mean_squared_error(y_test, y_pred)
-    #r2 = r2_score(y_test, y_pred)
-    #mse = 10000
+    r2 = r2_score(y_test, y_pred)
 
     print("MSE: {}".format(mse))
-    #print("R2: {}".format(r2))
+    print("R2: {}".format(r2))
 
     plot_prediction(y_test, y_pred, inputs=X_test, info="(MSE: {})".format(mse))
 
