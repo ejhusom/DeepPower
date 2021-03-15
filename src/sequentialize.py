@@ -56,6 +56,7 @@ def sequentialize(filepaths):
         X, y = split_sequences(data, hist_size, target_mean_window)
 
         if net == "dnn":
+            # Flatten X if dense network is to be used
             X = flatten_sequentialized(X)
 
         # Save X and y into a binary file
