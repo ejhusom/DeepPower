@@ -48,7 +48,7 @@ split:
 
 scale:
   method: none
-  output: minmax
+  output: none
 
 
 sequentialize:
@@ -60,7 +60,7 @@ sequentialize:
   target_mean_window: 1
 
 train:
-  net: cnn
+  net: lstm
   n_epochs: 20
   batch_size: 128
   kernel_size: 6
