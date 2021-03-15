@@ -48,7 +48,7 @@ split:
 
 scale:
   method: none
-  output: none
+  output: minmax
 
 
 sequentialize:

@@ -205,12 +205,13 @@ def lstm(hist_size, n_features, n_steps_out=1):
     """
 
     model = models.Sequential()
-    model.add(layers.LSTM(64, input_shape=(hist_size, n_features), return_sequences=True))
-    model.add(layers.LSTM(32, activation='relu'))
+    # model.add(layers.LSTM(64, input_shape=(hist_size, n_features), return_sequences=True))
+    model.add(layers.LSTM(64, input_shape=(hist_size, n_features)))
+    # model.add(layers.LSTM(32, activation='relu'))
     # model.add(layers.LSTM(16, activation='relu'))
     # model.add(layers.Dense(n_steps_out, activation='linear'))
     model.add(layers.Dense(n_steps_out))
-    model.compile(optimizer='adam', loss='mse', metrics=['mean_absolute_error'])
+    model.compile(optimizer='adam', loss='mse', metrics=['mean_squared_error'])
 
     return model
 
