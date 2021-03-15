@@ -47,10 +47,18 @@ def split(filepaths):
     training_files = filepaths[:file_split]
     test_files = filepaths[file_split:]
 
+    files_to_move = []
+
     for f in test_files:
-        if "-rest-" in f:
-            training_files.append(f)
-            test_files.remove(f)
+        if "rest" in f:
+            files_to_move.append(f)
+
+    for f in files_to_move:
+        training_files.append(f)
+        test_files.remove(f)
+
+    print(training_files)
+    print(test_files)
 
     for filepath in filepaths:
 

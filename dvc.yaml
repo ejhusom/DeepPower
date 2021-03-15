@@ -51,6 +51,7 @@ stages:
     - assets/data/scaled
     params:
     - scale.method
+    - scale.output
 
   sequentialize:
     cmd: python3 src/sequentialize.py assets/data/scaled/*.npz

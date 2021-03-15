@@ -27,7 +27,7 @@ featurize:
   remove:
     - ribcage
     - abdomen
-    - heartrate
+    # - heartrate
   breathing_min: 0
   breathing_max: 4096
   heartrate_min: 35
@@ -48,19 +48,20 @@ split:
 
 scale:
   method: none
+  output: minmax
 
 
 sequentialize:
   # History window size in deciseconds
-  hist_size: 10
+  hist_size: 40
   # Use only every nth element
   use_elements: 1
   # Use mean power value over given window
   target_mean_window: 1
 
 train:
-  net: lstm
-  n_epochs: 20
+  net: cnn
+  n_epochs: 1
   batch_size: 128
   kernel_size: 6
   weigh_samples: False

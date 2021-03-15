@@ -40,6 +40,7 @@ def scale(filepaths):
 
     params = yaml.safe_load(open("params.yaml"))["scale"]
     method = params["method"]
+    output_method = params["output"]
     
     if method == "standard":
         scaler = StandardScaler()
@@ -53,6 +54,7 @@ def scale(filepaths):
         raise NotImplementedError(f"{scaler_type} not implemented.")
 
     train_inputs = []
+    train_outputs = []
 
     data_overview = {}
 
@@ -70,6 +72,7 @@ def scale(filepaths):
 
         if "train" in filepath:
             train_inputs.append(X)
+            train_outputs.append(y)
             category = "train"
         elif "test" in filepath:
             category = "test"
@@ -77,9 +80,11 @@ def scale(filepaths):
         data_overview[filepath] = {"X": X, "y": y, "category": category}
 
     X_train = np.concatenate(train_inputs)
+    y_train = np.concatenate(train_outputs)
 
     # Fit a scaler to the training data
     scaler = scaler.fit(X_train)
+    output_scaler = scaler.fit(y_train)
 
     for filepath in data_overview:
 
@@ -88,6 +93,12 @@ def scale(filepaths):
             X=data_overview[filepath]["X"]
         else:
             X = scaler.transform(data_overview[filepath]["X"])
+
+        # Scale outputs
+        if output_method == "none":
+            y = data_overview[filepath]["y"]
+        else:
+            y = output_scaler.transform(data_overview[filepath]["y"])
 
         # Save X and y into a binary file
         np.savez(
@@ -98,9 +109,10 @@ def scale(filepaths):
                     data_overview[filepath]["category"] + "-scaled.npz"
                 )
             ),
-            #X=data_overview[filepath]["X"],
+            # X=data_overview[filepath]["X"],
             X = X, 
-            y = data_overview[filepath]["y"]
+            # y = data_overview[filepath]["y"]
+            y = y
         )
 
 if __name__ == "__main__":
