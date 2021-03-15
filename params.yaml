@@ -61,7 +61,7 @@ sequentialize:
 
 train:
   net: lstm
-  n_epochs: 14
+  n_epochs: 20
   batch_size: 128
   kernel_size: 6
   weigh_samples: False
