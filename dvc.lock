@@ -145,12 +145,12 @@ train:
       train.autoencode: false
       train.batch_size: 128
       train.kernel_size: 6
-      train.n_epochs: 20
+      train.n_epochs: 14
       train.net: lstm
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 1b0bafa138736ecdebd5a55b81ad52c8.dir
+    md5: a18e851102802092e743ff94cfc9d1f9.dir
     size: 409872
     nfiles: 1
 evaluate:
@@ -160,7 +160,7 @@ evaluate:
     md5: 3edf1fc56bb40fc2d5b20602586182f2
     size: 373148650
   - path: assets/models/model.h5
-    md5: 4cf0a59f324ad03c6bde2c06ab3b877f
+    md5: 4b6a4c0bea0a2da2d94ec50dd51cd71e
     size: 409872
   - path: src/evaluate.py
     md5: 670dcf89066f2dbc059eaf81a69d7a5a
@@ -170,5 +170,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 8445d22e08b70c0899dcdafdbf86facc
+    md5: 737126cabcb2fc774109bb25540d6051
     size: 27
