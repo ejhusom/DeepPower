@@ -146,12 +146,12 @@ train:
       train.batch_size: 128
       train.kernel_size: 6
       train.n_epochs: 100
-      train.net: lstm
+      train.net: cnn
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 7636bebea195312af54803ac7ec6cb34.dir
-    size: 250880
+    md5: 5c23f1e1be36548055a6d66d551a42cd.dir
+    size: 7969216
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
@@ -160,8 +160,8 @@ evaluate:
     md5: e89479d3704fc549d30a5ca7d7a9dbcd
     size: 373148650
   - path: assets/models/model.h5
-    md5: 2aa76050279c335d265190cff4d97d8d
-    size: 250880
+    md5: cb458c5e79529afe0ba9c37663ef5e73
+    size: 7969216
   - path: src/evaluate.py
     md5: 670dcf89066f2dbc059eaf81a69d7a5a
     size: 6178
@@ -170,5 +170,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: be1761276732d1c7d057b3ba84e45916
+    md5: d7e1070512a7c1c91716ddc432938267
     size: 27
