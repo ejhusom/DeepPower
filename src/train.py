@@ -18,6 +18,7 @@ from kerastuner.tuners import Hyperband, RandomSearch
 import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.utils import plot_model
+from tensorflow.keras.callbacks import EarlyStopping
 import yaml
 
 from autoencoder import Autoencoder
@@ -150,12 +151,18 @@ def train(filepath):
         dpi=96
     )
 
+    early_stopping = EarlyStopping(
+            monitor="val_loss",
+            patience=8
+    )
+
     history = model.fit(
         X_train, y_train, 
         epochs=params["n_epochs"], 
         batch_size=params["batch_size"],
-        validation_split=0.2,
-        sample_weight=sample_weights
+        validation_split=0.25,
+        sample_weight=sample_weights,
+        callbacks={early_stopping]
     )
 
     model.save(MODELS_FILE_PATH)
