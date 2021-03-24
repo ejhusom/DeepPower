@@ -144,7 +144,7 @@ def train(filepath):
     plot_model(
         model,
         to_file=PLOTS_PATH / 'model.pdf',
-        show_shapes=False,
+        show_shapes=True,
         show_layer_names=True,
         rankdir='TB',
         expand_nested=True,
@@ -152,7 +152,8 @@ def train(filepath):
 
     early_stopping = EarlyStopping(
             monitor="val_loss",
-            patience=20
+            patience=20,
+            verbose=3
     )
 
     model_checkpoint = ModelCheckpoint(
