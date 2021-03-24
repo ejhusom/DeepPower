@@ -58,6 +58,7 @@ def featurize(filepaths):
     """
 
     for filepath in filepaths:
+        print(filepath)
 
         # Read csv, and delete specified columns
         df, index = read_csv(
@@ -71,6 +72,7 @@ def featurize(filepaths):
         if scale:
             df = scale_inputs(df)
 
+        print(df)
         df = add_features(df, features, 
                 range_window=params["range_window"],
                 range_smoothing=params["range_smoothing"],
@@ -155,7 +157,7 @@ def add_features(df, features,
 
     # Stop function of features is not a list
     if features == None:
-        return 0
+        return df
 
     if "ribcage_min" in features:
         ribcage_min = df["ribcage"].rolling(range_window).min()

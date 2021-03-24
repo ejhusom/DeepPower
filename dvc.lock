@@ -4,27 +4,27 @@ stages:
     cmd: python3 src/restructure.py assets/data/raw/*.csv
     deps:
     - path: assets/data/raw
-      md5: 5a0bc019910a22c66f236dd3fd712c62.dir
-      size: 36198322
-      nfiles: 23
+      md5: 80b7ea7582c9521f3ccc6045fbedbac7.dir
+      size: 25174683
+      nfiles: 17
     - path: src/restructure.py
       md5: 3eb42252e7d186e87ca0f9701b39bd24
       size: 9123
     outs:
     - path: assets/data/restructured
-      md5: 40bb4b815f463a96fcdfba4ea23e30ab.dir
-      size: 15149013
-      nfiles: 22
+      md5: 2486c6dab9a22354edbf737ea7230f35.dir
+      size: 10552301
+      nfiles: 16
   featurize:
     cmd: python3 src/featurize.py assets/data/restructured/*.csv
     deps:
     - path: assets/data/restructured
-      md5: 40bb4b815f463a96fcdfba4ea23e30ab.dir
-      size: 15149013
-      nfiles: 22
+      md5: 2486c6dab9a22354edbf737ea7230f35.dir
+      size: 10552301
+      nfiles: 16
     - path: src/featurize.py
-      md5: 0e6ac6df12b75ad8e569d6f051ecbc6b
-      size: 9412
+      md5: 22f75a41a00b522fc2be3ea5d567a126
+      size: 9455
     params:
       params.yaml:
         featurize.breathing_max: 4096
@@ -34,26 +34,21 @@ stages:
         - calories
         featurize.diff_targets: 0
         featurize.features:
-        - ribcage_gradient
-        - abdomen_gradient
-        - ribcage_slope_cyclic
-        - abdomen_slope_cyclic
         featurize.heartrate_max: 185
         featurize.heartrate_min: 35
         featurize.range_smoothing: 50
         featurize.range_window: 50
         featurize.remove:
-        - ribcage
-        - abdomen
+        - heartrate
         featurize.scale: true
         featurize.slope_abs: true
         featurize.slope_shift: 1
         featurize.slope_smoothing: 100
     outs:
     - path: assets/data/featurized
-      md5: e8f5cf7cdf73c993232e0b34b8e01908.dir
-      size: 44228596
-      nfiles: 22
+      md5: 40fe03491fb4a68a3c72cfeb38b05eb0.dir
+      size: 9482539
+      nfiles: 16
   split:
     cmd: python3 src/split.py assets/data/featurized/*.csv
     deps:
