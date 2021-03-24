@@ -143,17 +143,16 @@ def train(filepath):
     # Save a plot of the model
     plot_model(
         model,
-        to_file=PLOTS_PATH / 'model.png',
+        to_file=PLOTS_PATH / 'model.pdf',
         show_shapes=False,
         show_layer_names=True,
         rankdir='TB',
         expand_nested=True,
-        dpi=96
     )
 
     early_stopping = EarlyStopping(
             monitor="val_loss",
-            patience=8
+            patience=20
     )
 
     model_checkpoint = ModelCheckpoint(
