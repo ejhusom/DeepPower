@@ -145,7 +145,7 @@ def train(filepath):
         model,
         to_file=PLOTS_PATH / 'model.pdf',
         show_shapes=True,
-        show_layer_names=True,
+        show_layer_names=False,
         rankdir='TB',
         expand_nested=True,
     )
