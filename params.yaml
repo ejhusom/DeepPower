@@ -44,7 +44,7 @@ featurize:
   diff_targets: 0
 
 split:
-  train_split: 0.7
+  train_split: 0.1
 
 scale:
   method: none
@@ -60,7 +60,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 100
+  n_epochs: 1
   batch_size: 128
   kernel_size: 6
   weigh_samples: False

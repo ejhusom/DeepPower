@@ -57,6 +57,17 @@ def split(filepaths):
         training_files.append(f)
         test_files.remove(f)
 
+    files_to_move = []
+
+    for f in training_files:
+        if "test" in f:
+            files_to_move.append(f)
+
+    for f in files_to_move:
+        test_files.append(f)
+        training_files.remove(f)
+
+
     print(training_files)
     print(test_files)
 
