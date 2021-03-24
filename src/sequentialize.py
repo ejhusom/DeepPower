@@ -54,6 +54,7 @@ def sequentialize(filepaths):
 
         # Split into sequences
         X, y = split_sequences(data, hist_size, target_mean_window)
+        print(X.shape)
 
         if net == "dnn":
             # Flatten X if dense network is to be used
