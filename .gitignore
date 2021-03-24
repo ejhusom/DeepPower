@@ -10,6 +10,7 @@ build*
 *.npz
 
 !assets/data/examples/*
+!assets/results/*
 
 # doconce:
 .*_html_file_collection
