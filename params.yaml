@@ -27,7 +27,7 @@ featurize:
   remove:
     # - ribcage
     # - abdomen
-    - heartrate
+    # - heartrate
   breathing_min: 0
   breathing_max: 4096
   heartrate_min: 35
