@@ -9,8 +9,8 @@ featurize:
   features:
     # - ribcage_min
     # - ribcage_max
-    # - ribcage_range
-    # - abdomen_range 
+    - ribcage_range
+    - abdomen_range 
     # - ribcage_gradient
     # - abdomen_gradient
     # - heartrate_gradient
@@ -25,8 +25,8 @@ featurize:
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
   remove:
-    # - ribcage
-    # - abdomen
+    - ribcage
+    - abdomen
     # - heartrate
   breathing_min: 0
   breathing_max: 4096
