@@ -152,7 +152,7 @@ def train(filepath):
 
     early_stopping = EarlyStopping(
             monitor="val_loss",
-            patience=50,
+            patience=20,
             verbose=3
     )
 
@@ -163,17 +163,17 @@ def train(filepath):
     )
 
     # Train model for 10 epochs before adding early stopping
-    history = model.fit(
-        X_train, y_train, 
-        epochs=10,
-        batch_size=params["batch_size"],
-        validation_split=0.25,
-        sample_weight=sample_weights
-    )
+    # history = model.fit(
+    #     X_train, y_train, 
+    #     epochs=10,
+    #     batch_size=params["batch_size"],
+    #     validation_split=0.25,
+    #     sample_weight=sample_weights
+    # )
 
     history = model.fit(
         X_train, y_train, 
-        epochs=params["n_epochs"] - 10,
+        epochs=params["n_epochs"],
         batch_size=params["batch_size"],
         validation_split=0.25,
         sample_weight=sample_weights,
