@@ -44,12 +44,16 @@ def scale(filepaths):
     
     if method == "standard":
         scaler = StandardScaler()
+        output_scaler = StandardScaler()
     elif method == "minmax":
         scaler = MinMaxScaler()
+        output_scaler = MinMaxScaler()
     elif method == "robust":
         scaler = RobustScaler()
+        output_scaler = RobustScaler()
     elif method == "none":
         scaler = StandardScaler()
+        output_scaler = StandardScaler()
     else:
         raise NotImplementedError(f"{scaler_type} not implemented.")
 
@@ -84,7 +88,7 @@ def scale(filepaths):
 
     # Fit a scaler to the training data
     scaler = scaler.fit(X_train)
-    output_scaler = scaler.fit(y_train)
+    output_scaler = output_scaler.fit(y_train)
 
     for filepath in data_overview:
 

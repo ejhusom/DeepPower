@@ -177,10 +177,10 @@ def train(filepath):
         batch_size=params["batch_size"],
         validation_split=0.25,
         sample_weight=sample_weights,
-        #callbacks=[early_stopping, model_checkpoint]
+        callbacks=[early_stopping, model_checkpoint]
     )
 
-    model.save(MODELS_FILE_PATH)
+    #model.save(MODELS_FILE_PATH)
 
     TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
