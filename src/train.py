@@ -162,9 +162,18 @@ def train(filepath):
             save_best_only=True
     )
 
+    # Train model for 10 epochs before adding early stopping
+    # history = model.fit(
+    #     X_train, y_train, 
+    #     epochs=10,
+    #     batch_size=params["batch_size"],
+    #     validation_split=0.25,
+    #     sample_weight=sample_weights
+    # )
+
     history = model.fit(
         X_train, y_train, 
-        epochs=params["n_epochs"], 
+        epochs=params["n_epochs"],
         batch_size=params["batch_size"],
         validation_split=0.25,
         sample_weight=sample_weights,
