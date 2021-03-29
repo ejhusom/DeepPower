@@ -77,17 +77,17 @@ scale:
   params:
     params.yaml:
       scale.method: standard
-      scale.output: none
+      scale.output: minmax
   outs:
   - path: assets/data/scaled
-    md5: 374043cedc56da824a85590b57b502df.dir
+    md5: 588b9f19ff79a6fe5761919da85869f3.dir
     size: 7851072
     nfiles: 16
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 374043cedc56da824a85590b57b502df.dir
+    md5: 588b9f19ff79a6fe5761919da85869f3.dir
     size: 7851072
     nfiles: 16
   - path: src/sequentialize.py
@@ -100,14 +100,14 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 411f928c6069618977e64add7cb77cf3.dir
+    md5: 6d15775e31ca65098e54f8b19990db44.dir
     size: 586358248
     nfiles: 16
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 411f928c6069618977e64add7cb77cf3.dir
+    md5: 6d15775e31ca65098e54f8b19990db44.dir
     size: 586358248
     nfiles: 16
   - path: src/combine.py
@@ -115,14 +115,14 @@ combine:
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: 4a96bcaaa79b1aa189e295a93dbea79e.dir
+    md5: 8bb712ae1afa7461a721242dc5b900fc.dir
     size: 586351388
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 4a96bcaaa79b1aa189e295a93dbea79e.dir
+    md5: 8bb712ae1afa7461a721242dc5b900fc.dir
     size: 586351388
     nfiles: 2
   - path: src/autoencoder.py
@@ -144,17 +144,17 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: bf80b6d1ca1ca6de7f747b38b1926f38.dir
+    md5: 3c71924f19e9379c6ec925f0663c02b7.dir
     size: 8933824
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: 5aba55c9c6c9775a63a3a7683affcee9
+    md5: 02ecbbcc43227a17b97d8a5f72c1daf1
     size: 77251538
   - path: assets/models/model.h5
-    md5: 75bc4b436fc40866ab714b032708e8a3
+    md5: 1efaddcf73378249d9586bfcc7410934
     size: 8933824
   - path: src/evaluate.py
     md5: 670dcf89066f2dbc059eaf81a69d7a5a
@@ -164,5 +164,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 61149b423de794caf078e10676674d26
+    md5: 6d2ffe07e6bbbce6da0d4cee0732a506
     size: 27

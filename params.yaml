@@ -48,7 +48,7 @@ split:
 
 scale:
   method: standard
-  output: none
+  output: minmax
 
 sequentialize:
   # History window size in deciseconds
