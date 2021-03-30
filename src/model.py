@@ -12,6 +12,7 @@ Date:
 from kerastuner import HyperModel
 from tensorflow.keras import layers
 from tensorflow.keras import models
+import tensorflow as tf
 
 from tensorflow.random import set_seed
 
@@ -30,8 +31,13 @@ def dnn(input_x, n_steps_out=1, seed=2020):
     set_seed(seed)
 
     model = models.Sequential()
-    model.add(layers.Dense(256, activation='relu', input_dim=input_x))
-    model.add(layers.Dense(128, activation='relu'))
+    model.add(layers.Dense(
+        256, 
+        activation='relu', 
+        input_dim=input_x,
+        bias_initializer=tf.keras.initializers.Constant(value=0.01)
+        )
+    )
     model.add(layers.Dense(64, activation='relu'))
     model.add(layers.Dense(n_steps_out, activation='linear'))
     model.compile(optimizer='adam', loss='mse')
@@ -69,7 +75,8 @@ def cnn(input_x, input_y,
             kernel_size=kernel_size,
             activation="relu",
             input_shape=(input_x, input_y),
-            name="input_layer"
+            name="input_layer",
+            bias_initializer=tf.keras.initializers.Constant(value=0.01)
         )
     )
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
@@ -108,7 +115,10 @@ def lstm(hist_size, n_features, n_steps_out=1):
 
     model = models.Sequential()
     # model.add(layers.LSTM(64, input_shape=(hist_size, n_features), return_sequences=True))
-    model.add(layers.LSTM(64, input_shape=(hist_size, n_features)))
+    model.add(layers.LSTM(
+        64, 
+        input_shape=(hist_size, n_features),
+    ))
     # model.add(layers.LSTM(32, activation='relu'))
     # model.add(layers.LSTM(16, activation='relu'))
     # model.add(layers.Dense(n_steps_out, activation='linear'))
