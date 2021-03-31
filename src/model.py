@@ -34,8 +34,7 @@ def dnn(input_x, n_steps_out=1, seed=2020):
     model.add(layers.Dense(
         256, 
         activation='relu', 
-        input_dim=input_x,
-        bias_initializer=tf.keras.initializers.Constant(value=0.01)
+        input_dim=input_x
         )
     )
     model.add(layers.Dense(64, activation='relu'))
@@ -75,8 +74,7 @@ def cnn(input_x, input_y,
             kernel_size=kernel_size,
             activation="relu",
             input_shape=(input_x, input_y),
-            name="input_layer",
-            bias_initializer=tf.keras.initializers.Constant(value=0.01)
+            name="input_layer"
         )
     )
     model.add(layers.Conv1D(filters=64, kernel_size=kernel_size,
