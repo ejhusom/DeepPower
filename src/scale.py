@@ -44,18 +44,25 @@ def scale(filepaths):
     
     if method == "standard":
         scaler = StandardScaler()
-        output_scaler = StandardScaler()
     elif method == "minmax":
         scaler = MinMaxScaler()
-        output_scaler = MinMaxScaler()
     elif method == "robust":
         scaler = RobustScaler()
-        output_scaler = RobustScaler()
     elif method == "none":
         scaler = StandardScaler()
+    else:
+        raise NotImplementedError(f"{method} not implemented.")
+
+    if output_method == "standard":
+        output_scaler = StandardScaler()
+    elif output_method == "minmax":
+        output_scaler = MinMaxScaler()
+    elif output_method == "robust":
+        output_scaler = RobustScaler()
+    elif output_method == "none":
         output_scaler = StandardScaler()
     else:
-        raise NotImplementedError(f"{scaler_type} not implemented.")
+        raise NotImplementedError(f"{output_method} not implemented.")
 
     train_inputs = []
     train_outputs = []

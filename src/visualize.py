@@ -48,12 +48,12 @@ def visualize(stage="restructured", backend="plotly"):
         # Read csv, and delete specified columns
         df = pd.read_csv(filepath, index_col=0)
 
-        fig = df.plot()
+        fig = df.plot(title=filepath)
 
         if backend == "plotly":
             fig.show()
         else:
-            # plt.title(filepath)
+            plt.title(filepath)
             plt.show()
 
 def plot_example_workouts():
