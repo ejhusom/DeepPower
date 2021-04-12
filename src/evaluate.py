@@ -73,7 +73,7 @@ def evaluate(model_filepath, test_filepath):
     plot_prediction(y_test, y_pred, inputs=X_test, info="(R2: {})".format(r2))
 
     with open(METRICS_FILE_PATH, "w") as f:
-        json.dump(dict(mse=mse), f)
+        json.dump(dict(mse=mse, r2=r2), f)
 
 
 def plot_prediction(y_true, y_pred, inputs=None, info="", backend="plotly"):

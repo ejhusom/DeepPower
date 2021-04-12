@@ -60,14 +60,14 @@ sequentialize:
 
 train:
   net: dnn
-  n_epochs: 40
+  n_epochs: 300
   batch_size: 128
   kernel_size: 6
   weigh_samples: False
   weight_thresh: 250
   weight: 1.5
   autoencode: False
-  early_stopping: False
+  early_stopping: True
 
 evaluate:
   smooth_targets: 0

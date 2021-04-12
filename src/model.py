@@ -37,6 +37,7 @@ def dnn(input_x, n_steps_out=1, seed=2020):
         input_dim=input_x
         )
     )
+    model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dense(64, activation='relu'))
     model.add(layers.Dense(n_steps_out, activation='linear'))
     model.compile(optimizer='adam', loss='mse')
