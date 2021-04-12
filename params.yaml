@@ -14,8 +14,8 @@ featurize:
     # - ribcage_gradient
     # - abdomen_gradient
     # - heartrate_gradient
-    # - ribcage_frequency
-    # - abdomen_frequency
+    - ribcage_frequency
+    - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
     # - ribcage_slope_cyclic
@@ -25,8 +25,8 @@ featurize:
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
   remove:
-    # - ribcage
-    # - abdomen
+    - ribcage
+    - abdomen
     # - heartrate
   breathing_min: 0
   breathing_max: 4096
@@ -52,7 +52,7 @@ scale:
 
 sequentialize:
   # History window size in deciseconds
-  hist_size: 120
+  hist_size: 100
   # Use only every nth element
   use_elements: 1
   # Use mean power value over given window
