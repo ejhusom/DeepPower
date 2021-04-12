@@ -32,8 +32,6 @@ featurize:
       - calories
       featurize.diff_targets: 0
       featurize.features:
-      - ribcage_frequency
-      - abdomen_frequency
       featurize.heartrate_max: 185
       featurize.heartrate_min: 35
       featurize.range_smoothing: 50
@@ -47,15 +45,15 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: 70a24daba3baaf2e8f75bf7a71798194.dir
-    size: 15098092
+    md5: 679688acf3bc61f8c154cd71c3cab758.dir
+    size: 6193103
     nfiles: 17
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 70a24daba3baaf2e8f75bf7a71798194.dir
-    size: 15098092
+    md5: 679688acf3bc61f8c154cd71c3cab758.dir
+    size: 6193103
     nfiles: 17
   - path: src/split.py
     md5: 3bdad993088aca59539aa1951fdc486f
@@ -65,15 +63,15 @@ split:
       split.train_split: 0.7
   outs:
   - path: assets/data/split
-    md5: 01b36857e9805b7b8dd2c85cdc786e01.dir
-    size: 15033231
+    md5: 112915ec5301e1b5eacb57ba3f2f7dbd.dir
+    size: 6183896
     nfiles: 17
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 01b36857e9805b7b8dd2c85cdc786e01.dir
-    size: 15033231
+    md5: 112915ec5301e1b5eacb57ba3f2f7dbd.dir
+    size: 6183896
     nfiles: 17
   - path: src/scale.py
     md5: a60979ad7c5ca8b4f24451a0477160c1
@@ -84,15 +82,15 @@ scale:
       scale.output: minmax
   outs:
   - path: assets/data/scaled
-    md5: 4919277c2618ca3bf533a2008f4f3fdb.dir
-    size: 7862026
+    md5: 173466246545956b3075af70013369bb.dir
+    size: 3962106
     nfiles: 17
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 4919277c2618ca3bf533a2008f4f3fdb.dir
-    size: 7862026
+    md5: 173466246545956b3075af70013369bb.dir
+    size: 3962106
     nfiles: 17
   - path: src/sequentialize.py
     md5: 8aeb2d0418699f5179fa77cb55090cd8
@@ -104,30 +102,30 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 040faebb4f043567d47107e49bbd3158.dir
-    size: 586905354
+    md5: 64591346241e40edd2b174d081991025.dir
+    size: 198300418
     nfiles: 17
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 040faebb4f043567d47107e49bbd3158.dir
-    size: 586905354
+    md5: 64591346241e40edd2b174d081991025.dir
+    size: 198300418
     nfiles: 17
   - path: src/combine.py
     md5: 7fa83d562e697f7f2c2bc807af7ea4e1
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: 5dfc9cbd9e9260bab9c0467d70c3c2bf.dir
-    size: 586898004
+    md5: 9c925613939ad9bb0ad337199e11b492.dir
+    size: 198293068
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 5dfc9cbd9e9260bab9c0467d70c3c2bf.dir
-    size: 586898004
+    md5: 9c925613939ad9bb0ad337199e11b492.dir
+    size: 198293068
     nfiles: 2
   - path: src/autoencoder.py
     md5: 19a7245addaed8a5a78f39d3fef05355
@@ -148,18 +146,18 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: c69af781d10d2028638fd7ea9f358b0d.dir
-    size: 1457720
+    md5: d54a147f27126b73e0c465b2c352670b.dir
+    size: 843320
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: c625d8c499684bd0645f7553d6b63117
-    size: 99771154
+    md5: ed09069e21339885315bf6cd7401690a
+    size: 33798322
   - path: assets/models/model.h5
-    md5: f06c8f9280085e4fdf68ef3b1338f840
-    size: 1457720
+    md5: e59086978c6f29ba44946cc4ac636ad3
+    size: 843320
   - path: src/evaluate.py
     md5: fb36b7edb78425e50d10ad4b1bd24d1c
     size: 6288
@@ -168,5 +166,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 0e4743cd6132a13349949fbf346b5579
-    size: 55
+    md5: 6bfc99747b2eacb6651e293852388eb8
+    size: 56

@@ -14,8 +14,8 @@ featurize:
     # - ribcage_gradient
     # - abdomen_gradient
     # - heartrate_gradient
-    - ribcage_frequency
-    - abdomen_frequency
+    # - ribcage_frequency
+    # - abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
     # - ribcage_slope_cyclic
