@@ -60,7 +60,7 @@ sequentialize:
 
 train:
   net: dnn
-  n_epochs: 1
+  n_epochs: 50
   batch_size: 128
   kernel_size: 6
   weigh_samples: False
