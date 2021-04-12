@@ -40,6 +40,8 @@ def train(filepath):
     params = yaml.safe_load(open("params.yaml"))["train"]
     net = params["net"]
     autoencode = params["autoencode"]
+    use_early_stopping = params["early_stopping"]
+    print(type(use_early_stopping))
 
     # Load training set
     train = np.load(filepath)
@@ -161,26 +163,36 @@ def train(filepath):
             monitor="val_loss",
             save_best_only=True
     )
+    
+    if use_early_stopping:
+        # Train model for 10 epochs before adding early stopping
+        history = model.fit(
+            X_train, y_train, 
+            epochs=10,
+            batch_size=params["batch_size"],
+            validation_split=0.25,
+            sample_weight=sample_weights
+        )
 
-    # Train model for 10 epochs before adding early stopping
-    # history = model.fit(
-    #     X_train, y_train, 
-    #     epochs=10,
-    #     batch_size=params["batch_size"],
-    #     validation_split=0.25,
-    #     sample_weight=sample_weights
-    # )
+        history = model.fit(
+            X_train, y_train, 
+            epochs=params["n_epochs"],
+            batch_size=params["batch_size"],
+            validation_split=0.25,
+            sample_weight=sample_weights,
+            callbacks=[early_stopping, model_checkpoint]
+        )
 
-    history = model.fit(
-        X_train, y_train, 
-        epochs=params["n_epochs"],
-        batch_size=params["batch_size"],
-        validation_split=0.25,
-        sample_weight=sample_weights,
-        callbacks=[early_stopping, model_checkpoint]
-    )
+    else:
+        history = model.fit(
+            X_train, y_train, 
+            epochs=params["n_epochs"],
+            batch_size=params["batch_size"],
+            validation_split=0.25,
+            sample_weight=sample_weights
+        )
 
-    #model.save(MODELS_FILE_PATH)
+        model.save(MODELS_FILE_PATH)
 
     TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
