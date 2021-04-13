@@ -36,7 +36,6 @@ featurize:
       - abdomen_gradient
       - ribcage_slope_cyclic
       - abdomen_slope_cyclic
-      - heartrate_slope_cyclic
       featurize.heartrate_max: 185
       featurize.heartrate_min: 35
       featurize.range_smoothing: 50
@@ -48,15 +47,15 @@ featurize:
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: a91b8b741ca356d3e5b10965e86dfc83.dir
-    size: 42001212
+    md5: 0892041c6cbeb8765119c51daf2dc3be.dir
+    size: 39766866
     nfiles: 17
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: a91b8b741ca356d3e5b10965e86dfc83.dir
-    size: 42001212
+    md5: 0892041c6cbeb8765119c51daf2dc3be.dir
+    size: 39766866
     nfiles: 17
   - path: src/split.py
     md5: 3bdad993088aca59539aa1951fdc486f
@@ -66,15 +65,15 @@ split:
       split.train_split: 0.7
   outs:
   - path: assets/data/split
-    md5: 697d57a4dc23b7f2edb54b04d429dd34.dir
-    size: 41930345
+    md5: 332aa023ed98960b76b3cb781f213d68.dir
+    size: 39696190
     nfiles: 17
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 697d57a4dc23b7f2edb54b04d429dd34.dir
-    size: 41930345
+    md5: 332aa023ed98960b76b3cb781f213d68.dir
+    size: 39696190
     nfiles: 17
   - path: src/scale.py
     md5: a60979ad7c5ca8b4f24451a0477160c1
@@ -85,15 +84,15 @@ scale:
       scale.output: minmax
   outs:
   - path: assets/data/scaled
-    md5: 622c4d3b4934e92dfc1ff9d438bd14cb.dir
-    size: 23729354
+    md5: 2bfd93b36f849c2b67d1c62aae353a93.dir
+    size: 19775850
     nfiles: 17
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 622c4d3b4934e92dfc1ff9d438bd14cb.dir
-    size: 23729354
+    md5: 2bfd93b36f849c2b67d1c62aae353a93.dir
+    size: 19775850
     nfiles: 17
   - path: src/sequentialize.py
     md5: 944a8a9afa0174630c08b73dbfa02370
@@ -105,30 +104,30 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: a729e406dd99a52d35dea1fc81c87585.dir
-    size: 2161438682
+    md5: d58726f98f6d1e9d963bf17edcd43c9e.dir
+    size: 1768808282
     nfiles: 17
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: a729e406dd99a52d35dea1fc81c87585.dir
-    size: 2161438682
+    md5: d58726f98f6d1e9d963bf17edcd43c9e.dir
+    size: 1768808282
     nfiles: 17
   - path: src/combine.py
     md5: 7fa83d562e697f7f2c2bc807af7ea4e1
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: 8826fdf957bf83a3d77edb9188c2389f.dir
-    size: 2161431332
+    md5: b4a39f07c96dd7f8d94aa2ef3c9844af.dir
+    size: 1768800932
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 8826fdf957bf83a3d77edb9188c2389f.dir
-    size: 2161431332
+    md5: b4a39f07c96dd7f8d94aa2ef3c9844af.dir
+    size: 1768800932
     nfiles: 2
   - path: src/autoencoder.py
     md5: 19a7245addaed8a5a78f39d3fef05355
@@ -149,18 +148,18 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: c149e158ceb2b4e1e4a779119f5fd9a3.dir
-    size: 2960472
+    md5: 7b7d888784e5587b554f742c4b6b0d4c.dir
+    size: 2951256
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: 0ac01d0915820e8136163639a159e328
-    size: 368395090
+    md5: 15729c526a2ea008d953bafa1c49e0c2
+    size: 301475090
   - path: assets/models/model.h5
-    md5: 7a61264e25437fed8a1fc3dc7a05eecb
-    size: 2960472
+    md5: e5d17940b8660379ad5278375cf0e40f
+    size: 2951256
   - path: src/evaluate.py
     md5: fb36b7edb78425e50d10ad4b1bd24d1c
     size: 6288
@@ -169,5 +168,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: ae52c302ec90173ae3cf8e253105a4c2
-    size: 56
+    md5: fcf48c8b341dfb55a696d45b453fe112
+    size: 55
