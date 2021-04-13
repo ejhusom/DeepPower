@@ -64,6 +64,7 @@ stages:
     - sequentialize.hist_size
     - sequentialize.use_elements
     - sequentialize.target_mean_window
+    - train.net
 
   combine:
     cmd: python3 src/combine.py assets/data/sequentialized/*.npz

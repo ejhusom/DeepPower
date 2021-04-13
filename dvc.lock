@@ -102,16 +102,17 @@ sequentialize:
       sequentialize.hist_size: 100
       sequentialize.target_mean_window: 1
       sequentialize.use_elements: 1
+      train.net: dnn
   outs:
   - path: assets/data/sequentialized
-    md5: d58726f98f6d1e9d963bf17edcd43c9e.dir
+    md5: fa550c92747429be4f2f91b6d85e18e7.dir
     size: 1768808282
     nfiles: 17
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: d58726f98f6d1e9d963bf17edcd43c9e.dir
+    md5: fa550c92747429be4f2f91b6d85e18e7.dir
     size: 1768808282
     nfiles: 17
   - path: src/combine.py
@@ -119,14 +120,14 @@ combine:
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: b4a39f07c96dd7f8d94aa2ef3c9844af.dir
+    md5: 949e4eb149fa04350d42ee52a30cedf4.dir
     size: 1768800932
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: b4a39f07c96dd7f8d94aa2ef3c9844af.dir
+    md5: 949e4eb149fa04350d42ee52a30cedf4.dir
     size: 1768800932
     nfiles: 2
   - path: src/autoencoder.py
@@ -136,30 +137,30 @@ train:
     md5: 4d4008c01c16004c6f10022cc0c74d9c
     size: 8720
   - path: src/train.py
-    md5: f734fbb6d6c7e165dc511d450070be2d
-    size: 5397
+    md5: 37c7abf567b33d9a153024c9f2423875
+    size: 5398
   params:
     params.yaml:
       train.autoencode: false
       train.batch_size: 128
       train.kernel_size: 6
-      train.n_epochs: 300
-      train.net: cnn
+      train.n_epochs: 400
+      train.net: dnn
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 7b7d888784e5587b554f742c4b6b0d4c.dir
-    size: 2951256
+    md5: d5c87fbf71e66c28e9ac73668178a658.dir
+    size: 3300920
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: 15729c526a2ea008d953bafa1c49e0c2
+    md5: 04b5a8ec06183869a76b049c6bb80dda
     size: 301475090
   - path: assets/models/model.h5
-    md5: e5d17940b8660379ad5278375cf0e40f
-    size: 2951256
+    md5: c95739d664f346bb78f5ab24de33fcc4
+    size: 3300920
   - path: src/evaluate.py
     md5: fb36b7edb78425e50d10ad4b1bd24d1c
     size: 6288
@@ -168,5 +169,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: fcf48c8b341dfb55a696d45b453fe112
+    md5: 32666c3ef9f6f4823ef4aaf96115adff
     size: 55
