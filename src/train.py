@@ -23,7 +23,7 @@ import yaml
 
 from autoencoder import Autoencoder
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
-from config import PLOTS_PATH
+from config import PLOTS_PATH, METRICS_PATH
 from model import DeepPowerHyperModel, cnn, dnn, lstm, cnndnn
 
 def train(filepath):
@@ -208,7 +208,7 @@ def train(filepath):
 
     print(f"Best model in epoch: {np.argmax(np.array(val_loss))}")
 
-    with open(MODELS_PATH / "epochs.txt", "w") as f:
+    with open(METRICS_PATH / "epochs.txt", "w") as f:
         f.write(f"{np.argmax(np.array(val_loss))}")
 
     n_epochs = range(len(loss))
