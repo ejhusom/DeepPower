@@ -18,3 +18,138 @@ model_num,nn,mse,r2
 5,cnn,0.4679254044472651,0.4062542925638689
 6,cnn,0.8017514768749748,-0.02058637384645201
 7,cnn,0.6587577326438245,0.16410912448821768
+
+Round 2 (2021-04-12)
+
+\begin{table}
+    \caption{Overview over the predictor variables used in the various models.
+    The model number corresponds to the model number in table
+    \ref{tab:model_performance}.}
+    \label{tab:model_variables}
+    \centering
+    \begin{tabular}{ |c | l| }
+        \hline
+        Model No & Predictor variables \\
+        \hline
+        1 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage \\
+                \acrshort{rip} abdomen
+            \end{tabular} \\
+        \hline
+        2 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage \\
+                \acrshort{rip} abdomen \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        3 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        4 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        5 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        6 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate slope - cyclic encoded
+            \end{tabular} \\
+        \hline
+        7 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+            \end{tabular} \\
+        \hline
+        8 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        9 & 
+            \begin{tabular}{@{}l@{}}
+                Heart rate
+            \end{tabular} \\
+        \hline
+        10 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded
+            \end{tabular} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+early_stopping: True
+input scale: none
+outputscale: minmax
+hist_size: 100
+kernel size: 6
+train_split: 0.7
+
+model_num,nn,mse,r2
+1,dnn,0.02138975546441402,-0.2582513775799004
+2,dnn,0.008416744176813696,0.5048854124193904
+3,dnn,0.008210655471017824,0.5157702917961781
+4,dnn,0.010434262120411004,0.384625906118753
+5,dnn,0.008320472337114214,0.5105379503169658
+6,dnn,0.012587960732198637,0.2594976809395384
+7,dnn,0.01825733591760003,-0.0767499816782542
+8,dnn,0.011093451708061341,0.34574934824478865
+9,dnn,0.0060306854926279515,0.6452452043467941
+1,lstm
+2,lstm
+3,lstm
+4,lstm
+5,lstm
+6,lstm
+7,lstm
+8,lstm
+9,lstm
+1,cnn,0.017009307115524563,-0.0005717057118632685
+2,cnn,0.011097061982057574,0.34721584128236316
+3,cnn,
+4,cnn,
+5,cnn,
+6,cnn,0.0060516597658965806,0.6440036487126377
+7,cnn,
+8,cnn,
+9,cnn,0.006847472991944597,0.5971977174124516
+10,cnn,0.006704920671223788,0.6055747700691752
