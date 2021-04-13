@@ -47,24 +47,28 @@ def statistics():
     # Power histogram
     plt.subplot(221)
     merged_df.power.hist(bins=50)
+    plt.xlim([0,1250])
     plt.xlabel("power (W)")
     # plt.title("Power histogram")
 
     # Heart rate histogram
     plt.subplot(222)
     merged_df.heartrate.hist(bins=50)
+    plt.xlim([25,180])
     plt.xlabel("heart rate (bpm)")
     # plt.title("Heart rate histogram")
 
     # Ribcage histogram
     plt.subplot(223)
     merged_df.ribcage.hist(bins=50)
+    plt.xlim([1000,2750])
     plt.xlabel("RIP ribcage (mV)")
     # plt.title("Ribcage histogram")
     
     # Abdomen histogram
     plt.subplot(224)
     merged_df.abdomen.hist(bins=50)
+    plt.xlim([0,2250])
     plt.xlabel("RIP abdomen (mV)")
     # plt.title("Abdomen histogram")
 
