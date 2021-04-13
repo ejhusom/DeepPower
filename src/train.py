@@ -198,6 +198,7 @@ def train(filepath):
 
     loss = history.history['loss']
     val_loss = history.history['val_loss']
+    print(f"Best model in epoch: {np.argmax(val_loss)}")
 
     n_epochs = range(len(loss))
 
