@@ -9,24 +9,24 @@ featurize:
   features:
     # - ribcage_min
     # - ribcage_max
-    #- ribcage_range
-    #- abdomen_range 
-    - ribcage_gradient
-    - abdomen_gradient
+    - ribcage_range
+    - abdomen_range 
+    #- ribcage_gradient
+    #- abdomen_gradient
     # - heartrate_gradient
     #- ribcage_frequency
     #- abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    - ribcage_slope_cyclic
-    - abdomen_slope_cyclic
+    #- ribcage_slope_cyclic
+    #- abdomen_slope_cyclic
       # - heartrate_slope_cyclic
   # The variables listed under 'remove' is removed after adding additional
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
   remove:
-    #- ribcage
-    #- abdomen
+    - ribcage
+    - abdomen
     # - heartrate
   breathing_min: 0
   breathing_max: 4096
