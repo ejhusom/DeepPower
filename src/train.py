@@ -154,7 +154,7 @@ def train(filepath):
 
     early_stopping = EarlyStopping(
             monitor="val_loss",
-            patience=40,
+            patience=30,
             verbose=4
     )
 
