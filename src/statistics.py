@@ -16,7 +16,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from config import PLOTS_PATH
 from preprocess_utils import read_csv, move_column
+
+plt.style.use("ggplot")
+WIDTH = 9
+HEIGHT = 6
 
 def statistics():
     """Print statistics about data set."""
@@ -42,24 +47,29 @@ def statistics():
     # Power histogram
     plt.subplot(221)
     merged_df.power.hist(bins=50)
-    plt.title("Power histogram")
+    plt.xlabel("power (W)")
+    # plt.title("Power histogram")
 
     # Heart rate histogram
     plt.subplot(222)
     merged_df.heartrate.hist(bins=50)
-    plt.title("Heart rate histogram")
+    plt.xlabel("heart rate (bpm)")
+    # plt.title("Heart rate histogram")
 
     # Ribcage histogram
     plt.subplot(223)
     merged_df.ribcage.hist(bins=50)
-    plt.title("Ribcage histogram")
+    plt.xlabel("RIP ribcage (mV)")
+    # plt.title("Ribcage histogram")
     
     # Abdomen histogram
     plt.subplot(224)
     merged_df.abdomen.hist(bins=50)
-    plt.title("Abdomen histogram")
+    plt.xlabel("RIP abdomen (mV)")
+    # plt.title("Abdomen histogram")
 
     plt.tight_layout()
+    plt.savefig(PLOTS_PATH / "histogram_training.pdf")
     plt.show()
 
 if __name__ == '__main__':
