@@ -174,6 +174,10 @@ def train(filepath):
             sample_weight=sample_weights
         )
 
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+        print(type(loss))
+
         history = model.fit(
             X_train, y_train, 
             epochs=params["n_epochs"],
@@ -182,6 +186,9 @@ def train(filepath):
             sample_weight=sample_weights,
             callbacks=[early_stopping, model_checkpoint]
         )
+
+        loss += history.history['loss']
+        val_loss += history.history['val_loss']
 
     else:
         history = model.fit(
@@ -192,13 +199,14 @@ def train(filepath):
             sample_weight=sample_weights
         )
 
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+
         model.save(MODELS_FILE_PATH)
 
     TRAININGLOSS_PLOT_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    loss = history.history['loss']
-    val_loss = history.history['val_loss']
-    print(f"Best model in epoch: {np.argmax(val_loss)}")
+    print(f"Best model in epoch: {np.argmax(np.array(val_loss))}")
 
     n_epochs = range(len(loss))
 
