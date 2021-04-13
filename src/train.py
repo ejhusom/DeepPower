@@ -208,6 +208,9 @@ def train(filepath):
 
     print(f"Best model in epoch: {np.argmax(np.array(val_loss))}")
 
+    with open(MODELS_PATH / "epochs.txt", "w") as f:
+        f.write(f"{np.argmax(np.array(val_loss))}")
+
     n_epochs = range(len(loss))
 
     plt.figure()

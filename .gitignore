@@ -11,6 +11,7 @@ build*
 
 !assets/data/examples/*
 !assets/results/*
+!assets/models/*
 
 # doconce:
 .*_html_file_collection
