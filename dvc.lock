@@ -32,28 +32,31 @@ featurize:
       - calories
       featurize.diff_targets: 0
       featurize.features:
+      - ribcage_gradient
+      - abdomen_gradient
+      - ribcage_slope_cyclic
+      - abdomen_slope_cyclic
+      - heartrate_slope_cyclic
       featurize.heartrate_max: 185
       featurize.heartrate_min: 35
       featurize.range_smoothing: 50
       featurize.range_window: 50
       featurize.remove:
-      - ribcage
-      - abdomen
       featurize.scale: true
       featurize.slope_abs: true
       featurize.slope_shift: 1
       featurize.slope_smoothing: 100
   outs:
   - path: assets/data/featurized
-    md5: 679688acf3bc61f8c154cd71c3cab758.dir
-    size: 6193103
+    md5: a91b8b741ca356d3e5b10965e86dfc83.dir
+    size: 42001212
     nfiles: 17
 split:
   cmd: python3 src/split.py assets/data/featurized/*.csv
   deps:
   - path: assets/data/featurized
-    md5: 679688acf3bc61f8c154cd71c3cab758.dir
-    size: 6193103
+    md5: a91b8b741ca356d3e5b10965e86dfc83.dir
+    size: 42001212
     nfiles: 17
   - path: src/split.py
     md5: 3bdad993088aca59539aa1951fdc486f
@@ -63,15 +66,15 @@ split:
       split.train_split: 0.7
   outs:
   - path: assets/data/split
-    md5: 112915ec5301e1b5eacb57ba3f2f7dbd.dir
-    size: 6183896
+    md5: 697d57a4dc23b7f2edb54b04d429dd34.dir
+    size: 41930345
     nfiles: 17
 scale:
   cmd: python3 src/scale.py assets/data/split/*.csv
   deps:
   - path: assets/data/split
-    md5: 112915ec5301e1b5eacb57ba3f2f7dbd.dir
-    size: 6183896
+    md5: 697d57a4dc23b7f2edb54b04d429dd34.dir
+    size: 41930345
     nfiles: 17
   - path: src/scale.py
     md5: a60979ad7c5ca8b4f24451a0477160c1
@@ -82,15 +85,15 @@ scale:
       scale.output: minmax
   outs:
   - path: assets/data/scaled
-    md5: 173466246545956b3075af70013369bb.dir
-    size: 3962106
+    md5: 622c4d3b4934e92dfc1ff9d438bd14cb.dir
+    size: 23729354
     nfiles: 17
 sequentialize:
   cmd: python3 src/sequentialize.py assets/data/scaled/*.npz
   deps:
   - path: assets/data/scaled
-    md5: 173466246545956b3075af70013369bb.dir
-    size: 3962106
+    md5: 622c4d3b4934e92dfc1ff9d438bd14cb.dir
+    size: 23729354
     nfiles: 17
   - path: src/sequentialize.py
     md5: 944a8a9afa0174630c08b73dbfa02370
@@ -102,30 +105,30 @@ sequentialize:
       sequentialize.use_elements: 1
   outs:
   - path: assets/data/sequentialized
-    md5: 04ace9de00ad749ed6f918142913dcee.dir
-    size: 198300418
+    md5: a729e406dd99a52d35dea1fc81c87585.dir
+    size: 2161438682
     nfiles: 17
 combine:
   cmd: python3 src/combine.py assets/data/sequentialized/*.npz
   deps:
   - path: assets/data/sequentialized
-    md5: 04ace9de00ad749ed6f918142913dcee.dir
-    size: 198300418
+    md5: a729e406dd99a52d35dea1fc81c87585.dir
+    size: 2161438682
     nfiles: 17
   - path: src/combine.py
     md5: 7fa83d562e697f7f2c2bc807af7ea4e1
     size: 1431
   outs:
   - path: assets/data/combined
-    md5: 88a57ce560915c68bcb0eed10bfda589.dir
-    size: 198293068
+    md5: 8826fdf957bf83a3d77edb9188c2389f.dir
+    size: 2161431332
     nfiles: 2
 train:
   cmd: python3 src/train.py assets/data/combined/train.npz
   deps:
   - path: assets/data/combined
-    md5: 88a57ce560915c68bcb0eed10bfda589.dir
-    size: 198293068
+    md5: 8826fdf957bf83a3d77edb9188c2389f.dir
+    size: 2161431332
     nfiles: 2
   - path: src/autoencoder.py
     md5: 19a7245addaed8a5a78f39d3fef05355
@@ -146,18 +149,18 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 5ed61d64b782cf3c6b4ad0bc815f3bcc.dir
-    size: 2915880
+    md5: c149e158ceb2b4e1e4a779119f5fd9a3.dir
+    size: 2960472
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
   deps:
   - path: assets/data/combined/test.npz
-    md5: dd8a927cf6e526afa986e809cd9fab37
-    size: 33798322
+    md5: 0ac01d0915820e8136163639a159e328
+    size: 368395090
   - path: assets/models/model.h5
-    md5: f87dced02df2f7192069fdc317a23acc
-    size: 2915880
+    md5: 7a61264e25437fed8a1fc3dc7a05eecb
+    size: 2960472
   - path: src/evaluate.py
     md5: fb36b7edb78425e50d10ad4b1bd24d1c
     size: 6288
@@ -166,5 +169,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 9217f65a3c9deee7cd0ce0a9404c3607
-    size: 55
+    md5: ae52c302ec90173ae3cf8e253105a4c2
+    size: 56
