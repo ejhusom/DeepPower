@@ -9,7 +9,7 @@ Date:
     2020-09-16
 
 """
-from kerastuner import HyperModel
+# from kerastuner import HyperModel
 from tensorflow.keras import layers
 from tensorflow.keras import models
 import tensorflow as tf
@@ -179,100 +179,103 @@ def cnndnn(input_x, input_y, n_forecast_hours, n_steps_out=1):
 
     return model
 
-class DeepPowerHyperModel(HyperModel):
 
-    def __init__(self, input_x, input_y, n_steps_out=1):
-        """Define size of model.
 
-        Args:
-            input_x (int): Number of time steps to include in each sample, i.e. how
-                much history is matched with a given target.
-            input_y (int): Number of features for each time step in the input data.
-            n_steps_out (int): Number of output steps.
 
-        """
+# class DeepPowerHyperModel(HyperModel):
 
-        self.input_x = input_x
-        self.input_y = input_y
-        self.n_steps_out = n_steps_out
+#     def __init__(self, input_x, input_y, n_steps_out=1):
+#         """Define size of model.
 
-    def build(self, hp, seed=2020):
-        """Build model.
+#         Args:
+#             input_x (int): Number of time steps to include in each sample, i.e. how
+#                 much history is matched with a given target.
+#             input_y (int): Number of features for each time step in the input data.
+#             n_steps_out (int): Number of output steps.
 
-        Args:
-            hp: HyperModel instance.
-            seed (int): Seed for random initialization of weights.
+#         """
 
-        Returns:
-            model (keras model): Model to be trained.
+#         self.input_x = input_x
+#         self.input_y = input_y
+#         self.n_steps_out = n_steps_out
 
-        """
+#     def build(self, hp, seed=2020):
+#         """Build model.
 
-        set_seed(seed)
+#         Args:
+#             hp: HyperModel instance.
+#             seed (int): Seed for random initialization of weights.
 
-        model = models.Sequential()
-        model.add(
-            layers.Conv1D(
-                input_shape=(self.input_x, self.input_y),
-                # filters=64,
-                filters=hp.Int(
-                    "filters",
-                    min_value=16,
-                    max_value=256,
-                    step=32,
-                    default=64),
-                # kernel_size=hp.Int(
-                #     "kernel_size",
-                #     min_value=2,
-                #     max_value=6,
-                #     step=2,
-                #     default=4),
-                kernel_size=6,
-                activation="relu",
-                name="input_layer",
-                padding="same"
-            )
-        )
+#         Returns:
+#             model (keras model): Model to be trained.
 
-        for i in range(hp.Int("num_conv1d_layers", 1, 3, default=1)):
-            model.add(layers.Conv1D(
-                # filters=64,
-                filters=hp.Int(
-                    "filters_" + str(i),
-                    min_value=16,
-                    max_value=256,
-                    step=32,
-                    default=64), 
-                # kernel_size=hp.Int(
-                #     "kernel_size_" + str(i),
-                #     min_value=2,
-                #     max_value=6,
-                #     step=2,
-                #     default=4),
-                kernel_size=6,
-                activation="relu", 
-                name=f"conv1d_{i}"
-            ))
+#         """
 
-        # model.add(layers.MaxPooling1D(pool_size=2, name="pool_1"))
-        # model.add(layers.Dropout(rate=0.2))
-        model.add(layers.Flatten(name="flatten"))
+#         set_seed(seed)
 
-        for i in range(hp.Int("num_dense_layers", 1, 3, default=2)):
-            model.add(layers.Dense(
-                # units=64,
-                units=hp.Int(
-                    "units_" + str(i),
-                    min_value=32,
-                    max_value=256,
-                    step=32,
-                    default=64), 
-                activation="relu",
-                name=f"dense_{i}"
-            ))
+#         model = models.Sequential()
+#         model.add(
+#             layers.Conv1D(
+#                 input_shape=(self.input_x, self.input_y),
+#                 # filters=64,
+#                 filters=hp.Int(
+#                     "filters",
+#                     min_value=16,
+#                     max_value=256,
+#                     step=32,
+#                     default=64),
+#                 # kernel_size=hp.Int(
+#                 #     "kernel_size",
+#                 #     min_value=2,
+#                 #     max_value=6,
+#                 #     step=2,
+#                 #     default=4),
+#                 kernel_size=6,
+#                 activation="relu",
+#                 name="input_layer",
+#                 padding="same"
+#             )
+#         )
 
-        model.add(layers.Dense(self.n_steps_out, activation="linear",
-            name="output_layer"))
-        model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
+#         for i in range(hp.Int("num_conv1d_layers", 1, 3, default=1)):
+#             model.add(layers.Conv1D(
+#                 # filters=64,
+#                 filters=hp.Int(
+#                     "filters_" + str(i),
+#                     min_value=16,
+#                     max_value=256,
+#                     step=32,
+#                     default=64), 
+#                 # kernel_size=hp.Int(
+#                 #     "kernel_size_" + str(i),
+#                 #     min_value=2,
+#                 #     max_value=6,
+#                 #     step=2,
+#                 #     default=4),
+#                 kernel_size=6,
+#                 activation="relu", 
+#                 name=f"conv1d_{i}"
+#             ))
 
-        return model
+#         # model.add(layers.MaxPooling1D(pool_size=2, name="pool_1"))
+#         # model.add(layers.Dropout(rate=0.2))
+#         model.add(layers.Flatten(name="flatten"))
+
+#         for i in range(hp.Int("num_dense_layers", 1, 3, default=2)):
+#             model.add(layers.Dense(
+#                 # units=64,
+#                 units=hp.Int(
+#                     "units_" + str(i),
+#                     min_value=32,
+#                     max_value=256,
+#                     step=32,
+#                     default=64), 
+#                 activation="relu",
+#                 name=f"dense_{i}"
+#             ))
+
+#         model.add(layers.Dense(self.n_steps_out, activation="linear",
+#             name="output_layer"))
+#         model.compile(optimizer="adam", loss="mse", metrics=["mae", "mape"])
+
+#         return model

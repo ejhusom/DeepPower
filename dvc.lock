@@ -108,17 +108,17 @@ stages:
         sequentialize.hist_size: 100
         sequentialize.target_mean_window: 1
         sequentialize.use_elements: 1
-        train.net: dnn
+        train.net: cnn
     outs:
     - path: assets/data/sequentialized
-      md5: 9d2ed8f870cf8438851b7e077511c87b.dir
+      md5: 55714946e2e13933949516e3e8b366d6.dir
       size: 1068614828
       nfiles: 22
   combine:
     cmd: python3 src/combine.py assets/data/sequentialized/*.npz
     deps:
     - path: assets/data/sequentialized
-      md5: 9d2ed8f870cf8438851b7e077511c87b.dir
+      md5: 55714946e2e13933949516e3e8b366d6.dir
       size: 1068614828
       nfiles: 22
     - path: src/combine.py
@@ -126,7 +126,7 @@ stages:
       size: 1431
     outs:
     - path: assets/data/combined
-      md5: 5e1e8a5d982bda1266834b50c3cfd01b.dir
+      md5: abe66a850385c1b0932c66c810fba4ea.dir
       size: 1068605028
       nfiles: 2
   train:

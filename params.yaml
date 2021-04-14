@@ -59,7 +59,7 @@ sequentialize:
   target_mean_window: 1
 
 train:
-  net: dnn
+  net: cnn
   n_epochs: 400
   batch_size: 128
   kernel_size: 6

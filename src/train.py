@@ -13,8 +13,8 @@ Created:
 import sys
 import time
 
-from kerastuner import HyperParameters
-from kerastuner.tuners import Hyperband, RandomSearch
+# from kerastuner import HyperParameters
+# from kerastuner.tuners import Hyperband, RandomSearch
 import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.utils import plot_model
@@ -24,7 +24,7 @@ import yaml
 from autoencoder import Autoencoder
 from config import MODELS_PATH, MODELS_FILE_PATH, TRAININGLOSS_PLOT_PATH
 from config import PLOTS_PATH, METRICS_PATH
-from model import DeepPowerHyperModel, cnn, dnn, lstm, cnndnn
+from model import cnn, dnn, lstm, cnndnn
 
 def train(filepath):
     """Train model to estimate power.
@@ -154,7 +154,7 @@ def train(filepath):
 
     early_stopping = EarlyStopping(
             monitor="val_loss",
-            patience=30,
+            patience=15,
             verbose=4
     )
 
