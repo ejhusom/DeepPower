@@ -115,7 +115,7 @@ def lstm(hist_size, n_features, n_steps_out=1):
     model = models.Sequential()
     # model.add(layers.LSTM(64, input_shape=(hist_size, n_features), return_sequences=True))
     model.add(layers.LSTM(
-        70, 
+        10, 
         input_shape=(hist_size, n_features),
     ))
     # model.add(layers.LSTM(32, activation='relu'))
