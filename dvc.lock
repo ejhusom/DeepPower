@@ -144,7 +144,7 @@ train:
     md5: 19a7245addaed8a5a78f39d3fef05355
     size: 3941
   - path: src/model.py
-    md5: 5c5d2eb579e4cf4272019bc1cd1942fb
+    md5: 9883fc694d3894b2e4115cfadb2605b0
     size: 8720
   - path: src/train.py
     md5: e6ab0d4fa4780859fbf2435a87dd51fe
@@ -159,8 +159,8 @@ train:
       train.weigh_samples: false
   outs:
   - path: assets/models
-    md5: 3fbf0ece990c41f0e6e2767c91ca0c0e.dir
-    size: 234368
+    md5: 95b07a729d0472f5a33ba0ac7b26505e.dir
+    size: 302688
     nfiles: 1
 evaluate:
   cmd: python3 src/evaluate.py assets/models/model.h5 assets/data/combined/test.npz
@@ -169,8 +169,8 @@ evaluate:
     md5: e0bf76297a6dc40a7650ff9211d32456
     size: 331795954
   - path: assets/models/model.h5
-    md5: 6d23cbf92f58a06a774bba0a9f4a04b6
-    size: 234368
+    md5: 61d27dfa15746b5abe7a9e3691e2bb9e
+    size: 302688
   - path: src/evaluate.py
     md5: fb36b7edb78425e50d10ad4b1bd24d1c
     size: 6288
@@ -179,5 +179,5 @@ evaluate:
       evaluate.smooth_targets: 0
   outs:
   - path: assets/metrics/metrics.json
-    md5: 468370ca17423666c717cf0e4fc50e03
+    md5: c296d121254e53d69e1fe3e9a1b2f66e
     size: 55
