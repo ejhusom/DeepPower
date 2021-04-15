@@ -65,7 +65,7 @@ def evaluate(model_filepath, test_filepath):
         PLOTS_PATH.parent.mkdir(parents=True, exist_ok=True)
         np.savez(
             PLOTS_PATH / "evaluated.npz",
-            y_test=y_test
+            y_test=y_test,
             y_pred=y_pred
         )
     
