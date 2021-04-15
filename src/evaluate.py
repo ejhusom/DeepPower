@@ -43,6 +43,7 @@ def evaluate(model_filepath, test_filepath):
     # Load parameters
     params = yaml.safe_load(open("params.yaml"))["evaluate"]
     smooth_targets = params["smooth_targets"]
+    save_y = params["save_y"]
     params_train = yaml.safe_load(open("params.yaml"))["train"]
     autoencode = params_train["autoencode"]
 
@@ -58,6 +59,16 @@ def evaluate(model_filepath, test_filepath):
     model = models.load_model(model_filepath)
 
     y_pred = model.predict(X_test)
+
+
+    if save_y:
+        PLOTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        np.savez(
+            PLOTS_PATH / "evaluated.npz",
+            y_test=y_test
+            y_pred=y_pred
+        )
+    
 
     if smooth_targets > 1:
         y_pred = pd.Series(y_pred.reshape(-1)).rolling(smooth_targets).mean()

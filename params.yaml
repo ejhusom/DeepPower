@@ -71,3 +71,4 @@ train:
 
 evaluate:
   smooth_targets: 0
+  save_y: True
