@@ -41,7 +41,6 @@ def train(filepath):
     net = params["net"]
     autoencode = params["autoencode"]
     use_early_stopping = params["early_stopping"]
-    print(type(use_early_stopping))
 
     # Load training set
     train = np.load(filepath)
