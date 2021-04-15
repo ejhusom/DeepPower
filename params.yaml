@@ -9,17 +9,17 @@ featurize:
   features:
     # - ribcage_min
     # - ribcage_max
-    # - ribcage_range
-    # - abdomen_range 
-    - ribcage_gradient
-    - abdomen_gradient
+    - ribcage_range
+    - abdomen_range 
+    #- ribcage_gradient
+    #- abdomen_gradient
     # - heartrate_gradient
     #- ribcage_frequency
     #- abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    - ribcage_slope_cyclic
-    - abdomen_slope_cyclic
+    #- ribcage_slope_cyclic
+    #- abdomen_slope_cyclic
       # - heartrate_slope_cyclic
   # The variables listed under 'remove' is removed after adding additional
   # features, which means that they might be used for feature engineering, but
@@ -59,7 +59,7 @@ sequentialize:
   target_mean_window: 1
 
 train:
-  net: cnn
+  net: lstm
   n_epochs: 400
   batch_size: 128
   kernel_size: 6
