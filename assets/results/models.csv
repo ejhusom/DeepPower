@@ -1,146 +1,21 @@
 model_num,nn,mse,r2
-1,dnn,0.774940829969018,0.016666228413631745
-2,dnn,0.3375088337692605,0.5717300965193538
-3,dnn,0.699142207299879,0.11007583229668261
-4,dnn,0.5199685615342796,0.33810807458833125
-5,dnn,0.3081652606563599,0.6089722871281485
-6,dnn,0.48447711788741893,0.3832867675111179
-1,lstm,0.7927155297355157,-0.005888348509232699
-2,lstm,0.3562478522089793,0.5479518815053226
-3,lstm,0.39797528981598096,0.4934251932467548
-4,lstm,0.34287369511160265,0.5635402848957234
-5,lstm,0.3859563955826644,0.510263920366917
-6,lstm,0.509793924531228,0.35105983854968115
-1,cnn,0.72539356906223,0.07953747361720986
-2,cnn,0.27289360769033966,0.6537213034668975
-3,cnn,0.8524635710972982,-0.08508387290193609
-4,cnn,0.7349563762832211,0.06444018546761021
-5,cnn,0.4679254044472651,0.4062542925638689
-6,cnn,0.8017514768749748,-0.02058637384645201
-7,cnn,0.6587577326438245,0.16410912448821768
-
-Round 2 (2021-04-12)
-
-\begin{table}
-    \caption{Overview over the predictor variables used in the various models.
-    The model number corresponds to the model number in table
-    \ref{tab:model_performance}.}
-    \label{tab:model_variables}
-    \centering
-    \begin{tabular}{ |c | l| }
-        \hline
-        Model No & Predictor variables \\
-        \hline
-        1 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage \\
-                \acrshort{rip} abdomen
-            \end{tabular} \\
-        \hline
-        2 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage \\
-                \acrshort{rip} abdomen \\
-                Heart rate
-            \end{tabular} \\
-        \hline
-        3 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage range \\
-                \acrshort{rip} abdomen range \\
-                Heart rate
-            \end{tabular} \\
-        \hline
-        4 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage frequency \\
-                \acrshort{rip} abdomen frequency \\
-                Heart rate
-            \end{tabular} \\
-        \hline
-        5 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage gradient \\
-                \acrshort{rip} abdomen gradient \\
-                \acrshort{rip} ribcage slope - cyclic encoded \\
-                \acrshort{rip} abdomen slope - cyclic encoded \\
-                Heart rate
-            \end{tabular} \\
-        \hline
-        6 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage gradient \\
-                \acrshort{rip} abdomen gradient \\
-                \acrshort{rip} ribcage slope - cyclic encoded \\
-                \acrshort{rip} abdomen slope - cyclic encoded \\
-                Heart rate slope - cyclic encoded
-            \end{tabular} \\
-        \hline
-        7 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage range \\
-                \acrshort{rip} abdomen range \\
-                \acrshort{rip} ribcage frequency \\
-                \acrshort{rip} abdomen frequency \\
-                \acrshort{rip} ribcage gradient \\
-                \acrshort{rip} abdomen gradient \\
-                \acrshort{rip} ribcage slope - cyclic encoded \\
-                \acrshort{rip} abdomen slope - cyclic encoded \\
-            \end{tabular} \\
-        \hline
-        8 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage range \\
-                \acrshort{rip} abdomen range \\
-                \acrshort{rip} ribcage frequency \\
-                \acrshort{rip} abdomen frequency \\
-                \acrshort{rip} ribcage gradient \\
-                \acrshort{rip} abdomen gradient \\
-                \acrshort{rip} ribcage slope - cyclic encoded \\
-                \acrshort{rip} abdomen slope - cyclic encoded \\
-                Heart rate
-            \end{tabular} \\
-        \hline
-        9 & 
-            \begin{tabular}{@{}l@{}}
-                Heart rate
-            \end{tabular} \\
-        \hline
-        10 & 
-            \begin{tabular}{@{}l@{}}
-                \acrshort{rip} ribcage gradient \\
-                \acrshort{rip} abdomen gradient \\
-                \acrshort{rip} ribcage slope - cyclic encoded \\
-                \acrshort{rip} abdomen slope - cyclic encoded
-            \end{tabular} \\
-        \hline
-    \end{tabular}
-\end{table}
-
-early_stopping: True
-input scale: none
-outputscale: minmax
-hist_size: 100
-kernel size: 6
-train_split: 0.7
-
-model_num,nn,mse,r2
 1,dnn,0.02138975546441402,-0.2582513775799004
 2,dnn,0.008416744176813696,0.5048854124193904
 3,dnn,0.00681997806211895,0.5977865593516442
 4,dnn,0.010434262120411004,0.384625906118753
 5,dnn,0.008320472337114214,0.5105379503169658
-6,dnn,0.012587960732198637,0.2594976809395384
+6,dnn,0.0067357446135328115,0.6037615136372549
 7,dnn,0.01825733591760003,-0.0767499816782542
 8,dnn,0.011093451708061341,0.34574934824478865
-9,dnn,0.0060306854926279515,0.6452452043467941
-10,dnn,0.007533278972796761,0.5568455710847234
+9,dnn,0.006950282982322832,0.591149924475426
+10,dnn,0.025964373631636204,0.28326913054580116
+11,dnn,0.015677155917807103,0.07777196319701618
 1,lstm, 0.01856621325816806,-0.09215663766692583
 2,lstm,0.011231538829869995,0.33930524691890307
 3,lstm,0.007330730677425158,0.5676645318537097
 4,lstm,0.010705038013383492,0.3686565478776107
 5,lstm, 0.009084636419753954,0.46558505545370044
-6,lstm,0.011792591580286033, 0.3062862524985446
+6,lstm,0.0077309856032769814,0.5452152346482781
 7,lstm,0.0159033429895307,0.06207979357531812
 8,lstm,0.0074733656229845095,0.5592486037425521
 9,lstm,0.006636598254566483,0.6096024141021472
@@ -155,4 +30,5 @@ model_num,nn,mse,r2
 7,cnn,0.01696803382599839,-0.0007117245209478096
 8,cnn,0.0169680338259983,-0.0007117245209478096
 9,cnn,0.006847472991944597,0.5971977174124516
-10,cnn,0.006704920671223788,0.6055747700691752
+10,cnn,0.00972395865779548,0.4279761361085901
+11,cnn,0.009414687358693602,0.44616940180713827

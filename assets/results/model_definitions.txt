@@ -1,0 +1,105 @@
+Round 2 (2021-04-12)
+
+\begin{table}
+    \caption{Overview over the predictor variables used in the various models.
+    The model number corresponds to the model number in table
+    \ref{tab:model_performance}.}
+    \label{tab:model_variables}
+    \centering
+    \begin{tabular}{ |c | l| }
+        \hline
+        Model No & Predictor variables \\
+        \hline
+        1 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage \\
+                \acrshort{rip} abdomen
+            \end{tabular} \\
+        \hline
+        2 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage \\
+                \acrshort{rip} abdomen \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        3 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        4 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        5 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        6 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate slope - cyclic encoded
+            \end{tabular} \\
+        \hline
+        7 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+            \end{tabular} \\
+        \hline
+        8 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage range \\
+                \acrshort{rip} abdomen range \\
+                \acrshort{rip} ribcage frequency \\
+                \acrshort{rip} abdomen frequency \\
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded \\
+                Heart rate
+            \end{tabular} \\
+        \hline
+        9 & 
+            \begin{tabular}{@{}l@{}}
+                Heart rate
+            \end{tabular} \\
+        \hline
+        10 & 
+            \begin{tabular}{@{}l@{}}
+                \acrshort{rip} ribcage gradient \\
+                \acrshort{rip} abdomen gradient \\
+                \acrshort{rip} ribcage slope - cyclic encoded \\
+                \acrshort{rip} abdomen slope - cyclic encoded
+            \end{tabular} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+early_stopping: True
+input scale: none
+outputscale: minmax
+hist_size: 100
+kernel size: 6
+train_split: 0.7
+
