@@ -151,13 +151,20 @@ def plot_prediction():
     y_pred = scaler.inverse_transform(y_pred)
 
     # Pick suitable amount of data
-    n = 80000
-    y_test = y_test[n:]
-    y_pred = y_pred[n:]
+    n = 12000
+    y_test = y_test[-n:]
+    y_pred = y_pred[-n:]
+
+    l = len(y_test)
+
+    t = np.linspace(0,(l-1)/10/60,l)
 
     plt.figure(figsize=(WIDTH,HEIGHT))
-    plt.plot(y_test)
-    plt.plot(y_pred)
+    plt.plot(t, y_test, label="true")
+    plt.plot(t, y_pred, label="predicted")
+    plt.xlabel("time (min)")
+    plt.ylabel("power (W)")
+    plt.legend()
     plt.savefig("assets/plots/final_result.pdf")
     plt.show()
 
