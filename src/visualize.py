@@ -142,11 +142,18 @@ def plot_prediction():
     y = np.load("assets/plots/evaluated.npz")
     scaler = pickle.load(open("outputscaler.pkl", "rb"))
     
+    # Read data
     y_test = y["y_test"]
     y_pred = y["y_pred"]
 
+    # Rescale data
     y_test = scaler.inverse_transform(y_test)
     y_pred = scaler.inverse_transform(y_pred)
+
+    # Pick suitable amount of data
+    n = 80000
+    y_test = y_test[n:]
+    y_pred = y_pred[n:]
 
     plt.figure(figsize=(WIDTH,HEIGHT))
     plt.plot(y_test)
