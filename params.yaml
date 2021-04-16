@@ -52,14 +52,14 @@ scale:
 
 sequentialize:
   # History window size in deciseconds
-  hist_size: 100
+  hist_size: 120
   # Use only every nth element
   use_elements: 1
   # Use mean power value over given window
   target_mean_window: 1
 
 train:
-  net: lstm
+  net: dnn
   n_epochs: 400
   batch_size: 128
   kernel_size: 6
