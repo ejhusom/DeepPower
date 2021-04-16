@@ -17,10 +17,11 @@ import os
 import sys
 
 import numpy as np
+import pickle
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 import yaml
 
-from config import DATA_SCALED_PATH
+from config import DATA_SCALED_PATH, MODELS_PATH
 from preprocess_utils import read_csv, scale_data
 
 def scale(filepaths):
@@ -125,6 +126,8 @@ def scale(filepaths):
             # y = data_overview[filepath]["y"]
             y = y
         )
+
+    pickle.dump(output_scaler, open(MODELS_PATH / "outputscaler.pkl", "wb"))
 
 if __name__ == "__main__":
 

@@ -135,6 +135,27 @@ def plot_example_workouts():
     plt.show()
 
 
+def plot_prediction():
+
+    y = np.load("assets/plots/evaluated.npz")
+    scaler = pickle.load(open(MODELS_PATH / "outputscaler.pkl",  "rb"))
+    
+    y_test = y["y_test"]
+    y_pred = y["y_pred"]
+
+    y_test = scaler.inverse_transform(y_test)
+    y_pred = scaler.inverse_transform(y_pred)
+
+
+    plt.figure(figsize=(WIDTH,HEIGHT))
+    plt.plot(y_test)
+    plt.plot(y_pred)
+    plt.savefig("assets/plots/final_result.pdf")
+    plt.show()
+
+
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Visualize data set")
@@ -147,6 +168,8 @@ if __name__ == '__main__':
         help="Backend, plotly or matplotlib")
     parser.add_argument("-e", "--examples", help="Plot example workouts",
             action="store_true")
+    parser.add_argument("-p", "--prediction", help="Plot final prediction",
+            action="store_true")
 
     args = parser.parse_args()
 
@@ -158,3 +181,7 @@ if __name__ == '__main__':
     
     if args.examples:
         plot_example_workouts()
+
+    if args.prediction:
+        plot_prediction()
+
