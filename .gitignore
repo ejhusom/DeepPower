@@ -8,6 +8,7 @@ build*
 *.dat
 *.csv
 *.npz
+*.pkl
 
 !assets/data/examples/*
 !assets/results/*

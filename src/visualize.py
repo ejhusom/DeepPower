@@ -15,9 +15,11 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pickle
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+from config import MODELS_PATH
 from preprocess_utils import read_csv, move_column
 
 plt.style.use("ggplot")
@@ -138,14 +140,13 @@ def plot_example_workouts():
 def plot_prediction():
 
     y = np.load("assets/plots/evaluated.npz")
-    scaler = pickle.load(open(MODELS_PATH / "outputscaler.pkl",  "rb"))
+    scaler = pickle.load(open("outputscaler.pkl", "rb"))
     
     y_test = y["y_test"]
     y_pred = y["y_pred"]
 
     y_test = scaler.inverse_transform(y_test)
     y_pred = scaler.inverse_transform(y_pred)
-
 
     plt.figure(figsize=(WIDTH,HEIGHT))
     plt.plot(y_test)

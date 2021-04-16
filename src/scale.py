@@ -127,7 +127,7 @@ def scale(filepaths):
             y = y
         )
 
-    pickle.dump(output_scaler, open(MODELS_PATH / "outputscaler.pkl", "wb"))
+    pickle.dump(output_scaler, open("outputscaler.pkl", "wb"))
 
 if __name__ == "__main__":
 
