@@ -33,14 +33,14 @@ def plot_results_cnn(model_num):
     xticks = [2,4,6,8,10]
 
     plt.figure(figsize=(WIDTH,HEIGHT))
-    plt.subplot(211)
+    # plt.subplot(211)
     plt.plot(df["kernel_size"], df["mse"], ".-")
     plt.ylabel("MSE")
     plt.xticks(xticks)
-    plt.subplot(212)
-    plt.plot(df["kernel_size"], df["r2"], ".-", color=(74/256,137/256,185/256))
-    plt.xticks(xticks)
-    plt.ylabel("R2 score")
+    # plt.subplot(212)
+    # plt.plot(df["kernel_size"], df["r2"], ".-", color=(74/256,137/256,185/256))
+    # plt.xticks(xticks)
+    # plt.ylabel("R2 score")
     plt.xlabel("Kernel size")
     plt.savefig(f"assets/plots/cnn_kernel_size_model{model_num}.pdf")
     plt.show()
@@ -71,7 +71,7 @@ def plot_results_over_hist_size():
 
 if __name__ == '__main__':
 
-    plot_results_lstm(3)
+    # plot_results_lstm(3)
     # plot_results_over_hist_size()
-    # plot_results_cnn(6)
+    plot_results_cnn(6)
 
