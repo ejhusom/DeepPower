@@ -98,7 +98,7 @@ def plot_example_workouts():
             ramp
     ]
 
-    workout_labels = ["a)", "b)", "c)"]
+    workout_labels = ["(a)", "(b)", "(c)"]
 
     fig = plt.figure(figsize=(WIDTH,7))
     ax = None
