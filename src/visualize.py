@@ -98,9 +98,9 @@ def plot_example_workouts():
             ramp
     ]
 
-    workout_labels = ["A", "B", "C"]
+    workout_labels = ["a)", "b)", "c)"]
 
-    fig = plt.figure(figsize=(WIDTH,HEIGHT))
+    fig = plt.figure(figsize=(WIDTH,7))
     ax = None
 
     for i, filepath in enumerate(filepaths):
@@ -127,12 +127,14 @@ def plot_example_workouts():
         l2 = ax.plot(t[t0:t0+12000], df["power"].iloc[t0:t0+12000], 
                 label="actual structure") 
 
-        if i == 1:
-            ax.set_ylabel("power (W)")
+        ax.set_title(workout_labels[i], loc="left")
+
+        # if i == 1:
+        ax.set_ylabel("power (W)")
 
     fig.legend( labels=["planned", "actual"], loc="center right")
 
-    plt.subplots_adjust(right=0.85)
+    plt.subplots_adjust(right=0.85, hspace=0.9)
     plt.savefig("assets/plots/workout_examples.pdf")
     plt.show()
 
