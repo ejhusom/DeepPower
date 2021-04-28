@@ -182,6 +182,62 @@ def mean_absolute_percentage_error(y_true, y_pred):
     return m
 
 
+def plot_example_data():
+
+    stage = "examples"
+
+    data_dir = "assets/data/" + stage + "/"
+
+    paths = sorted(os.listdir(data_dir))
+
+    filepaths = []
+
+    for p in paths:
+        if p.endswith(".csv"):
+            filepaths.append(p)
+
+
+    workout_labels = ["(a)", "(b)", "(c)", "(d)"]
+    data_labels = ["RIP ribcage (mV)", 
+            "RIP abdomen (mV)",
+            "Heart rate (bpm)",
+            "Power (W)"]
+
+    cols = ["ribcage", "abdomen", "heartrate", "power"]
+
+    fig = plt.figure(figsize=(WIDTH,10))
+    ax = None
+
+    filepath = data_dir + filepaths[1]
+    df = pd.read_csv(filepath, index_col=0)
+
+    t0 = 0
+
+    t = (df["time"] - df["time"].iloc[0]) / 60
+
+    for i, col in enumerate(cols):
+
+        if i == 0:
+            ax = fig.add_subplot(4,1,i+1)
+        else:
+            ax = fig.add_subplot(4,1,i+1, sharex = ax)
+            # ax = fig.add_subplot(4,1,i+1, sharex = ax, sharey = ax)
+
+
+        # ax.set_ylim([0, 400])
+        ax.set_xlabel("time (min)")
+        l1 = ax.plot(t[t0:t0+12000], df[col].iloc[t0:t0+12000], 
+                label=data_labels[i]) 
+
+        ax.set_title(workout_labels[i], loc="left")
+
+        ax.set_ylabel(data_labels[i])
+
+    # fig.legend(labels=["planned", "actual"], loc="center right")
+
+    plt.subplots_adjust(right=0.85, hspace=0.9)
+    plt.savefig("assets/plots/data_example.pdf")
+    plt.show()
 
 if __name__ == '__main__':
 
@@ -197,6 +253,8 @@ if __name__ == '__main__':
             action="store_true")
     parser.add_argument("-p", "--prediction", help="Plot final prediction",
             action="store_true")
+    parser.add_argument("-d", "--exampledata", help="Plot example data",
+            action="store_true")
 
     args = parser.parse_args()
 
@@ -208,6 +266,9 @@ if __name__ == '__main__':
     
     if args.examples:
         plot_example_workouts()
+
+    if args.exampledata:
+        plot_example_data()
 
     if args.prediction:
         plot_prediction()
