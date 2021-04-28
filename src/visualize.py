@@ -152,6 +152,10 @@ def plot_prediction():
     y_test = scaler.inverse_transform(y_test)
     y_pred = scaler.inverse_transform(y_pred)
 
+    # Calculate MAPE
+    mape = mean_absolute_percentage_error(y_test, y_pred)
+    print(mape)
+
     # Pick suitable amount of data
     n = 12000
     y_test = y_test[-n:]
@@ -170,6 +174,12 @@ def plot_prediction():
     plt.savefig("assets/plots/final_result.pdf")
     plt.show()
 
+
+def mean_absolute_percentage_error(y_true, y_pred):
+
+    m = np.sum(np.abs((y_true - y_pred) / y_true)) / len(y_true)
+
+    return m
 
 
 
