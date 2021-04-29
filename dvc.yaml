@@ -59,6 +59,7 @@ stages:
     deps:
     - assets/data/scaled
     - src/sequentialize.py
+    - src/preprocess_utils.py
     outs:
     - assets/data/sequentialized
     params:

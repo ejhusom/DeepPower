@@ -11,16 +11,16 @@ featurize:
     # - ribcage_max
     #- ribcage_range
     #- abdomen_range 
-      #- ribcage_gradient
-      #- abdomen_gradient
+    - ribcage_gradient
+    - abdomen_gradient
     # - heartrate_gradient
     #- ribcage_frequency
     #- abdomen_frequency
     # - ribcage_slope
     # - abdomen_slope
-    #- ribcage_slope_cyclic
-    #- abdomen_slope_cyclic
-    #- heartrate_slope_cyclic
+    - ribcage_slope_cyclic
+    - abdomen_slope_cyclic
+    - heartrate_slope_cyclic
   # The variables listed under 'remove' is removed after adding additional
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
@@ -52,14 +52,14 @@ scale:
 
 sequentialize:
   # History window size in deciseconds
-  hist_size: 120
+  hist_size: 100
   # Use only every nth element
   use_elements: 1
   # Use mean power value over given window
   target_mean_window: 1
 
 train:
-  net: dnn
+  net: cnn
   n_epochs: 400
   batch_size: 128
   kernel_size: 6
