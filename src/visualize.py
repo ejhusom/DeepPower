@@ -239,6 +239,63 @@ def plot_example_data():
     plt.savefig("assets/plots/data_example.pdf")
     plt.show()
 
+def plot_cdrift():
+
+    stage = "cardiovascular-drift"
+
+    data_dir = "assets/data/" + stage + "/"
+
+    paths = sorted(os.listdir(data_dir))
+
+    filepaths = []
+
+    for p in paths:
+        if p.endswith(".csv"):
+            filepaths.append(p)
+
+
+    data_labels = [
+            "Heart rate (bpm)",
+            "Speed (kph)"]
+
+    cols = ["hr", "kph"]
+
+    fig = plt.figure(figsize=(WIDTH,4))
+    ax = None
+
+    filepath = data_dir + filepaths[0]
+    df = pd.read_csv(filepath)
+
+    t0 = 1185
+    t1 = 550
+
+    t = df["secs"] / 60
+    df["kph"] = df["kph"] - df["kph"] + 7.9
+
+    for i, col in enumerate(cols):
+
+        if i == 0:
+            ax = fig.add_subplot(2,1,i+1)
+        else:
+            ax = fig.add_subplot(2,1,i+1, sharex = ax)
+
+        ax.set_xlabel("time (min)")
+        l1 = ax.plot(
+                t[t0:-t1], 
+                df[col].iloc[t0:-t1], 
+                label=data_labels[i]
+        ) 
+        # l1 = ax.plot(t[t0:t0+12000], df[col].iloc[t0:t0+12000],
+        #         label=data_labels[i]) 
+
+        ax.set_ylabel(data_labels[i])
+
+    # fig.legend(labels=["planned", "actual"], loc="center right")
+
+    plt.subplots_adjust(right=0.85, hspace=0.9)
+    plt.savefig("assets/plots/cardiovascular_drift.pdf")
+    plt.show()
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Visualize data set")
@@ -254,6 +311,8 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--prediction", help="Plot final prediction",
             action="store_true")
     parser.add_argument("-d", "--exampledata", help="Plot example data",
+            action="store_true")
+    parser.add_argument("-c", "--cdrift", help="Plot cardiovascular drift",
             action="store_true")
 
     args = parser.parse_args()
@@ -273,3 +332,5 @@ if __name__ == '__main__':
     if args.prediction:
         plot_prediction()
 
+    if args.cdrift:
+        plot_cdrift()
