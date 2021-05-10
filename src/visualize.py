@@ -260,7 +260,7 @@ def plot_cdrift():
 
     cols = ["hr", "kph"]
 
-    fig = plt.figure(figsize=(WIDTH,4))
+    fig = plt.figure(figsize=(8,4))
     ax = None
 
     filepath = data_dir + filepaths[0]

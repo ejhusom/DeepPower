@@ -63,7 +63,7 @@ def plot_results_over_hist_size():
         )
         plt.ylabel("MSE")
         plt.xticks(xticks)
-        plt.xlabel("History size (no. of time steps)")
+        plt.xlabel("History size (deciseconds)")
 
     plt.legend()
     plt.savefig(f"assets/plots/history_size.pdf")
@@ -72,6 +72,6 @@ def plot_results_over_hist_size():
 if __name__ == '__main__':
 
     # plot_results_lstm(3)
-    # plot_results_over_hist_size()
-    plot_results_cnn(6)
+    plot_results_over_hist_size()
+    # plot_results_cnn(6)
 
