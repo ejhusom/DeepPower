@@ -25,9 +25,9 @@ featurize:
   # features, which means that they might be used for feature engineering, but
   # should not be used as input the the neural network.
   remove:
-          #- ribcage
-          #- abdomen
-          - heartrate
+          - ribcage
+          - abdomen
+            #- heartrate
   breathing_min: 0
   breathing_max: 4096
   heartrate_min: 35
@@ -60,7 +60,7 @@ sequentialize:
 
 train:
   net: cnn
-  n_epochs: 20
+  n_epochs: 400
   batch_size: 128
   kernel_size: 6
   weigh_samples: False
