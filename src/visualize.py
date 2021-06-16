@@ -145,8 +145,8 @@ def plot_prediction():
     scaler = pickle.load(open("outputscaler.pkl", "rb"))
     
     # Read data
-    y_test = y["y_test"]
-    y_pred = y["y_pred"]
+    y_test = y["y_test"].reshape(-1,1)
+    y_pred = y["y_pred"].reshape(-1,1)
 
     # Rescale data
     y_test = scaler.inverse_transform(y_test)
@@ -157,7 +157,7 @@ def plot_prediction():
     print(mape)
 
     # Pick suitable amount of data
-    n = 12000
+    n = 13000
     y_test = y_test[-n:]
     y_pred = y_pred[-n:]
 
