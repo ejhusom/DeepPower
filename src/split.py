@@ -50,7 +50,7 @@ def split(filepaths):
     files_to_move = []
 
     for f in test_files:
-        if "rest" in f:
+        if "rest" in f or "interval" in f:
             files_to_move.append(f)
 
     for f in files_to_move:
@@ -70,6 +70,7 @@ def split(filepaths):
 
     print(training_files)
     print(test_files)
+    a = input("Press ENTER to continue...")
 
     for filepath in filepaths:
 
