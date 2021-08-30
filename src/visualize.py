@@ -24,7 +24,7 @@ from preprocess_utils import read_csv, move_column
 
 plt.style.use("ggplot")
 WIDTH = 9
-HEIGHT = 6
+HEIGHT = 2.5
 
 def visualize(stage="restructured", backend="plotly"):
     """Visualize data set.
@@ -158,8 +158,10 @@ def plot_prediction():
 
     # Pick suitable amount of data
     n = 13000
-    y_test = y_test[-n:]
-    y_pred = y_pred[-n:]
+    # y_test = y_test[-n:]
+    # y_pred = y_pred[-n:]
+    y_test = y_test[:n]
+    y_pred = y_pred[:n]
 
     l = len(y_test)
 
@@ -171,6 +173,7 @@ def plot_prediction():
     plt.xlabel("time (min)")
     plt.ylabel("power (W)")
     plt.legend()
+    plt.tight_layout()
     plt.savefig("assets/plots/final_result.pdf")
     plt.show()
 
