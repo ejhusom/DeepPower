@@ -44,7 +44,7 @@ featurize:
   diff_targets: 0
 
 split:
-  train_split: 0.9
+  train_split: 1.0
 
 scale:
   method: minmax
