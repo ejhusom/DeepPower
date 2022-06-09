@@ -9,9 +9,6 @@ build*
 *.csv
 *.npz
 
-!assets/data/examples/*
-!assets/results/*
-!assets/plots/*
 
 # doconce:
 .*_html_file_collection
@@ -86,3 +83,14 @@ models
 # zip file for use in Colab
 colab.zip
 model_tuning/
+
+# Stuff
+!assets/data/examples/*
+!assets/data/cardiovascular-drift/*
+!assets/data/trainset/*
+!assets/data/testset/*
+!assets/results/*
+!assets/plots/*
+!docs/5.csv
+!docs/model/*
+!docs/model.bak/*.sav
