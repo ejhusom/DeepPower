@@ -48,7 +48,7 @@ __pycache__
 
 # temporary files:
 *.pyc
-*.bak
+# *.bak
 *.swp
 *~
 .*~
